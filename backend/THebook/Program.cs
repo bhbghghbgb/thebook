@@ -16,7 +16,6 @@ builder.Services.AddHttpLogging(logging =>
 
 // Add MongoDB
 
-
 // Lấy thông tin cấu hình từ tệp appsettings.json và đăng ký các dịch vụ cần thiết cho Dependency Injection.
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<IMongoDBSettings>(sp =>
@@ -25,7 +24,6 @@ builder.Services.AddSingleton<MongoDBService>();
 builder.Services.AddSingleton<BookService>();
 
 // Add services to the container.
-
 builder.Services.AddLogging(); // Thêm dòng này để cấu hình logging
 
 builder.Services.AddControllers();
@@ -37,10 +35,22 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://localhost:5173") // Replace with your frontend URL
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 var app = builder.Build();
 app.UseExceptionHandler();
 
 app.UseHttpLogging();
+
+// Use the CORS policy
+app.UseCors("AllowSpecificOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
