@@ -45,5 +45,10 @@ namespace THebook.Models
         [BsonElement("authors")]
         [JsonPropertyName("authors")]
         public string[]? Authors { get; set; } = null!;
+        
+        [BsonElement("coins")]
+        [JsonPropertyName("coins")]
+        public int? Coins { get; set; } = null!;
+        
     }
 }
