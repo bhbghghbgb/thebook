@@ -1,11 +1,11 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 // import App from './App.tsx'
-import './index.css'
-import HungApp from './HungApp.tsx'
-
-createRoot(document.getElementById('root')!).render(
+import "./index.css";
+// import NavBar from "./components/NavBar.tsx";
+import BookDetail from "./BookDetail.tsx";
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <HungApp />
-  </StrictMode>,
-)
+    <BookDetail />
+  </StrictMode>
+);
