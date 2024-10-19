@@ -22,11 +22,11 @@ export default ({book, text}: {book: Book[], text: string}) => (
                 mousewheel={{
                     invert: false,
                 }}
-                autoplay={{
-                    delay: 5000,
-                    stopOnLastSlide: false,
-                    disableOnInteraction: false,
-                }}
+                // autoplay={{
+                //     delay: 5000,
+                //     stopOnLastSlide: false,
+                //     disableOnInteraction: false,
+                // }}
                 breakpoints={{
                     0: {
                         spaceBetween: 10,
@@ -62,3 +62,20 @@ export default ({book, text}: {book: Book[], text: string}) => (
         </div>
     </section>
 )
+
+/**
+ *
+ *
+ * Các con số như `0`, `468`, `768`, `1024`, `1280` trong đoạn mã của bạn đại diện cho các điểm ngắt (breakpoints) trong thiết kế responsive. Chúng xác định các kích thước chiều rộng màn hình (theo đơn vị pixel) mà tại đó các thuộc tính của `Swiper` sẽ thay đổi để phù hợp với kích thước màn hình khác nhau.
+ *
+ * Cụ thể:
+ * - `0`: Áp dụng cho màn hình có chiều rộng từ 0 pixel trở lên.
+ * - `468`: Áp dụng cho màn hình có chiều rộng từ 468 pixel trở lên.
+ * - `768`: Áp dụng cho màn hình có chiều rộng từ 768 pixel trở lên.
+ * - `1024`: Áp dụng cho màn hình có chiều rộng từ 1024 pixel trở lên.
+ * - `1280`: Áp dụng cho màn hình có chiều rộng từ 1280 pixel trở lên.
+ *
+ * Mỗi điểm ngắt này có các thuộc tính `spaceBetween` và `slidesPerView` để điều chỉnh khoảng cách giữa các slide và số lượng slide hiển thị tương ứng với kích thước màn hình.
+ *
+ *
+ * */
