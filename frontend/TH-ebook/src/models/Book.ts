@@ -1,4 +1,3 @@
-import { Author } from "./Author";
 
 export interface Book {
     id: string,
@@ -10,6 +9,6 @@ export interface Book {
     language: string;
     created_at: string;
     updated_at: string;
-    authors: Author[];
+    authors: string[];
     coins: number;
 }

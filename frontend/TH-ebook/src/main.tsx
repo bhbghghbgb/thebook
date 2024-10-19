@@ -1,11 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-// import App from './App.tsx'
-import './index.css'
-import HungApp from './HungApp.tsx'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+// import HungApp from './Book';
+import './index.css';
+import HomePage from './pages/HomePage';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <HungApp />
-  </StrictMode>,
-)
+const queryClient = new QueryClient();
+
+ReactDOM.render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <HomePage />
+    </QueryClientProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
