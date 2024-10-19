@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import './App.css';
 import { Book } from "./models/Book";
-import BreakPoint from "./component/HomePage/BreakPoint.tsx";
+import BreakPoint from "./component/HomePage/BookContainer.tsx";
 
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
       id="root"
       className="m-0 flex place-items-center min-w-[320px] min-h-screen font-pop w-full h-full bg-black"
     >
-      <BreakPoint book={books} />
+      <BreakPoint book={books} text={"My App"} />
     </div>
   );
 };
