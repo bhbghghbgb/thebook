@@ -1,27 +1,20 @@
-import { useEffect, useState } from "react";
-// import './App.css';
-import { Book } from "./models/Book";
+import useFetchBooks from './hooks/useFetchBook.ts';
 import BreakPoint from "./components/HomePage/BookContainer.tsx";
 
+const HungApp = () => {
+  const { data: books, error, isLoading } = useFetchBooks();
 
-const App = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const response = await fetch("http://localhost:5024/api/Book");
-        const data = await response.json();
-        setBooks(data);
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
-        console.info("Books fetched:", books);
-      } catch (error) {
-        console.error("Error fetching books:", error);
-      }
-    };
-
-    fetchBooks().then(r => r);
-  }, []);
+  if (!books) {
+    return <div>No books available</div>;
+  }
 
   return (
     <div
@@ -33,4 +26,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default HungApp;
