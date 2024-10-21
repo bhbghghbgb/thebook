@@ -12,6 +12,7 @@ function NavBar() {
               stroke-width="1.5"
               stroke="currentColor"
               className="size-6 "
+              id="menu-icon"
             >
               <path
                 stroke-linecap="round"

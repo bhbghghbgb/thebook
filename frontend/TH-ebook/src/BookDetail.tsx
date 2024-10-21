@@ -1,6 +1,18 @@
 import NavBar from "./components/NavBar";
+import {Book} from "./models/Book.ts";
+import Category from "./components/Category.tsx";
+import Ratings from "./components/Ratings.tsx";
 
-function BookDetail() {
+
+interface BookDetailProps {
+    book: Book;
+    onAddToLibrary: () => void;
+    onPreview: () => void;
+    onPreoder: () => void;
+    onSub: () => void;
+}
+
+function BookDetail({ book, onAddToLibrary, onPreview, onPreoder, onSub}: BookDetailProps) {
   return (
     <>
       <div>
@@ -10,7 +22,7 @@ function BookDetail() {
         <div className="Container flex mt-4 ml-8">
           <div className="nav-l ">
             <img
-              src="https://mangadex.org/covers/517b19aa-0243-4c55-85dc-eafd6318bbc2/63af2309-b249-4c6a-9d01-e1f81f3b3630.jpg.512.jpg"
+              src= {book.cover_image}
               alt=""
               className="w-52 h-80 object-cover"
             />
@@ -18,18 +30,18 @@ function BookDetail() {
           <div className="nav-r ml-5">
             <div className="space-y-1">
               <span className=" text-custom-xl font-bold block">
-                Mayonaka no X Giten
+                {book.title}
               </span>
               <span className="text-xl block">
                 Cross Method in the Dead of Night
               </span>
               <span style={{ marginTop: "56px" }} className="block">
-                Yamaguchi Mikoto, Bareisho
+                {book.authors.map(author => author.name).join(", ")}
               </span>
             </div>
             <div className="mt-11 flex gap-2">
               <div className="Add-Library">
-                <button className="bg-custom-orange text-white rounded-md w-[220px] h-[48px] hover:bg-orange-600 focus:outline-none">
+                <button className="bg-custom-orange text-white rounded-md w-[220px] h-[48px] hover:bg-orange-600 focus:outline-none" onClick={onAddToLibrary}>
                   Add To Library
                 </button>
               </div>
@@ -87,7 +99,7 @@ function BookDetail() {
                 </button>
               </div>
               <div className="flex gap-2">
-                <button className="flex items-center justify-center bg-custom-orange text-white rounded-md w-[120px] h-[48px] gap-2 hover:bg-orange-600 focus:outline-none">
+                <button className="flex items-center justify-center bg-custom-orange text-white rounded-md w-[120px] h-[48px] gap-2 hover:bg-orange-600 focus:outline-none" onClick={onPreview}>
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
@@ -101,7 +113,7 @@ function BookDetail() {
                   </svg>
                   <span>Preview</span>
                 </button>
-                <button className="flex items-center justify-center bg-custom-orange text-white rounded-md w-[120px] h-[48px] gap-2 hover:bg-orange-600 focus:outline-none">
+                <button className="flex items-center justify-center bg-custom-orange text-white rounded-md w-[120px] h-[48px] gap-2 hover:bg-orange-600 focus:outline-none" onClick={onPreoder}>
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
@@ -115,7 +127,7 @@ function BookDetail() {
                   </svg>
                   <span>Preoder</span>
                 </button>
-                <button className="flex items-center justify-center bg-custom-orange text-white rounded-md w-[120px] h-[48px] gap-2 hover:bg-orange-600 focus:outline-none">
+                <button className="flex items-center justify-center bg-custom-orange text-white rounded-md w-[120px] h-[48px] gap-2 hover:bg-orange-600 focus:outline-none" onClick={onSub}>
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
@@ -135,166 +147,15 @@ function BookDetail() {
         </div>
 
         {/* category */}
-        <div className="category mt-3">
-          <div className="flex ml-[260px] gap-1">
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Suggestive
-              </a>
-            </span>
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Genderswap
-              </a>
-            </span>
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Psychological
-              </a>
-            </span>
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Romance
-              </a>
-            </span>
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Supernatural
-              </a>
-            </span>
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Mystery
-              </a>
-            </span>
-            <span className="px-2 h-[15px] bg-gray-900 rounded font-bold flex items-center justify-center">
-              <a href="" className="text-xs">
-                Tragedy
-              </a>
-            </span>
-            <span className="w-[300px] h-[15px] rounded flex items-center">
-              <svg
-                data-v-9ba4cb7e
-                data-v-6ebb56e1
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 6.35 6.35"
-                className="icon text-blue-500"
-              >
-                <path
-                  fill="currentColor"
-                  d="M4.233 3.175a1.06 1.06 0 0 1-1.058 1.058 1.06 1.06 0 0 1-1.058-1.058 1.06 1.06 0 0 1 1.058-1.058 1.06 1.06 0 0 1 1.058 1.058"
-                ></path>
-              </svg>
-              <span className=" text-sm font-bold">
-                Publication: 2014, Completed
-              </span>
-            </span>
-          </div>
-        </div>
+        <Category book={book}/>
 
         {/* rating */}
-        <div className="ml-[260px] mt-4 flex gap-3">
-          <span className="flex">
-            <svg
-              data-v-9ba4cb7e=""
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              className="feather feather-star icon rel text-primary mr-1 mt-1 text-custom-orange"
-              viewBox="0 0 24 24"
-            >
-              <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"></path>
-            </svg>
-            <span className=" text-custom-orange">7.67</span>
-          </span>
-          <span className="flex">
-            <svg
-              data-v-9ba4cb7e=""
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="icon rel mr-1 mt-1"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-              ></path>
-            </svg>
-            <span>3,374</span>
-          </span>
-          <span className="flex">
-            <svg
-              data-v-9ba4cb7e=""
-              data-v-89359c03=""
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="icon small text-icon-contrast text-undefined mr-1 mt-1"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-              ></path>
-            </svg>
-            <span>30</span>
-          </span>
-          <span className="flex text-gray-500 font-bold">
-            <svg
-              data-v-9ba4cb7e=""
-              data-v-65e4b371=""
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              className="feather feather-eye icon rel mr-1 mt-1"
-              viewBox="0 0 24 24"
-            >
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-            <span>N/A</span>
-          </span>
-        </div>
+        <Ratings />
 
         {/* story */}
         <div className="story-container ml-8 mr-10 mt-8">
           <p className="story-description">
-            Hiroki has a NEET Shut-in for an older sister, which leads him to
-            always think "It's better to be a girl!" While taking care of his
-            lazy self-centered sister Yui, he has finally had enough of her
-            behaviour, and snaps at her. Griping about his sister, Hiroki
-            mutters "I wish we weren't related", and accesses a mysterious
-            website address. The website claims to allow you to enter the body
-            of another person, as long as you are willing to make your own body
-            available as well. Skeptical, Hiroki tries the service and winds up
-            in the body of popular idol Mikuriya Mikuni. While spending time as
-            Mikuni, Hiroki is involved in finding out a secret about her he'd
-            rather not. At the same time, when seeking to go back to his own
-            body, the person occupying it tells him something outrageous has
-            just happened! What happened to Hiroki's body during the incident?
-            And what is the idol Mikuni's big secret? Be witness to the suspense
-            as these mysteries pile up!
+            {book.description}
           </p>
         </div>
 
