@@ -15,7 +15,10 @@ const config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    "tailwindcss",
+    "autoprefixer"
+  ],
 };
 
 export default withMT(config);

@@ -23,15 +23,14 @@ const test_data: Book =
     };
 
 const BookDetailPage = () => {
-
     return (
-        <div
-            id="page"
-    className="m-0 flex  min-w-[320px] min-h-screen font-pop"
-    >
-    <BookDetail book={test_data} onAddToLibrary={() => {}} onPreoder={() => {}} onPreview={() => {}} onSub={() => {}} />
-    </div>
-);
+        <div id="BookDetailPage" className="max-w-[1280px] mx-auto p-8 text-center ">
+            <div className="card p-8">
+                <BookDetail book={test_data} onAddToLibrary={() => {}} onPreoder={() => {}} onPreview={() => {}} onSub={() => {}} />
+            </div>
+        </div>
+    );
 };
 
 export default BookDetailPage;
+
