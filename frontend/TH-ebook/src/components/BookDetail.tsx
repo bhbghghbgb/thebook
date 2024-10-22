@@ -1,7 +1,6 @@
-import NavBar from "./components/NavBar";
-import {Book} from "./models/Book.ts";
-import Category from "./components/Category.tsx";
-import Ratings from "./components/Ratings.tsx";
+import {Book} from "../models/Book.ts";
+import Category from "./Category.tsx";
+import Ratings from "./Ratings.tsx";
 
 
 interface BookDetailProps {
@@ -16,8 +15,6 @@ function BookDetail({ book, onAddToLibrary, onPreview, onPreoder, onSub}: BookDe
   return (
     <>
       <div>
-        <NavBar />
-
         {/* Container */}
         <div className="Container flex mt-4 ml-8">
           <div className="nav-l ">
@@ -103,7 +100,7 @@ function BookDetail({ book, onAddToLibrary, onPreview, onPreoder, onSub}: BookDe
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 576 512"
                     height="1em"
                     width="1em"
@@ -117,7 +114,7 @@ function BookDetail({ book, onAddToLibrary, onPreview, onPreoder, onSub}: BookDe
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 288 512"
                     height="1em"
                     width="1em"
@@ -131,7 +128,7 @@ function BookDetail({ book, onAddToLibrary, onPreview, onPreoder, onSub}: BookDe
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 448 512"
                     height="1em"
                     width="1em"
@@ -184,7 +181,7 @@ function BookDetail({ book, onAddToLibrary, onPreview, onPreoder, onSub}: BookDe
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 448 512"
                   height="1em"
                   width="1em"
