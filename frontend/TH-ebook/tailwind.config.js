@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import withMT from "@material-tailwind/react/utils/withMT"
+import {requirePropFactory} from "@mui/material";
 const config = {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -16,17 +17,20 @@ const config = {
 
       gridTemplateAreas: {
         'product-detail': [
-          'header header header',
-          'nav    main   main',
-          'nav    footer footer',
+          'left cover   facing  right',
+          'left cover   buttons right',
+          'left cover   tags    right',
+          'left cover   scores  right',
+          'left desc    desc    right',
+          'left info    chapter right',
         ],
       },
     },
   },
   plugins: [
-    "tailwindcss",
-    "autoprefixer",
-    '@savvywombat/tailwindcss-grid-areas',
+    require('tailwindcss'),
+    require('autoprefixer'),
+    require('@savvywombat/tailwindcss-grid-areas'),
   ],
   variants: {
     gridTemplateAreas: ['responsive'],
