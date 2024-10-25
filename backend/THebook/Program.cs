@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using THebook.Repository;
-using THebook.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +28,7 @@ builder.Services.AddSingleton<IMongoDBSettings>(sp =>
     sp.GetRequiredService<IOptions<MongoDBSettings>>().Value
 );
 builder.Services.AddSingleton<MongoDbContext>();
-builder.Services.AddSingleton<BookService>();
+// builder.Services.AddSingleton<BookService>();
 
 // Add services to the container.
 
