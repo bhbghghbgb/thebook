@@ -746,6 +746,11 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.24.0.tgz#0574d7e87b44ee8511d08cc7f914bcb802b70818"
   integrity sha512-fbMkAF7fufku0N2dE5TBXcNlg0pt0cJue4xBRE2Qc5Vqikxr4VCgKj/ht6SMdFcOacVA9rqF70APJ8RN/4vMJw==
 
+"@savvywombat/tailwindcss-grid-areas@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@savvywombat/tailwindcss-grid-areas/-/tailwindcss-grid-areas-4.0.0.tgz#72f227362e93c20f5e94f01cd3aef8da2664ecbe"
+  integrity sha512-gjEGTltsGfy+AJQqhkuQKQGp/SB0XzXT3ZNmrOfuwPGF5DLg5GsN5XHiaYhudMvmBwRp+9k6wrZhHBM0lhEgJA==
+
 "@swc/core-darwin-arm64@1.7.39":
   version "1.7.39"
   resolved "https://registry.yarnpkg.com/@swc/core-darwin-arm64/-/core-darwin-arm64-1.7.39.tgz#8954552632e8100e30625dba3b926fb861f37209"

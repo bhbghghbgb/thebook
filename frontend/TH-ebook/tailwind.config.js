@@ -13,12 +13,24 @@ const config = {
       colors: {
         "custom-orange": "rgb(255, 103, 64)",
       },
+
+      gridTemplateAreas: {
+        'product-detail': [
+          'header header header',
+          'nav    main   main',
+          'nav    footer footer',
+        ],
+      },
     },
   },
   plugins: [
     "tailwindcss",
-    "autoprefixer"
+    "autoprefixer",
+    '@savvywombat/tailwindcss-grid-areas',
   ],
+  variants: {
+    gridTemplateAreas: ['responsive'],
+  },
 };
 
 export default withMT(config);
