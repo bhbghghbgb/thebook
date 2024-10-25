@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using THebook.Services;
 using THebook.Models.Entities;
+using THebook.Models.Queries;
+using THebook.Services;
 
 namespace THebook.Controllers.Tag
 {
@@ -16,10 +17,9 @@ namespace THebook.Controllers.Tag
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTags()
+        public async Task<IEnumerable<TagEntity>> GetTags([FromQuery] TagCriteria criteria)
         {
-            var tags = await _tagService.GetAllTagsAsync();
-            return Ok(tags);
+            return await _tagService.GetTagsAsync(criteria);
         }
 
         [HttpGet("{id}")]

@@ -19,12 +19,15 @@ builder.Services.AddHttpLogging(logging =>
 var pack = new ConventionPack { new EnumRepresentationConvention(BsonType.String) };
 ConventionRegistry.Register("EnumStringConvention", pack, t => true);
 
-builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
-builder.Services.AddSingleton<IMongoDBSettings>(sp =>
-    sp.GetRequiredService<IOptions<MongoDBSettings>>().Value
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<IMongoDbSettings>(sp =>
+    sp.GetRequiredService<IOptions<MongoDbSettings>>().Value
 );
-builder.Services.AddSingleton<MongoDbContext>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddDbContext<MongoDbContext>();
+
+builder.Services.AddSingleton<MongoDbCollection>();
+builder.Services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<TagService>(); // Change from AddSingleton to AddScoped
 

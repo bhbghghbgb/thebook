@@ -1,13 +1,16 @@
 // File: backend/THebook/Repository/IGenericRepository.cs
 using System.Linq.Expressions;
+using THebook.Models;
 
 namespace THebook.Repository
 {
-    public interface IGenericRepository<T> where T : class
+    public interface ICrudRepository<T>
+        where T : BaseDbModel
     {
-        Task<List<T>> GetAllAsync();
-        Task<T> GetByIdAsync(string id);
+        Task<IEnumerable<T>> FindAllAsync();
+        Task<T?> FindByIdAsync(string id);
         Task InsertAsync(T entity);
         Task ReplaceAsync(string id, T entity);
+        Task DeleteAsync(string id);
     }
 }

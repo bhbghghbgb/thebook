@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using THebook.Models.Entities;
+using THebook.Models.Queries;
 using THebook.Repository;
 
 namespace THebook.Services
@@ -15,9 +16,9 @@ namespace THebook.Services
             _tagRepository = tagRepository;
         }
 
-        public async Task<IEnumerable<TagEntity>> GetAllTagsAsync()
+        public async Task<IEnumerable<TagEntity>> GetTagsAsync(TagCriteria criteria)
         {
-            return await _tagRepository.GetAllAsync();
+            return await _tagRepository.FindAsync(criteria);
         }
 
         public async Task<TagEntity?> GetTagByIdAsync(string id)
@@ -27,7 +28,7 @@ namespace THebook.Services
                 throw new ArgumentException("Tag ID cannot be null or empty", nameof(id));
             }
 
-            return await _tagRepository.GetByIdAsync(id);
+            return await _tagRepository.FindByIdAsync(id);
         }
 
         public async Task AddTagAsync(TagEntity tag)
@@ -63,7 +64,7 @@ namespace THebook.Services
                 throw new ArgumentNullException(nameof(tag), "Tag cannot be null");
             }
 
-            var existingTag = await _tagRepository.GetByIdAsync(id);
+            var existingTag = await _tagRepository.FindByIdAsync(id);
             if (existingTag == null)
             {
                 throw new InvalidOperationException($"Tag with ID '{id}' does not exist");
@@ -79,7 +80,7 @@ namespace THebook.Services
                 throw new ArgumentException("Tag ID cannot be null or empty", nameof(id));
             }
 
-            var existingTag = await _tagRepository.GetByIdAsync(id);
+            var existingTag = await _tagRepository.FindByIdAsync(id);
             if (existingTag == null)
             {
                 throw new InvalidOperationException($"Tag with ID '{id}' does not exist");
