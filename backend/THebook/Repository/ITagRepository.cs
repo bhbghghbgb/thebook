@@ -6,13 +6,9 @@ using THebook.Models.Entities;
 
 namespace THebook.Repository
 {
-    public interface ITagRepository
+    public interface ITagRepository : IGenericRepository<TagEntity>
     {
-        Task<List<TagEntity>> FindAsync();
-        Task<TagEntity?> FindByIdAsync(string id);
-        Task<TagEntity?> FindByNameAsync(string id);
-        Task InsertAsync(TagEntity tag);
-        Task ReplaceAsync(string id, TagEntity tag);
+        Task<TagEntity?> FindByNameAsync(string name);
         Task DeleteAsync(string id);
     }
 }
