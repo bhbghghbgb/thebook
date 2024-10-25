@@ -10,7 +10,7 @@ import {useState} from "react";
 import {DrawerDefault} from "./DrawerDefault.tsx";
 
 
-export default function SearchBar() {
+export default function NavBar() {
     const [open, setOpen] = useState(false);
 
     const openDrawer = () => setOpen(true);

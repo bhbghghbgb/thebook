@@ -1,6 +1,6 @@
-function Ratings() {
+function RatingsContainer() {
   return (
-      <div className="ml-[260px] mt-4 flex gap-3">
+      <div className="ml-2 mt-4 flex gap-3">
           <span className="flex">
             <svg
                 data-v-9ba4cb7e=""
@@ -84,4 +84,4 @@ function Ratings() {
   );
 }
 
-export default Ratings;
+export default RatingsContainer;
