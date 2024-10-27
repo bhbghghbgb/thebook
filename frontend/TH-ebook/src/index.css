@@ -3,11 +3,16 @@
 @tailwind utilities;
 
 body {
-    @apply overflow-y-auto;
+    @apply overflow-y-auto flex flex-grow text-white;
     background-color: #242424;
     color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
-    ext-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    width: 100%;
+    --navbar-height: 64px;
 }

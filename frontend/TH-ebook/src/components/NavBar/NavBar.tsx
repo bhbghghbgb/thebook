@@ -37,7 +37,7 @@ export default function NavBar() {
                                 type="search"
                                 color="black"
                                 label="Type here..."
-                                className="pr-20 bg-white text-white"
+                                className="pr-20 bg-white text-black"
                                 containerProps={{ className: "min-w-[288px]" }}
                             />
                             <Button size="sm" color="black" className="!absolute right-1 top-1 rounded">

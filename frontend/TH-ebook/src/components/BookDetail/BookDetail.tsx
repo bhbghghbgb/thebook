@@ -1,7 +1,6 @@
 import { Book } from "../../models/Book.ts";
 import CategoryContainer from "./CategoryContainer.tsx";
 import RatingsContainer from "./RatingsContainer.tsx";
-import AuthorContainer from "./AuthorContainer.tsx";
 import TitleContainer from "./TitleContainer.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
@@ -61,7 +60,26 @@ const BookDetail = ({
             w-full h-full m-0 p-0
              "
       >
-        <div className="nav-l grid-in-cover mr-5">
+        {/* Background Container */}
+        <div
+          className="absolute top-0 left-0 z-[-2] w-full h-[250px] blur-xl bg-no-repeat  bg-gradient-to-t from-[
+        before:content-['']
+            before:absolute
+            before:inset-0
+            before:block
+            before:bg-gradient-to-r
+            before:from-indigo-50
+            before:to-gray-400
+            before:opacity-75
+            before:z-[-5]
+        "
+          style={{
+            backgroundImage: `url(${book.cover_image})`,
+            backgroundPosition: "top 35% center",
+            backgroundSize: "100%",
+          }}
+        ></div>
+        <div className="nav-l grid-in-cover mr-5 mb-5">
           <img
             src={book.cover_image}
             alt=""
@@ -74,7 +92,7 @@ const BookDetail = ({
         </div>
 
         {/*ButtonGroup*/}
-        <div className="grid-in-buttons sm:ml-2 relative">
+        <div className="grid-in-buttons sm:ml-2 relative mt-3">
           <ButtonGroupContainer
             onAddToLibrary={onAddToLibrary}
             onPreview={onPreview}
@@ -94,8 +112,8 @@ const BookDetail = ({
         </div>
 
         {/* description */}
-        <div className="grid-in-synopsis min-w-0">
-          <p className="story-description">{book.description}</p>
+        <div className="grid-in-synopsis overflow-hidden transition-[max-height,height]">
+          <p className="story-description py-2 text-sm">{book.description}</p>
         </div>
 
         {/* 
@@ -108,7 +126,7 @@ nội dung bị tràn
         */}
 
         <div className="content grid-in-content overflow-x-auto fill-width mt-2 mb-4">
-            <TabDefault data={tabData} />
+          <TabDefault data={tabData} />
         </div>
       </div>
     </>
