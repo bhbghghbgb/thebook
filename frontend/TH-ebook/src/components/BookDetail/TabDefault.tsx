@@ -5,28 +5,21 @@ import {
     Tab,
     TabPanel,
 } from "@material-tailwind/react";
-import PartComponent from "./PartComponent.tsx";
+import React from "react";
 
-export function TabsDefault() {
-    const data = [
-        {
-            label: "Chapter",
-            value: "chapter",
-            content: (
-                <div>
-                    <PartComponent/>
-                </div>
-            )
-        },
-        {
-            label: "Comment",
-            value: "comment",
-            content: `Chúng tôi hiện đang tiếp tục xây dựng tính năng này. Các bạn có thể ủng hộ chúng tôi phát triển tính năng bằng cách đăng ký gói.`,
-        },
-    ];
+interface TabData {
+    label: string;
+    value: string;
+    content: React.ReactNode;
+}
 
+interface TabsDefaultProps {
+    data: TabData[];
+}
+
+const TabsDefault = ({ data }: TabsDefaultProps) => {
     return (
-        <Tabs value="html">
+        <Tabs value={data[0]?.value || ""}>
             <TabsHeader>
                 {data.map(({ label, value }) => (
                     <Tab key={value} value={value}>
@@ -43,7 +36,7 @@ export function TabsDefault() {
             </TabsBody>
         </Tabs>
     );
-}
+};
 
 export default TabsDefault;
 

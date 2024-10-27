@@ -6,6 +6,7 @@ import TitleContainer from "./TitleContainer.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
 import InformationContainer from "./InformationContainer.tsx";
+import PartComponent from "./PartComponent.tsx";
 
 interface BookDetailProps {
   book: Book;
@@ -27,7 +28,28 @@ const BookDetail = ({
   onAuthorClick,
 }: BookDetailProps) => {
   const authors = book.authors.map((author) => author.name);
-
+  const tabData = [
+    {
+      label: "Part",
+      value: "Part",
+      content: (
+        <div className="flex gap-6 items-start">
+          {/* Author */}
+          <InformationContainer
+            header="Author"
+            content={authors}
+            onContainerClick={onAuthorClick}
+          />
+          <PartComponent />
+        </div>
+      ),
+    },
+    {
+      label: "Comment",
+      value: "comment",
+      content: `Chúng tôi hiện đang tiếp tục xây dựng tính năng này. Các bạn có thể ủng hộ chúng tôi phát triển tính năng bằng cách đăng ký gói.`,
+    },
+  ];
   return (
     <>
       {/* Container */}
@@ -76,15 +98,17 @@ const BookDetail = ({
           <p className="story-description">{book.description}</p>
         </div>
 
-        <div className="content flex gap-6 items-start grid-in-content">
-          {/* Author */}
-          <InformationContainer
-            header="Author"
-            content={authors}
-            onContainerClick={onAuthorClick}
-          />
-          {/* Parts */}
-          <TabDefault />
+        {/* 
+overflow-x-auto
+
+Đảm bảo rằng nếu nội dung của phần tử vượt quá chiều rộng của nó,
+một thanh cuộn ngang sẽ xuất hiện để người dùng có thể cuộn qua 
+nội dung bị tràn
+
+        */}
+
+        <div className="content grid-in-content overflow-x-auto fill-width mt-2 mb-4">
+            <TabDefault data={tabData} />
         </div>
       </div>
     </>

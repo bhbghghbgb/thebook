@@ -38,7 +38,7 @@ const handleCategoryClick = (categoryName: string) => {
   console.log(`Category clicked: ${categoryName}`);
 };
 const handleAuthorClick = (authorName: string) => {
-  console.log(`Category clicked: ${authorName}`);
+  console.log(`Author clicked: ${authorName}`);
 };
 
 const BookDetailPage = () => {
