@@ -6,6 +6,7 @@ import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
 import InformationContainer from "./InformationContainer.tsx";
 import PartComponent from "./PartComponent.tsx";
+import { useMediaQuery } from "@mui/material";
 
 interface BookDetailProps {
   book: Book;
@@ -26,6 +27,7 @@ const BookDetail = ({
   onCategoryClick,
   onAuthorClick,
 }: BookDetailProps) => {
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const authors = book.authors.map((author) => author.name);
   const tabData = [
     {
