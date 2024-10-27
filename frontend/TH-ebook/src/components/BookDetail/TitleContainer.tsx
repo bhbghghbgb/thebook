@@ -7,19 +7,16 @@ interface Props {
 const TitleContainer = ({book}: Props) => {
     return (
         <>
-            <div className="title space-y-1">
-              <span className=" text-custom-xl font-bold block">
+            <div className="title ">
+              <span className=" text-custom-xl font-bold block mb-1">
                 {book.title}
               </span>
+                <div className="flex-grow hidden sm:block"></div>
                 <span className="text-xl block">
                 Cross Method in the Dead of Night
               </span>
 
-                <div className="flex-grow hidden sm:block">
-
-                </div>
-
-                <span className="block mt-3 text-2xl">
+                <span className="block font-normal text-xs sm:text-base sm:truncate flex-shrink-0">
                 {book.authors.map(author => author.name).join(", ")}
               </span>
                 <span className=" text-sm font-bold">

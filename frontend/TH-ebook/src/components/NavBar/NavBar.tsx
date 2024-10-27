@@ -20,14 +20,14 @@ export default function NavBar() {
             <Navbar
                 variant="gradient"
                 color="transparent"
-                className="navbar mx-auto max-w-screen-xl from-blue-gray-900 to-blue-gray-800 px-4 py-3"
-            >
+                className="navbar mx-auto max-w-full w-full from-blue-gray-900 to-blue-gray-800 px-4 py-3"
+                >
                 <div className="flex flex-wrap items-center justify-between gap-y-4 text-white">
                     <div className="flex items-center">
                         <IconButton className="ml-2" onClick={openDrawer}>
                             <HiMenu className="w-6 h-6 text-white" />
                         </IconButton>
-                        <Typography as="a" href="#" variant="h6" className="mr-4 ml-2 cursor-pointer py-1.5 text-black text-3xl">
+                        <Typography as="a" href="#" variant="h6" className="mr-4 ml-2 cursor-pointer py-1.5 text-whitek text-3xl">
                             TH Ebook
                         </Typography>
                     </div>
@@ -37,7 +37,7 @@ export default function NavBar() {
                                 type="search"
                                 color="black"
                                 label="Type here..."
-                                className="pr-20 bg-black text-black"
+                                className="pr-20 bg-white text-white"
                                 containerProps={{ className: "min-w-[288px]" }}
                             />
                             <Button size="sm" color="black" className="!absolute right-1 top-1 rounded">

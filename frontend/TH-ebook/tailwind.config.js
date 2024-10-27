@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import withMT from "@material-tailwind/react/utils/withMT"
-import {requirePropFactory} from "@mui/material";
+import withMT from "@material-tailwind/react/utils/withMT";
 const config = {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -14,27 +13,38 @@ const config = {
       colors: {
         "custom-orange": "rgb(255, 103, 64)",
       },
-
       gridTemplateAreas: {
-        'product-detail': [
-          'left cover   facing  right',
-          'left cover   buttons right',
-          'left cover   tags    right',
-          'left cover   scores  right',
-          'left desc    desc    right',
-          'left info    chapter right',
+        "product-detail": [
+          "left cover title right",
+          "left cover buttons right",
+          "left cover info right",
+          "left cover stats right",
+          "left cover padding right",
+          "left synopsis synopsis right",
+          "left content content right",
         ],
+        "product-detail-mobile": [
+          "cover    title   ",
+          "cover    stats   ",
+          "info     info    ",
+          "buttons  buttons ",
+          "synopsis synopsis",
+          "content  content ",
+        ],
+      },
+      screens: {
+        lg: { max: "960px" },
+        md: { max: "768px" },
+        sm: { max: "480px" },
+        xsm: { max: "320px" },
       },
     },
   },
   plugins: [
-    require('tailwindcss'),
-    require('autoprefixer'),
-    require('@savvywombat/tailwindcss-grid-areas'),
+    require("tailwindcss"),
+    require("autoprefixer"),
+    require("@savvywombat/tailwindcss-grid-areas"),
   ],
-  variants: {
-    gridTemplateAreas: ['responsive'],
-  },
 };
 
 export default withMT(config);

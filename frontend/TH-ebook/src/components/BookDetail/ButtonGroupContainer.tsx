@@ -11,7 +11,7 @@ interface Props {
 const ButtonGroupContainer = ({onAddToLibrary, onSub, onPreview, onPreoder}:Props) => {
     return (
         <>
-            <div className="button flex gap-2">
+            <div className="button flex gap-2 sm:mb-0 mb-2 flex-wrap">
                 <div className="flex gap-2">
                     <Button variant="filled" onClick={onAddToLibrary} size="lg" color="deep-orange">Add To
                         Library</Button>
@@ -24,6 +24,7 @@ const ButtonGroupContainer = ({onAddToLibrary, onSub, onPreview, onPreoder}:Prop
                     <IconButton color={"lightBlue"} size="lg">
                         <HiArrowUp/>
                     </IconButton>
+
                 </div>
                 <div className="flex gap-2">
                     <Button variant="filled" onClick={onPreview} size="lg"

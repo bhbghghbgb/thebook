@@ -9,7 +9,7 @@ interface CategoryProps {
 
 const CategoryContainer = ({book, onCategoryClick}: CategoryProps) => {
     return (
-        <div className="category flex flex-wrap gap-1">
+        <div className="category flex gap-1 flex-wrap items-center">
             {book.category.map((category) => (
                 <Chip
                     key={category.name}

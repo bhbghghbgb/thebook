@@ -7,19 +7,19 @@ interface AuthorProps {
     onAuthorClick: (categoryName: string) => void;
 }
 
-const AuthorContainer: React.FC<AuthorProps> = ({book, onAuthorClick}) => {
+const AuthorContainer = ({book, onAuthorClick} : AuthorProps) => {
     return (
-        <div className="category flex flex-wrap gap-1">
+        <div className="category flex-col flex-wrap gap-x-4 gap-y-2 ">
             <h3 className="text-lg font-bold text-black mb-2">Author: </h3>
             {book.authors.map((author) => (
                 <div>
                     <Chip
+                        className="inline-flex"
                         key={author.name}
                         variant="gradient"
                         value={author.name}
                         color="gray"
                         onClick={() => onAuthorClick(author.name)}
-                        size="sm"
                     />
 
                 </div>
