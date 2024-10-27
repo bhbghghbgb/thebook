@@ -6,7 +6,6 @@ import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
 import InformationContainer from "./InformationContainer.tsx";
 import PartComponent from "./PartComponent.tsx";
-import { useMediaQuery } from "@mui/material";
 
 interface BookDetailProps {
   book: Book;
@@ -16,6 +15,7 @@ interface BookDetailProps {
   onSub: () => void;
   onCategoryClick: (categoryName: string) => void;
   onAuthorClick: (authorName: string) => void;
+  isMobile: boolean;
 }
 
 const BookDetail = ({
@@ -26,8 +26,8 @@ const BookDetail = ({
   onSub,
   onCategoryClick,
   onAuthorClick,
+  isMobile,
 }: BookDetailProps) => {
-  const isMobile = useMediaQuery("(max-width: 600px)");
   const authors = book.authors.map((author) => author.name);
   const tabData = [
     {
@@ -64,7 +64,7 @@ const BookDetail = ({
       >
         {/* Background Container */}
         <div
-          className="absolute top-0 left-0 z-[-2] w-full h-[250px] blur-xl bg-no-repeat  bg-gradient-to-t from-[
+          className="absolute top-0 left-0 z-[-2] w-full h-[250px] blur-sm bg-no-repeat  bg-gradient-to-t from-[
         before:content-['']
             before:absolute
             before:inset-0
@@ -100,6 +100,7 @@ const BookDetail = ({
             onPreview={onPreview}
             onPreoder={onPreoder}
             onSub={onSub}
+            isMobile={isMobile}
           />
         </div>
 
@@ -115,7 +116,7 @@ const BookDetail = ({
 
         {/* description */}
         <div className="grid-in-synopsis overflow-hidden transition-[max-height,height]">
-          <p className="story-description py-2 text-sm">{book.description}</p>
+          <p className="story-description py-2 text-xl md:text-lg sm:text-sm">{book.description}</p>
         </div>
 
         {/* 

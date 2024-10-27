@@ -1,16 +1,18 @@
-// import './App.css'
-// import "./index.css"
 import NavBar from "./components/NavBar/NavBar.tsx";
 import BookDetailPage from "./pages/BookDetailPage.tsx";
+import { useMediaQuery } from "@mui/material";
 
 function App() {
+  // Define the media query
+  const isMobile = useMediaQuery("(max-width: 576px)");
+
   return (
     <>
       <div className="App flex flex-col flex-grow">
         <div className="h-[var(--navbar-height)]">
-          <NavBar />
+          <NavBar isMobile={isMobile} />
         </div>
-        <BookDetailPage />
+        <BookDetailPage isMobile={isMobile} />
         {/* <BookDetailTest/> */}
       </div>
     </>

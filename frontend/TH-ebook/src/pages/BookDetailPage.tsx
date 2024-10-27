@@ -41,7 +41,11 @@ const handleAuthorClick = (authorName: string) => {
   console.log(`Author clicked: ${authorName}`);
 };
 
-const BookDetailPage = () => {
+interface Props{
+  isMobile: boolean;
+}
+
+const BookDetailPage = ({isMobile}:Props) => {
   return (
     <div className=" md-content flex-grow place-items-center">
       <BookDetail
@@ -52,6 +56,7 @@ const BookDetailPage = () => {
         onSub={() => {}}
         onCategoryClick={handleCategoryClick}
         onAuthorClick={handleAuthorClick}
+        isMobile={isMobile}
       />
     </div>
   );
