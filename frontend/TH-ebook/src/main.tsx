@@ -1,17 +1,13 @@
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-// import HungApp from './Book';
-import './index.css';
-import HomePage from './pages/HomePage';
+const container = document.getElementById('root');
+const root = createRoot(container!);
 
-const queryClient = new QueryClient();
-
-ReactDOM.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <HomePage />
-    </QueryClientProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
 );

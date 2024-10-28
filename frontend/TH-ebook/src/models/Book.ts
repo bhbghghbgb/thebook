@@ -1,3 +1,4 @@
+import { Author } from "./Author";
 
 export interface Book {
     id: string,
@@ -9,6 +10,7 @@ export interface Book {
     language: string;
     created_at: string;
     updated_at: string;
-    authors: string[];
+    authors: Author[];
     coins: number;
+    category: Category[];
 }
