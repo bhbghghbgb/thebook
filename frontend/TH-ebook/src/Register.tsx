@@ -1,6 +1,5 @@
 // src/Register.tsx
 import React, { useState } from "react";
-import "./index.css"; // Import the CSS file
 
 interface FormData {
   username: string;
@@ -27,7 +26,7 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const apiUrl = "https://localhost:5001/api/auth/register"; // API URL
+    const apiUrl = "https://localhost:5001/api/auth/register"; 
 
     try {
       const response = await fetch(apiUrl, {
@@ -51,12 +50,12 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <div className="form-wrapper">
-        <h2 className="title">Create an Account</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-gray-200">
+      <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-center">Create an Account</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="username" className="label">Username</label>
+            <label htmlFor="username" className="block text-sm font-medium">Username</label>
             <input
               type="text"
               name="username"
@@ -67,7 +66,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="label">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium">Email</label>
             <input
               type="email"
               name="email"
@@ -78,7 +77,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="label">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium">Password</label>
             <input
               type="password"
               name="password"
@@ -89,7 +88,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="confirmPassword" className="label">Confirm Password</label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium">Confirm Password</label>
             <input
               type="password"
               name="confirmPassword"
@@ -101,12 +100,12 @@ const Register: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="submit-button"
+            className="w-full py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all"
           >
             Register
           </button>
         </form>
-        {message && <p className="message">{message}</p>}
+        {message && <p className="mt-4 text-center text-red-500">{message}</p>}
       </div>
     </div>
   );
