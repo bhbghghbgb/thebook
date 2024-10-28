@@ -1,68 +1,109 @@
-import 'swiper/css'
+import "swiper/css";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import {Autoplay, Mousewheel, Scrollbar} from "swiper/modules";
-import {Book} from "../../models/Book.ts";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Mousewheel, Scrollbar } from "swiper/modules";
+import { Book } from "../../models/Book.ts";
 import BookCard from "./BookCard.tsx";
+import { HiOutlineArrowSmRight } from "react-icons/hi";
+import CardDefault from "../CardDefault.tsx";
 
+interface Props {
+  books: Book[];
+  text: string;
+}
 
-export default ({book, text}: {book: Book[], text: string}) => (
-    <section className="w-full">
+const BookContainer = ({
+  books,
+  text,
+}: Props) => {
+  return (
+    <>
+      <section className="w-full">
         <div className="xl:mx-auto max-w-6xl mx-[1.5rem]">
-            <h1 className="text-[3rem] font-bold mb-[2rem] text-white">
-                {text}
-            </h1>
-            <Swiper
-                modules={[Scrollbar, Mousewheel, Autoplay]}
-                loop={true}
-                pagination={{clickable: true}}
-                centeredSlides={true}
-                grabCursor={true}
-                scrollbar={{draggable: true}}
-                mousewheel={{
-                    invert: false,
-                }}
-                // autoplay={{
-                //     delay: 5000,
-                //     stopOnLastSlide: false,
-                //     disableOnInteraction: false,
-                // }}
-                breakpoints={{
-                    0: {
-                        spaceBetween: 10,
-                        slidesPerView: 1,
-                    },
-                    468: {
-                        spaceBetween: 10,
-                        slidesPerView: 2,
-                    },
-                    768: {
-                        spaceBetween: 15,
-                        slidesPerView: 3,
-                    },
-                    1024: {
-                        spaceBetween: 15,
-                        slidesPerView: 4,
-                    },
-                    1280: {
-                        spaceBetween: 30,
-                        slidesPerView: 5,
-                    },
-                }}
-                className="breakpoint"
-            >
-                {book.map((p, index) => {
-                    return (
-                        <SwiperSlide key={index}>
-                            <BookCard book={p} />
-                        </SwiperSlide>
-                    );
-                })}
-            </Swiper>
-        </div>
-    </section>
-)
+          <h1 className="text-[3rem] font-bold mb-[2rem] text-white">{text}</h1>
+          <Swiper
+            modules={[Scrollbar, Mousewheel, Autoplay]}
+            loop={true}
+            pagination={{ clickable: true }}
+            centeredSlides={true}
+            grabCursor={true}
+            scrollbar={{ draggable: true }}
+            mousewheel={{
+              invert: false,
+            }}
+            // autoplay={{
+            //     delay: 5000,
+            //     stopOnLastSlide: false,
+            //     disableOnInteraction: false,
+            // }}
 
+            // Responsive breakpoints
+            breakpoints={{
+              0: {
+                spaceBetween: 3,
+                slidesPerView: 1,
+              },
+              468: {
+                spaceBetween: 5,
+                slidesPerView: 1,
+              },
+              768: {
+                spaceBetween: 5,
+                slidesPerView: 2,
+              },
+              1024: {
+                spaceBetween: 10,
+                slidesPerView: 2,
+              },
+              1280: {
+                spaceBetween: 15,
+                slidesPerView: 2,
+              },
+              1629: {
+                spaceBetween: 30,
+                slidesPerView: 3,
+              },
+            }}
+            className="breakpoint"
+          >
+            {books.map((p, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  {/* <BookCard book={p} /> */}
+
+                  <CardDefault
+                    imageUrl={p.cover_image}
+                    key={p.id}
+                    ComponentHeader={
+                      <img
+                        src={p.cover_image}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                      />
+                    }
+                    ComponentBody={[
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        {p.title}
+                      </h3>,
+                      <div key="authors" className="text-sm">
+                        {p.authors.map((author) => author.name).join(", ")}
+                      </div>,
+                      <div key="published_year" className="text-sm">
+                        {p.published_year}
+                      </div>,
+                    ]}
+                  ></CardDefault>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default BookContainer;
 /**
  *
  *

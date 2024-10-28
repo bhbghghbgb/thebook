@@ -1,6 +1,7 @@
 import NavBar from "./components/NavBar/NavBar.tsx";
 import BookDetailPage from "./pages/BookDetailPage.tsx";
 import { useMediaQuery } from "@mui/material";
+import HomePage from "./pages/HomePage.tsx";
 
 function App() {
   // Define the media query
@@ -12,8 +13,9 @@ function App() {
         <div className="h-[var(--navbar-height)]">
           <NavBar isMobile={isMobile} />
         </div>
-        <BookDetailPage isMobile={isMobile} />
+        {/* <BookDetailPage isMobile={isMobile} /> */}
         {/* <BookDetailTest/> */}
+        <HomePage />
       </div>
     </>
   );

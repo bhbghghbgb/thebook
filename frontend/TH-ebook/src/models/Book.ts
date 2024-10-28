@@ -1,4 +1,5 @@
 import { Author } from "./Author";
+import {Category} from "./Category.ts";
 
 export interface Book {
     id: string,

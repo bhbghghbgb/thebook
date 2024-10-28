@@ -1,33 +1,100 @@
 import React from "react";
 import BookContainer from "../components/HomePage/BookContainer";
 import useFetchBooks from "../hooks/useFetchBook";
-import NavBar from "../components/NavBar.tsx";
+import { Category } from "../models/Category";
+import { Book } from "../models/Book";
 
 const HomePage: React.FC = () => {
-  const { data: books, error, isLoading } = useFetchBooks();
+  // const { data: books, error, isLoading } = useFetchBooks();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error.message}</div>;
+  // }
 
-  if (!books) {
-    return <div>No books available</div>;
-  }
+  // if (!books) {
+  //   return <div>No books available</div>;
+  // }
+
+  const categories: Category[] = [
+    { name: "Action" },
+    { name: "Adventure" },
+    { name: "Comedy" },
+    { name: "Drama" },
+    { name: "Fantasy" },
+    { name: "Horror" },
+    { name: "Mystery" },
+    { name: "Romance" },
+    { name: "Sci-Fi" },
+    { name: "Thriller" },
+    { name: "Western" },
+    { name: "Biography" },
+    { name: "Cookbook" },
+  ];
+
+  const books: Book[] = [
+    {
+      id: "123456789",
+      title: "Fuck Microsoft",
+      description:
+        'Mia is a half-succubus, but she bitterly hates the devil part of her genetics. "I\'m not lewd!", she said. "All men are monkey", she said. Yet, karma often comes sooner than expected.',
+      cover_image:
+        "https://img.perlego.com/book-covers/778577/9781451648553_300_450.webp",
+      file_path: "dede",
+      published_year: 2023,
+      language: "vi",
+      created_at: "2024-10-10T08:31:36.732Z",
+      updated_at: "2024-10-10T08:31:36.732Z",
+      authors: [{ name: "Nguyen Thanh Hung" }, { name: "Huynh Gia Bao" }],
+      coins: 50,
+      category: categories,
+    },
+    {
+      id: "123456781",
+      title: "Fuck Apple",
+      description:
+        'Mia is a half-succubus, but she bitterly hates the devil part of her genetics. "I\'m not lewd!", she said. "All men are monkey", she said. Yet, karma often comes sooner than expected.',
+      cover_image: "https://img.perlego.com/book-covers/3427220/9788858436059_300_450.webp",
+      file_path: "dede",
+      published_year: 2023,
+      language: "vi",
+      created_at: "2024-10-10T08:31:36.732Z",
+      updated_at: "2024-10-10T08:31:36.732Z",
+      authors: [{ name: "Nguyen Thanh Hung" }, { name: "Huynh Gia Bao" }],
+      coins: 50,
+      category: categories,
+    },
+    {
+      id: "123456782",
+      title: "Fuck Facebook",
+      description:
+        'Mia is a half-succubus, but she bitterly hates the devil part of her genetics. "I\'m not lewd!", she said. "All men are monkey", she said. Yet, karma often comes sooner than expected.',
+      cover_image:
+        "https://img.perlego.com/book-covers/4168677/thumbnail_9780313351280.jpg",
+      file_path: "dede",
+      published_year: 2023,
+      language: "vi",
+      created_at: "2024-10-10T08:31:36.732Z",
+      updated_at: "2024-10-10T08:31:36.732Z",
+      authors: [{ name: "Nguyen Thanh Hung" }, { name: "Huynh Gia Bao" }],
+      coins: 50,
+      category: categories,
+    },
+  ];
 
   return (
-    <div 
-    id="HomePage"
-    className="m-0 place-items-center min-w-[320px] min-h-screen w-full h-full bg-black"
+    <div
+      id="HomePage"
+      className="m-0 place-items-center min-w-[320px] min-h-screen w-full h-full gap-y-3"
     >
-      <h1 id="WebName" className="text-center text-white text-6xl font-bold italic">TH Ebook</h1>
-      <NavBar />
-      <BookContainer text="Trending" book={books}/>
-      <BookContainer text="New" book={books}/>
-      <BookContainer text="Features" book={books}/>
+      <BookContainer text="Trending" books={books} />
+      <div className="flex-grow hidden sm:block" />
+      <BookContainer text="New" books={books} />
+      <div className="flex-grow hidden sm:block" />
+      <BookContainer text="Features" books={books} />
     </div>
   );
 };
@@ -53,9 +120,6 @@ bg-black: Thiết lập màu nền của phần tử là màu đen.
 
 */
 
-
-
-
 /* 
 
 
@@ -66,7 +130,6 @@ bg-black: Thiết lập màu nền của phần tử là màu đen.
 
 
 */
-
 
 /* // Đặt classname và đặt id có sự khác biệt như sau:
 
