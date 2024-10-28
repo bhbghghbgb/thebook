@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MangaDexApi.Models;
+using THebookApi.Models;
 
 namespace THebookApi.Controllers
 {
