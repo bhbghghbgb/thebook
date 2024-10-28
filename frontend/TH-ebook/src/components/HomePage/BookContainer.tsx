@@ -6,16 +6,14 @@ import { Book } from "../../models/Book.ts";
 import BookCard from "./BookCard.tsx";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import CardDefault from "../CardDefault.tsx";
+import { Button, IconButton } from "@material-tailwind/react";
 
 interface Props {
   books: Book[];
   text: string;
 }
 
-const BookContainer = ({
-  books,
-  text,
-}: Props) => {
+const BookContainer = ({ books, text }: Props) => {
   return (
     <>
       <section className="w-full">
@@ -90,6 +88,16 @@ const BookContainer = ({
                       </div>,
                       <div key="published_year" className="text-sm">
                         {p.published_year}
+                      </div>,
+                    ]}
+                    ComponentFooter={[
+                      <div >
+                        <Button color="deep-orange" size="lg" >
+                            Read
+                        </Button>
+                        <IconButton color="gray" size="lg" >
+                          <HiOutlineArrowSmRight className="text-white" />
+                        </IconButton>
                       </div>,
                     ]}
                   ></CardDefault>
