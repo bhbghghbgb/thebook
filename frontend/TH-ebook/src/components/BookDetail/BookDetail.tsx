@@ -9,25 +9,36 @@ import PartComponent from "./PartComponent.tsx";
 
 interface BookDetailProps {
   book: Book;
-  onAddToLibrary: () => void;
-  onPreview: () => void;
-  onPreoder: () => void;
-  onSub: () => void;
-  onCategoryClick: (categoryName: string) => void;
-  onAuthorClick: (authorName: string) => void;
   isMobile: boolean;
 }
 
 const BookDetail = ({
   book,
-  onAddToLibrary,
-  onPreview,
-  onPreoder,
-  onSub,
-  onCategoryClick,
-  onAuthorClick,
   isMobile,
 }: BookDetailProps) => {
+  const handleAddToLibrary = () => {
+    console.log("Add to library clicked");
+  };
+
+  const handlePreview = () => {
+    console.log("Preview clicked");
+  };
+
+  const handlePreorder = () => {
+    console.log("Preorder clicked");
+  };
+
+  const handleSub = () => {
+    console.log("Subscribe clicked");
+  };
+
+  const handleCategoryClick = (categoryName: string) => {
+    console.log(`Category clicked: ${categoryName}`);
+  };
+
+  const handleAuthorClick = (authorName: string) => {
+    console.log(`Author clicked: ${authorName}`);
+  };
   const authors = book.authors.map((author) => author.name);
   const tabData = [
     {
@@ -39,7 +50,7 @@ const BookDetail = ({
           <InformationContainer
             header="Author"
             content={authors}
-            onContainerClick={onAuthorClick}
+            onContainerClick={handleAuthorClick}
           />
           <PartComponent />
         </div>
@@ -96,17 +107,17 @@ const BookDetail = ({
         {/*ButtonGroup*/}
         <div className="grid-in-buttons sm:ml-2 relative mt-3">
           <ButtonGroupContainer
-            onAddToLibrary={onAddToLibrary}
-            onPreview={onPreview}
-            onPreoder={onPreoder}
-            onSub={onSub}
+            onAddToLibrary={handleAddToLibrary}
+            onPreview={handlePreview}
+            onPreoder={handlePreorder}
+            onSub={handleSub}
             isMobile={isMobile}
           />
         </div>
 
         {/* category */}
         <div className="grid-in-info sm:mx-2">
-          <CategoryContainer book={book} onCategoryClick={onCategoryClick} />
+          <CategoryContainer book={book} onCategoryClick={handleCategoryClick} />
         </div>
 
         {/* rating */}

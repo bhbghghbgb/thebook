@@ -47,15 +47,9 @@ interface Props{
 
 const BookDetailPage = ({isMobile}:Props) => {
   return (
-    <div className=" md-content flex-grow place-items-center">
+    <div className="place-items-center">
       <BookDetail
         book={test_data}
-        onAddToLibrary={() => {}}
-        onPreoder={() => {}}
-        onPreview={() => {}}
-        onSub={() => {}}
-        onCategoryClick={handleCategoryClick}
-        onAuthorClick={handleAuthorClick}
         isMobile={isMobile}
       />
     </div>

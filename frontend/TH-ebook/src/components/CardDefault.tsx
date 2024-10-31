@@ -31,8 +31,10 @@ function CardDefault({ ComponentHeader, ComponentBody, ComponentFooter, imageUrl
   }, [imageUrl]);
 
   return (
+    <>
+    <div className="card relative">
     <Card className="mt-6 w-96" shadow={true} style={{ boxShadow: `0 4px 8px ${shadowColor}` }} variant="gradient" color="transparent">
-      <CardHeader className="relative" style={{ backgroundColor: shadowColor }}>
+      <CardHeader className="relative xxlg:h-56 xlg:h-50 lg:h-45 md:h-40 sm:h-30 " style={{ backgroundColor: shadowColor }}>
         {ComponentHeader}
       </CardHeader>
       <CardBody>
@@ -48,6 +50,8 @@ function CardDefault({ ComponentHeader, ComponentBody, ComponentFooter, imageUrl
         </CardFooter>
       )}
     </Card>
+    </div>
+    </>
   );
 }
 

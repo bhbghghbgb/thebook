@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Mousewheel, Scrollbar } from "swiper/modules";
 import { Book } from "../../models/Book.ts";
 import BookCard from "./BookCard.tsx";
-import { HiOutlineArrowSmRight } from "react-icons/hi";
+import { HiOutlineArrowSmRight, HiOutlineChevronDoubleRight} from "react-icons/hi";
 import CardDefault from "../CardDefault.tsx";
 import { Button, IconButton } from "@material-tailwind/react";
 
@@ -16,9 +16,14 @@ interface Props {
 const BookContainer = ({ books, text }: Props) => {
   return (
     <>
-      <section className="w-full">
-        <div className="xl:mx-auto max-w-6xl mx-[1.5rem]">
-          <h1 className="text-[3rem] font-bold mb-[2rem] text-white">{text}</h1>
+      <div className="w-full">
+        <div className="md:overflow-hidden mx-20">
+            <div className="flex justify-between items-center text-2xl mb-4">
+                <h1 className="text-white text-4xl lg:text-2xl md:text-xl sm:text-base font-bold">{text}</h1>
+                <IconButton color="deep-orange" size="lg" >
+                    <HiOutlineChevronDoubleRight className="text-white" />
+                </IconButton>
+            </div>
           <Swiper
             modules={[Scrollbar, Mousewheel, Autoplay]}
             loop={true}
@@ -37,30 +42,26 @@ const BookContainer = ({ books, text }: Props) => {
 
             // Responsive breakpoints
             breakpoints={{
-              0: {
-                spaceBetween: 3,
-                slidesPerView: 1,
-              },
-              468: {
-                spaceBetween: 5,
-                slidesPerView: 1,
-              },
-              768: {
-                spaceBetween: 5,
-                slidesPerView: 2,
-              },
-              1024: {
-                spaceBetween: 10,
-                slidesPerView: 2,
-              },
-              1280: {
-                spaceBetween: 15,
-                slidesPerView: 2,
-              },
-              1629: {
-                spaceBetween: 30,
-                slidesPerView: 3,
-              },
+                0: {
+                    spaceBetween: 3,
+                    slidesPerView: 1,
+                },
+                468: {
+                    spaceBetween: 5,
+                    slidesPerView: 1,
+                },
+                768: {
+                    spaceBetween: 15,
+                    slidesPerView: 2,
+                },
+                1024: {
+                    spaceBetween: 15,
+                    slidesPerView: 3,
+                },
+                1280: {
+                    spaceBetween: 30,
+                    slidesPerView: 4,
+                },
             }}
             className="breakpoint"
           >
@@ -91,7 +92,7 @@ const BookContainer = ({ books, text }: Props) => {
                       </div>,
                     ]}
                     ComponentFooter={[
-                      <div >
+                      <div className="flex justify-between items-center text-2xl mb-4">
                         <Button color="deep-orange" size="lg" >
                             Read
                         </Button>
@@ -106,7 +107,7 @@ const BookContainer = ({ books, text }: Props) => {
             })}
           </Swiper>
         </div>
-      </section>
+      </div>
     </>
   );
 };

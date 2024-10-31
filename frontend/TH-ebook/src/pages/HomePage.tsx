@@ -1,10 +1,15 @@
-import React from "react";
 import BookContainer from "../components/HomePage/BookContainer";
 import useFetchBooks from "../hooks/useFetchBook";
 import { Category } from "../models/Category";
 import { Book } from "../models/Book";
+import BannerSlider from "../components/HomePage/BannerSlider";
 
-const HomePage: React.FC = () => {
+interface Props {
+  isMobile: boolean;
+}
+
+
+const HomePage = ({isMobile}:Props) => {
   // const { data: books, error, isLoading } = useFetchBooks();
 
   // if (isLoading) {
@@ -83,13 +88,29 @@ const HomePage: React.FC = () => {
       coins: 50,
       category: categories,
     },
+    {
+      id: "123456785",
+      title: "Fuck Google",
+      description:
+        'Mia is a half-succubus, but she bitterly hates the devil part of her genetics. "I\'m not lewd!", she said. "All men are monkey", she said. Yet, karma often comes sooner than expected.',
+      cover_image:
+        "https://img.perlego.com/book-covers/2193445/9781351768290_300_450.webp",
+      file_path: "dede",
+      published_year: 2023,
+      language: "vi",
+      created_at: "2024-10-10T08:31:36.732Z",
+      updated_at: "2024-10-10T08:31:36.732Z",
+      authors: [{ name: "Nguyen Thanh Hung" }, { name: "Huynh Gia Bao" }],
+      coins: 50,
+      category: categories,
+    },
   ];
 
   return (
     <div
-      id="HomePage"
-      className="m-0 place-items-center min-w-[320px] min-h-screen w-full h-full gap-y-3"
+      className="home-page gap-y-10"
     >
+      <BannerSlider books={books} isMobile={isMobile} />
       <BookContainer text="Trending" books={books} />
       <div className="flex-grow hidden sm:block" />
       <BookContainer text="New" books={books} />
@@ -130,34 +151,3 @@ bg-black: Thiết lập màu nền của phần tử là màu đen.
 
 
 */
-
-/* // Đặt classname và đặt id có sự khác biệt như sau:
-
-// 1. Classname:
-// - Classname được sử dụng để áp dụng các kiểu CSS cho một hoặc nhiều phần tử.
-// - Bạn có thể sử dụng cùng một classname cho nhiều phần tử khác nhau.
-// - Classname thường được sử dụng khi bạn muốn áp dụng cùng một kiểu dáng cho nhiều phần tử.
-// - Trong React, bạn sử dụng thuộc tính `className` để đặt classname cho một phần tử.
-
-<div className="example-class">Nội dung</div>
-
-// 2. ID:
-// - ID được sử dụng để xác định duy nhất một phần tử trong tài liệu HTML.
-// - Mỗi ID phải là duy nhất trong một tài liệu HTML, nghĩa là bạn không thể sử dụng cùng một ID cho nhiều phần tử.
-// - ID thường được sử dụng khi bạn cần truy cập hoặc thao tác với một phần tử cụ thể bằng JavaScript.
-// - Trong React, bạn sử dụng thuộc tính `id` để đặt ID cho một phần tử.
-
-<div id="example-id">Nội dung</div>
-
-// Ví dụ trong React:
-
-const ExampleComponent: React.FC = () => {
-  return (
-    <div>
-      <div className="example-class">Đây là một phần tử với classname</div>
-      <div id="example-id">Đây là một phần tử với ID</div>
-    </div>
-  );
-};
-
-export default ExampleComponent; */

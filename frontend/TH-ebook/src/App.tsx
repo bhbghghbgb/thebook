@@ -9,14 +9,17 @@ function App() {
 
   return (
     <>
-      <div className="App flex flex-col flex-grow">
-        <div className="h-[var(--navbar-height)]">
-          <NavBar isMobile={isMobile} />
+      {/* <div className="App flex flex-grow text-color"> */}
+        <div className="App flex flex-col flex-grow">
+          <div className="h-[var(--navbar-height)]">
+            <NavBar isMobile={isMobile} />
+          </div>
+          <div className="md-content flex-grow">
+            <HomePage isMobile={isMobile}/>
+            {/* <BookDetailPage isMobile={isMobile}></BookDetailPage> */}
+          </div>
         </div>
-        {/* <BookDetailPage isMobile={isMobile} /> */}
-        {/* <BookDetailTest/> */}
-        <HomePage />
-      </div>
+      {/* </div> */}
     </>
   );
 }
