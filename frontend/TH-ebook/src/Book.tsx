@@ -21,7 +21,7 @@ const HungApp = () => {
       id="root"
       className="m-0 flex place-items-center min-w-[320px] min-h-screen font-pop w-full h-full bg-black"
     >
-      <BreakPoint books={books} text={"My App"} />
+      <BreakPoint books={books} header={"My App"} />
     </div>
   );
 };

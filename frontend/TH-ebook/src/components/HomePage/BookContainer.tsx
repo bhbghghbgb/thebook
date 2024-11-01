@@ -5,21 +5,27 @@ import { Autoplay, Mousewheel, Scrollbar } from "swiper/modules";
 import { Book } from "../../models/Book.ts";
 import BookCard from "./BookCard.tsx";
 import { HiOutlineArrowSmRight, HiOutlineChevronDoubleRight} from "react-icons/hi";
-import CardDefault from "../CardDefault.tsx";
+import CardDefault from "../Card/CardDefault.tsx";
 import { Button, IconButton } from "@material-tailwind/react";
+import {useNavigate} from "react-router-dom"
 
 interface Props {
   books: Book[];
-  text: string;
+  header: string;
 }
 
-const BookContainer = ({ books, text }: Props) => {
+const BookContainer = ({ books, header }: Props) => {
+  const navigate = useNavigate();
+
+  const handleBookClick = (bookId: string) => {
+    navigate(`/book/${bookId}`);
+  };
   return (
     <>
       <div className="w-full">
         <div className="md:overflow-hidden mx-20">
             <div className="flex justify-between items-center text-2xl mb-4">
-                <h1 className="text-white text-4xl lg:text-2xl md:text-xl sm:text-base font-bold">{text}</h1>
+                <h1 className="text-white text-4xl lg:text-2xl md:text-xl sm:text-base font-bold">{header}</h1>
                 <IconButton color="deep-orange" size="lg" >
                     <HiOutlineChevronDoubleRight className="text-white" />
                 </IconButton>
@@ -67,9 +73,8 @@ const BookContainer = ({ books, text }: Props) => {
           >
             {books.map((p, index) => {
               return (
-                <SwiperSlide key={index}>
+                <SwiperSlide key={index} onClick={() => handleBookClick(p.id)}>
                   {/* <BookCard book={p} /> */}
-
                   <CardDefault
                     imageUrl={p.cover_image}
                     key={p.id}

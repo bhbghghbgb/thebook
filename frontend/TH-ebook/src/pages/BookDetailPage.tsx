@@ -1,6 +1,7 @@
 import { Book } from "../models/Book.ts";
 import { Category } from "../models/Category.ts";
 import BookDetail from "../components/BookDetail/BookDetail.tsx";
+import { useParams } from "react-router-dom";
 
 const categories: Category[] = [
   { name: "Action" },
@@ -34,22 +35,23 @@ const test_data: Book = {
   coins: 50,
   category: categories,
 };
-const handleCategoryClick = (categoryName: string) => {
-  console.log(`Category clicked: ${categoryName}`);
-};
-const handleAuthorClick = (authorName: string) => {
-  console.log(`Author clicked: ${authorName}`);
-};
 
 interface Props{
+  books: Book[];
   isMobile: boolean;
 }
 
-const BookDetailPage = ({isMobile}:Props) => {
+const BookDetailPage = ({isMobile, books}:Props) => {
+  const { id } = useParams<{ id: string }>();
+  const book = books.find((book) => book.id === id);
+
+  if (!book) {
+    return <div>No book found</div>;
+  }
   return (
     <div className="place-items-center">
       <BookDetail
-        book={test_data}
+        book={book}
         isMobile={isMobile}
       />
     </div>
