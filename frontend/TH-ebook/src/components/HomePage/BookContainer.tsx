@@ -73,7 +73,7 @@ const BookContainer = ({ books, header }: Props) => {
           >
             {books.map((p, index) => {
               return (
-                <SwiperSlide key={index} onClick={() => handleBookClick(p.id)}>
+                <SwiperSlide key={index} >
                   {/* <BookCard book={p} /> */}
                   <CardDefault
                     imageUrl={p.cover_image}
@@ -101,7 +101,7 @@ const BookContainer = ({ books, header }: Props) => {
                         <Button color="deep-orange" size="lg" >
                             Read
                         </Button>
-                        <IconButton color="gray" size="lg" >
+                        <IconButton color="gray" size="lg" onClick={() => handleBookClick(p.id)}>
                           <HiOutlineArrowSmRight className="text-white" />
                         </IconButton>
                       </div>,

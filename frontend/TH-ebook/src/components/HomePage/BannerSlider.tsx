@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, FreeMode } from "swiper/modules";
 import Banner from "./Banner";
 import { Book } from "../../models/Book";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   books: Book[];
@@ -10,6 +11,11 @@ interface Props {
 }
 
 const BannerSlider = ({books, isMobile}: Props) => {
+  const navigate = useNavigate();
+
+  const handleBookClick = (bookId: string) => {
+    navigate(`/book/${bookId}`);
+  };
   return (
     <>
       <Swiper
@@ -22,7 +28,7 @@ const BannerSlider = ({books, isMobile}: Props) => {
         freeMode={true}
       >
         {books.map((book) => (
-            <SwiperSlide key={book.id}>
+            <SwiperSlide key={book.id} onClick={() => handleBookClick(book.id)}>
                 <Banner book={book} isMobile={isMobile} />
             </SwiperSlide>
             ))}

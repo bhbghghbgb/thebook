@@ -3,7 +3,7 @@ import { HiMenu, HiSearch, HiUser } from "react-icons/hi";
 import { useState } from "react";
 import { DrawerDefault } from "./DrawerDefault.tsx";
 import SearchBar from "./SearchBar.tsx";
-import OverlayComponent from "../OverlayComponent.tsx";
+import OverlayComponent from "../Share/OverlayComponent.tsx";
 import CardPricing from "../Card/CardPricing.tsx";
 
 interface NavBarProps {
@@ -31,7 +31,7 @@ const NavBar = ({ isMobile }: NavBarProps) => {
             </IconButton>
             <Typography
               as="a"
-              href="#"
+              href="/"
               variant="h6"
               className="mr-4 ml-2 cursor-pointer py-1.5 text-white text-3xl"
             >
