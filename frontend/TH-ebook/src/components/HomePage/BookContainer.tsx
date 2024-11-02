@@ -3,7 +3,6 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Mousewheel, Scrollbar } from "swiper/modules";
 import { Book } from "../../models/Book.ts";
-import BookCard from "./BookCard.tsx";
 import { HiOutlineArrowSmRight, HiOutlineChevronDoubleRight} from "react-icons/hi";
 import CardDefault from "../Card/CardDefault.tsx";
 import { Button, IconButton } from "@material-tailwind/react";
@@ -20,13 +19,17 @@ const BookContainer = ({ books, header }: Props) => {
   const handleBookClick = (bookId: string) => {
     navigate(`/book/${bookId}`);
   };
+
+  const handleListClick = () => {
+    navigate("/book/trending");
+  }
   return (
     <>
       <div className="w-full">
         <div className="md:overflow-hidden mx-20">
             <div className="flex justify-between items-center text-2xl mb-4">
                 <h1 className="text-white text-4xl lg:text-2xl md:text-xl sm:text-base font-bold">{header}</h1>
-                <IconButton color="deep-orange" size="lg" >
+                <IconButton color="deep-orange" size="lg" onClick={()=> handleListClick()}>
                     <HiOutlineChevronDoubleRight className="text-white" />
                 </IconButton>
             </div>

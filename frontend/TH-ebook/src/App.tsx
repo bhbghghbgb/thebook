@@ -5,10 +5,11 @@ import HomePage from "./pages/HomePage.tsx";
 import { Category } from "./models/Category.ts";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Book } from "./models/Book.ts";
+import BookListPage from "./pages/BookListPage.tsx";
 
 function App() {
   // Define the media query
-  const isMobile = useMediaQuery("(max-width: 576px)");
+  const isMobile = useMediaQuery("(max-width: 1060px)");
 
   const categories: Category[] = [
     { name: "Action" },
@@ -103,6 +104,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage isMobile={isMobile} books={books} />} />
             <Route path="/book/:id" element={<BookDetailPage books={books} isMobile={isMobile} />} />
+            <Route path="/book/trending" element={<BookListPage bookList={books} header={"Trending"} />} />
           </Routes>
         </div>
       </div>

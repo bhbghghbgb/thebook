@@ -39,7 +39,7 @@ const NavBar = ({ isMobile }: NavBarProps) => {
             </Typography>
             <Typography
               as="li"
-              variant="button"
+              variant="lead"
               color="white"
               className="p-1 font-normal"
               onClick={() => {
