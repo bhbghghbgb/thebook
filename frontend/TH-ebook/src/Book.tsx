@@ -1,5 +1,5 @@
 import useFetchBooks from './hooks/useFetchBook.ts';
-import BreakPoint from "./components/HomePage/BookContainer.tsx";
+import BreakPoint from "./components/Home/BookContainer.tsx";
 
 const HungApp = () => {
   const { data: books, error, isLoading } = useFetchBooks();

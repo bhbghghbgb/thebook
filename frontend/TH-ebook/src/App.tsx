@@ -49,7 +49,8 @@ function App() {
       title: "Fuck Apple",
       description:
         'Mia is a half-succubus, but she bitterly hates the devil part of her genetics. "I\'m not lewd!", she said. "All men are monkey", she said. Yet, karma often comes sooner than expected.',
-      cover_image: "https://img.perlego.com/book-covers/3427220/9788858436059_300_450.webp",
+      cover_image:
+        "https://img.perlego.com/book-covers/3427220/9788858436059_300_450.webp",
       file_path: "dede",
       published_year: 2023,
       language: "vi",
@@ -94,7 +95,7 @@ function App() {
   ];
 
   return (
-    <Router>
+    <>
       {/* <div className="App flex flex-grow text-color"> */}
       <div className="App flex flex-col flex-grow">
         <div className="h-[var(--navbar-height)]">
@@ -102,14 +103,23 @@ function App() {
         </div>
         <div className="md-content flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage isMobile={isMobile} books={books} />} />
-            <Route path="/book/:id" element={<BookDetailPage books={books} isMobile={isMobile} />} />
-            <Route path="/book/trending" element={<BookListPage bookList={books} header={"Trending"} />} />
+            <Route
+              path="/"
+              element={<HomePage isMobile={isMobile} books={books} />}
+            />
+            <Route
+              path="/book/:id"
+              element={<BookDetailPage books={books} isMobile={isMobile} />}
+            />
+            <Route
+              path="/book/trending"
+              element={<BookListPage bookList={books} header={"Trending"} />}
+            />
           </Routes>
         </div>
       </div>
       {/* </div> */}
-      </Router>
+    </>
   );
 }
 

@@ -1,8 +1,8 @@
-import BookContainer from "../components/HomePage/BookContainer";
+import BookContainer from "../components/Home/BookContainer";
 import useFetchBooks from "../hooks/useFetchBook";
 import { Category } from "../models/Category";
 import { Book } from "../models/Book";
-import BannerSlider from "../components/HomePage/BannerSlider";
+import BannerSlider from "../components/Home/BannerSlider";
 
 interface Props {
   isMobile: boolean;
