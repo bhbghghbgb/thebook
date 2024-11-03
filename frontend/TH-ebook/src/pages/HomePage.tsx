@@ -1,8 +1,9 @@
 import BookContainer from "../components/Home/BookContainer";
-import useFetchBooks from "../hooks/useFetchBook";
-import { Category } from "../models/Category";
+// import useFetchBooks from "../hooks/useFetchBook";
+// import { Category } from "../models/Category";
 import { Book } from "../models/Book";
 import BannerSlider from "../components/Home/BannerSlider";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   isMobile: boolean;
@@ -25,19 +26,30 @@ const HomePage = ({isMobile, books}:Props) => {
   //   return <div>No books available</div>;
   // }
 
-  
+  const navigate = useNavigate();
 
+  const handleBannerClick = (book: Book) => {
+    navigate(`/book/${book.id}`, { state: { book } });
+  }
+
+  const hanleBookClick = (book: Book) => {
+    navigate(`/book/${book.id}`, { state: { book } });
+  }
+
+  const hanleBookListClick = (books: Book[]) => {
+    navigate(`/book/trending`, { state: { books } });
+  }
   
   return (
     <div
       className="home-page gap-y-10"
     >
-      <BannerSlider books={books} isMobile={isMobile} />
-      <BookContainer header="Trending" books={books} />
+      <BannerSlider books={books} isMobile={isMobile}  onClick={handleBannerClick}/>
+      <BookContainer header="Trending" books={books}  onClick={hanleBookClick} onListClick={hanleBookListClick}/>
       <div className="flex-grow hidden sm:block" />
-      <BookContainer header="New" books={books} />
+      <BookContainer header="New" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
       <div className="flex-grow hidden sm:block" />
-      <BookContainer header="Features" books={books} />
+      <BookContainer header="Features" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
     </div>
   );
 };

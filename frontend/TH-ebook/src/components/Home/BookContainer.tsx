@@ -11,25 +11,27 @@ import {useNavigate} from "react-router-dom"
 interface Props {
   books: Book[];
   header: string;
+  onClick: (book: Book) => void;
+  onListClick: (books: Book[]) => void;
 }
 
-const BookContainer = ({ books, header }: Props) => {
+const BookContainer = ({ books, header, onClick, onListClick }: Props) => {
   const navigate = useNavigate();
 
-  const handleBookClick = (bookId: string) => {
-    navigate(`/book/${bookId}`);
-  };
+  // const handleBookClick = (bookId: string) => {
+  //   navigate(`/book/${bookId}`);
+  // };
 
-  const handleListClick = () => {
-    navigate("/book/trending");
-  }
+  // const handleListClick = () => {
+  //   navigate("/book/trending");
+  // }
   return (
     <>
       <div className="w-full">
         <div className="md:overflow-hidden mx-20">
             <div className="flex justify-between items-center text-2xl mb-4">
                 <h1 className="text-white text-4xl lg:text-2xl md:text-xl sm:text-base font-bold">{header}</h1>
-                <IconButton color="deep-orange" size="lg" onClick={()=> handleListClick()}>
+                <IconButton color="deep-orange" size="lg" onClick={()=> onListClick(books)}>
                     <HiOutlineChevronDoubleRight className="text-white" />
                 </IconButton>
             </div>
@@ -104,7 +106,7 @@ const BookContainer = ({ books, header }: Props) => {
                         <Button color="deep-orange" size="lg" >
                             Read
                         </Button>
-                        <IconButton color="gray" size="lg" onClick={() => handleBookClick(p.id)}>
+                        <IconButton color="gray" size="lg" onClick={() => onClick(p)}>
                           <HiOutlineArrowSmRight className="text-white" />
                         </IconButton>
                       </div>,

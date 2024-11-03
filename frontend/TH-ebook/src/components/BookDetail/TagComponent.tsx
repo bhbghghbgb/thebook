@@ -6,7 +6,7 @@ interface Props {
   onContainerClick: (item: string) => void;
 }
 
-const InformationContainer = ({ header, content, onContainerClick }: Props) => {
+const TagComponent = ({ header, content, onContainerClick }: Props) => {
   return (
     <div className="header flex-col flex-wrap gap-x-4 gap-y-2">
       {header && <h3 className="text-lg font-bold text-white mb-2">{header}:</h3>}
@@ -25,4 +25,4 @@ const InformationContainer = ({ header, content, onContainerClick }: Props) => {
   );
 };
 
-export default InformationContainer;
+export default TagComponent;

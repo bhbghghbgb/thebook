@@ -1,18 +1,24 @@
 import { HiArrowLeft } from "react-icons/hi";
 import BookListContainer from "../components/BookList/BookListContainer";
 import { Book } from "../models/Book";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {IconButton} from "@material-tailwind/react";
 
 interface Props {
-  bookList: Book[];
   header: string;
 }
 
-const BookListPage = ({ bookList, header }: Props) => {
+const BookListPage = ({ header }: Props) => {
   const navigate = useNavigate();
-  const handleBookClick = (bookId: string) => {
-    navigate(`/book/${bookId}`);
+  // const handleBookClick = (bookId: string) => {
+  //   navigate(`/book/${bookId}`);
+  // };
+
+  const location = useLocation();
+  const { books } = location.state as { books: Book[] };
+
+  const handleBookClick = (book: Book) => {
+    navigate(`/book/${book.id}`, { state: { book } });
   };
   const handleBackClick = () => {
     navigate(-1);
@@ -27,7 +33,7 @@ const BookListPage = ({ bookList, header }: Props) => {
           </IconButton>
           <h1 className="text-2xl font-bold">{header}</h1>
         </div>
-        <BookListContainer books={bookList} onClick={handleBookClick} />
+        <BookListContainer books={books} onClick={handleBookClick} />
       </div>
     </>
   );

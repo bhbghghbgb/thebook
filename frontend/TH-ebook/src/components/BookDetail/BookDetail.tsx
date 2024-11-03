@@ -4,7 +4,7 @@ import RatingsContainer from "./RatingsContainer.tsx";
 import TitleContainer from "./TitleContainer.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
-import InformationContainer from "./InformationContainer.tsx";
+import TagComponent from "./TagComponent.tsx";
 import PartComponent from "./PartComponent.tsx";
 
 interface BookDetailProps {
@@ -47,7 +47,7 @@ const BookDetail = ({
       content: (
         <div className="flex gap-6 items-start">
           {/* Author */}
-          <InformationContainer
+          <TagComponent
             header="Author"
             content={authors}
             onContainerClick={handleAuthorClick}

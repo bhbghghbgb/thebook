@@ -22,6 +22,7 @@ const Banner = ({
             md:grid-areas-product-detail-mobile md:grid-cols-[200px_auto]
             grid-areas-product-detail grid-cols-[1fr_200px_minmax(0,calc(1240px-3.5rem))_1fr]
             w-full h-full m-0 p-0
+            cursor-pointer
              "
       >
         {/* Background Container */}

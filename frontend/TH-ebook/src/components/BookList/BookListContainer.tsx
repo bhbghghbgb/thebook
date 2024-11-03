@@ -1,14 +1,15 @@
 import { Typography } from "@material-tailwind/react";
 import { Book } from "../../models/Book";
-import InformationContainer from "../BookDetail/InformationContainer";
+import TagComponent from "../BookDetail/TagComponent.tsx";
 import RatingsContainer from "../BookDetail/RatingsContainer";
 
 interface Props {
   books: Book[];
-  onClick: (bookId: string) => void;
+  // onClick: (bookId: string) => void;
+    onClick: (book: Book) => void;
 }
 
-const BookContainer = ({ books, onClick }: Props) => {
+const BookListContainer = ({ books, onClick }: Props) => {
   return (
     <>
       <div className="grid gap-y-2">
@@ -16,7 +17,8 @@ const BookContainer = ({ books, onClick }: Props) => {
           <div
             key={book.id}
             className="manga-card grid grid-areas-product-list grid-cols-[84px auto 1fr auto auto] bg-gray-800"
-            onClick={() => onClick(book.id)}
+            // onClick={() => onClick(book.id)}
+            onClick={() => onClick(book)}
           >
             <img
               className="cover grid-in-cover w-35 h-40 mr-5"
@@ -27,7 +29,7 @@ const BookContainer = ({ books, onClick }: Props) => {
               {book.title}
             </Typography>
             <div className="author grid-in-author p-5">
-              <InformationContainer
+              <TagComponent
                 content={book.authors.map((author) => author.name)}
                 onContainerClick={(authorName) =>
                   console.log(`Author clicked: ${authorName}`)
@@ -38,7 +40,7 @@ const BookContainer = ({ books, onClick }: Props) => {
               <RatingsContainer />
             </div>
             <div className="tags grid-in-tags">
-              <InformationContainer
+              <TagComponent
                 content={book.category.map((category) => category.name)}
                 onContainerClick={(categoryName) =>
                   console.log(`Category clicked: ${categoryName}`)
@@ -57,4 +59,4 @@ const BookContainer = ({ books, onClick }: Props) => {
   );
 };
 
-export default BookContainer;
+export default BookListContainer;
