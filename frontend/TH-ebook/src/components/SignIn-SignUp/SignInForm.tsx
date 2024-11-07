@@ -10,6 +10,7 @@ import {
 } from "@material-tailwind/react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ISignInSchema {
     nameoremail: string,
@@ -32,6 +33,7 @@ const SignInForm = () => {
     const onSubmit: SubmitHandler<ISignInSchema> = (data) => {
         console.log(data);
     }
+    const navigate = useNavigate();
     return (
         <Card className="w-96">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -41,7 +43,7 @@ const SignInForm = () => {
                     className="mb-4 grid h-28 place-items-center"
                 >
                     <Typography variant="h3" color="white">
-                        Sign Up
+                        Sign In
                     </Typography>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
@@ -79,11 +81,12 @@ const SignInForm = () => {
                         Don&apos;t have an account?
                         <Typography
                             as="a"
-                            href="#signup"
+                            href="/auth/signup"
                             variant="small"
                             color="blue-gray"
                             className="ml-1 font-bold"
                             onClick={() => {
+                                // navigate("/auth/signup");
                             }}
                         >
                             Sign Up
