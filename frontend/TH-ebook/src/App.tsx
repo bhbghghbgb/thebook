@@ -42,7 +42,7 @@ function App() {
                         />
                         <Route
                             path="/book/trending"
-                            element={<BookListPage header={"Trending"}/>}
+                            element={<BookListPage header={"Trending"} books={books}/>}
                         />
                     </Routes>
                 </div>
