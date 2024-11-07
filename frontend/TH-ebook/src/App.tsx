@@ -20,35 +20,35 @@ function App() {
   });
 
   return (
-      <>
-        {/* <div className="App flex flex-grow text-color"> */}
-        <div className="App flex flex-col flex-grow">
-          {!location.pathname.startsWith("/auth")  &&(<div className="h-[var(--navbar-height)]">
-            <NavBar isMobile={isMobile}/>
-          </div>)}
-          <div className="md-content flex-grow">
-            <Routes>
-              <Route path="/auth">
-                <Route path="signup" element={<SignUpForm />} />
-                <Route path="signin" element={<SignInForm />} />
-              </Route>
-              <Route
-                  path="/"
-                  element={<HomePage isMobile={isMobile} books={books} />}
-              />
-              <Route
-                  path="/book/:id"
-                  element={<BookDetailPage books={books} isMobile={isMobile} />}
-              />
-              <Route
-                  path="/book/trending"
-                  element={<BookListPage header={"Trending"} />}
-              />
-            </Routes>
-          </div>
+    <>
+      {/* <div className="App flex flex-grow text-color"> */}
+      <div className="App flex flex-col flex-grow">
+        {!location.pathname.startsWith("/auth")  &&(<div className="h-[var(--navbar-height)]">
+          <NavBar isMobile={isMobile}/>
+        </div>)}
+        <div className="md-content flex-grow">
+          <Routes>
+            <Route path="/auth">
+              <Route path="signup" element={<SignUpForm />} />
+              <Route path="signin" element={<SignInForm />} />
+            </Route>
+            <Route
+              path="/"
+              element={<HomePage isMobile={isMobile} books={books} />}
+            />
+            <Route
+              path="/book/:id"
+              element={<BookDetailPage books={books} isMobile={isMobile} />}
+            />
+            <Route
+              path="/book/trending"
+              element={<BookListPage header={"Trending"} />}
+            />
+          </Routes>
         </div>
-        {/* </div> */}
-      </>
+      </div>
+      {/* </div> */}
+    </>
   );
 }
 
