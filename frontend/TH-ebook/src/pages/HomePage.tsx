@@ -1,57 +1,67 @@
 import BookContainer from "../components/Home/BookContainer";
 // import useFetchBooks from "../hooks/useFetchBook";
 // import { Category } from "../models/Category";
-import { Book } from "../models/Book";
+import {Book} from "../models/Book";
 import BannerSlider from "../components/Home/BannerSlider";
 import {useNavigate} from "react-router-dom";
+import LayoutComponent from "../components/Share/LayoutComponent.tsx";
 
 interface Props {
-  isMobile: boolean;
-  books: Book[];
+    isMobile: boolean;
+    books: Book[];
 }
 
 
-const HomePage = ({isMobile, books}:Props) => {
-  // const { data: books, error, isLoading } = useFetchBooks();
+const HomePage = ({isMobile, books}: Props) => {
+    // const { data: books, error, isLoading } = useFetchBooks();
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+    // if (isLoading) {
+    //   return <div>Loading...</div>;
+    // }
 
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
+    // if (error) {
+    //   return <div>Error: {error.message}</div>;
+    // }
 
-  // if (!books) {
-  //   return <div>No books available</div>;
-  // }
+    // if (!books) {
+    //   return <div>No books available</div>;
+    // }
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleBannerClick = (book: Book) => {
-    navigate(`/book/${book.id}`, { state: { book } });
-  }
+    const handleBannerClick = (book: Book) => {
+        navigate(`/book/${book.id}`, {state: {book}});
+    }
 
-  const hanleBookClick = (book: Book) => {
-    navigate(`/book/${book.id}`, { state: { book } });
-  }
+    const hanleBookClick = (book: Book) => {
+        navigate(`/book/${book.id}`, {state: {book}});
+    }
 
-  const hanleBookListClick = (books: Book[]) => {
-    navigate(`/book/trending`, { state: { books } });
-  }
-  
-  return (
-    <div
-      className="home-page gap-y-10"
-    >
-      <BannerSlider books={books} isMobile={isMobile}  onClick={handleBannerClick}/>
-      <BookContainer header="Trending" books={books}  onClick={hanleBookClick} onListClick={hanleBookListClick}/>
-      <div className="flex-grow hidden sm:block" />
-      <BookContainer header="New" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
-      <div className="flex-grow hidden sm:block" />
-      <BookContainer header="Features" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
-    </div>
-  );
+    const hanleBookListClick = (books: Book[]) => {
+        navigate(`/book/trending`, {state: {books}});
+    }
+
+    return (
+        <div
+            className="home-page gap-y-10"
+        >
+
+            <LayoutComponent isMobile={isMobile}>
+
+                <BannerSlider books={books} isMobile={isMobile} onClick={handleBannerClick}/>
+                <BookContainer header="Trending" books={books} onClick={hanleBookClick}
+                               onListClick={hanleBookListClick}/>
+                <div className="flex-grow hidden sm:block"/>
+                <BookContainer header="New" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
+                <div className="flex-grow hidden sm:block"/>
+                <BookContainer header="Features" books={books} onClick={hanleBookClick}
+                               onListClick={hanleBookListClick}/>
+
+            </LayoutComponent>
+
+
+        </div>
+    );
 };
 
 export default HomePage;

@@ -16,7 +16,6 @@ import {RootState} from "../../store/store.ts";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import {User} from "../../models/User.ts";
-import {useNavigate} from "react-router-dom";
 
 const ISignUpSchema = yup.object().shape({
     username: yup.string().required(),
@@ -26,7 +25,6 @@ const ISignUpSchema = yup.object().shape({
 }
 )
 const SignUpForm = () => {
-    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,

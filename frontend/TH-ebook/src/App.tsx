@@ -4,14 +4,21 @@ import { useMediaQuery } from "@mui/material";
 import HomePage from "./pages/HomePage.tsx";
 import { Route, Routes } from "react-router-dom";
 import BookListPage from "./pages/BookListPage.tsx";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "./store/store.ts";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
+import {useEffect} from "react";
+import { setIsMobile } from "./features/layout/layoutSlice";
 
 function App() {
   // Define the media query
+  const dispatch = useDispatch();
   const isMobile = useMediaQuery("(max-width: 1060px)");
+
+  useEffect(() => {
+    dispatch(setIsMobile(isMobile));
+  }, [isMobile, dispatch]);
 
   const books = useSelector((state: RootState) => {
     return state.books;
@@ -21,11 +28,6 @@ function App() {
     <>
       {/* <div className="App flex flex-grow text-color"> */}
       <div className="App flex flex-col flex-grow w-full h-full">
-        {!location.pathname.startsWith("/auth") && (
-          <div className="h-[var(--navbar-height)]">
-            <NavBar isMobile={isMobile} />
-          </div>
-        )}
         <div className="md-content flex-grow">
           <Routes>
             <Route path="/auth">
@@ -42,7 +44,7 @@ function App() {
             />
             <Route
               path="/book/trending"
-              element={<BookListPage header={"Trending"} />}
+              element={<BookListPage header={"Trending"}  books={books}/>}
             />
           </Routes>
         </div>

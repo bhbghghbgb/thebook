@@ -10,12 +10,15 @@ import {
 } from "@material-tailwind/react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useState} from "react";
-import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {User} from "../../models/User.ts";
 
-interface ISignInSchema {
-    nameoremail: string,
-    password: string,
-}
+const ISignInSchema = yup.object().shape({
+        nameoremail: yup.string().required(),
+        password: yup.string().required(),
+    }
+)
 
 const SignInForm = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -24,16 +27,10 @@ const SignInForm = () => {
         handleSubmit,
         // watch,
         formState: {errors}
-    } = useForm<ISignInSchema>({
-        defaultValues: {
-            nameoremail: "",
-            password: "",
-        }
-    });
-    const onSubmit: SubmitHandler<ISignInSchema> = (data) => {
+    } = useForm({ resolver: yupResolver(ISignInSchema) });
+    const onSubmit = (data: User) => {
         console.log(data);
     }
-    const navigate = useNavigate();
     return (
         <Card className="w-96">
             <form onSubmit={handleSubmit(onSubmit)}>
