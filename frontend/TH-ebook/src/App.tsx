@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store/store.ts";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
+import ReaderPage from "./pages/ReaderPage.tsx";
 
 function App() {
   // Define the media query
@@ -46,6 +47,7 @@ function App() {
               path="/book/trending"
               element={<BookListPage header={"Trending"} />}
             />
+            <Route path="/reader/:id/:pg?" element={<ReaderPage />}></Route>
           </Routes>
         </div>
       </div>
