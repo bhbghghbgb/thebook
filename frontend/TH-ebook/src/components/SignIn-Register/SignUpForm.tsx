@@ -43,8 +43,6 @@ const SignUpForm = () => {
         dispatch(addUser({ username, password, email }));
     }
 
-    const users = useSelector((state: RootState) => state.user);
-    console.log("All users:", users);
     return (
         <Card className="w-96">
             <form onSubmit={handleSubmit(onSubmit)}>
