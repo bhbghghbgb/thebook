@@ -10,6 +10,9 @@ import {
 } from "@material-tailwind/react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import { addUser } from "../../features/user/userSlice.ts";
+import {RootState} from "../../store/store.ts";
 
 interface ISignUpSchema {
     username: string,
@@ -24,7 +27,7 @@ const SignUpForm = () => {
         register,
         handleSubmit,
         // watch,
-        formState: {errors}
+        formState: {errors},
     } = useForm<ISignUpSchema>({
         defaultValues: {
             username: "",
@@ -33,9 +36,15 @@ const SignUpForm = () => {
             email: "",
         }
     });
+    const dispatch = useDispatch();
+
     const onSubmit: SubmitHandler<ISignUpSchema> = (data) => {
-        console.log(data);
+        const { username, password, email } = data;
+        dispatch(addUser({ username, password, email }));
     }
+
+    const users = useSelector((state: RootState) => state.user);
+    console.log("All users:", users);
     return (
         <Card className="w-96">
             <form onSubmit={handleSubmit(onSubmit)}>
