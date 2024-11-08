@@ -16,12 +16,6 @@ const BookListPage = ({ header, books }: Props) => {
     navigate(`/book/${bookId}`);
   };
 
-  // const location = useLocation();
-  // const { books } = location.state as { books: Book[] };
-  //
-  // const handleBookClick = (book: Book) => {
-  //   navigate(`/book/${book.id}`, { state: { book } });
-  // };
   const handleBackClick = () => {
     navigate(-1);
   };

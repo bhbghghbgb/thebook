@@ -1,4 +1,3 @@
-import NavBar from "./components/NavBar/NavBar.tsx";
 import BookDetailPage from "./pages/BookDetailPage.tsx";
 import { useMediaQuery } from "@mui/material";
 import HomePage from "./pages/HomePage.tsx";
@@ -8,17 +7,10 @@ import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "./store/store.ts";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
-import {useEffect} from "react";
-import { setIsMobile } from "./features/layout/layoutSlice";
 
 function App() {
   // Define the media query
-  const dispatch = useDispatch();
   const isMobile = useMediaQuery("(max-width: 1060px)");
-
-  useEffect(() => {
-    dispatch(setIsMobile(isMobile));
-  }, [isMobile, dispatch]);
 
   const books = useSelector((state: RootState) => {
     return state.books;
