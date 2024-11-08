@@ -13,12 +13,11 @@ interface Props {
 }
 
 const BookDetailPage = ({ isMobile, data, isLoading, error }: Props) => {
-
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
   return (
     <>
       <LayoutComponent isMobile={isMobile}>
-          {isLoading && <div className="text-2xl">Loading...</div>}
-            {error && <div className="text-red-900">Error: {error.message}</div>}
         <div className="place-items-center">
           <BookDetail book={data} isMobile={isMobile} />
         </div>
