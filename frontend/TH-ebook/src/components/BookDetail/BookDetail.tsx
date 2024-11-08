@@ -68,13 +68,12 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
       <div
         className="
             container grid px-4
-            md:grid-areas-product-detail-mobile md:grid-cols-[200px_auto]
-            grid-areas-product-detail grid-cols-[1fr_200px_minmax(0,calc(1240px-3.5rem))_1fr]
-            w-full h-full m-0 p-0
-             "
+            grid-areas-product-detail-mobile grid-cols-[200px_auto]
+            md:grid-areas-product-detail md:grid-cols-[1fr_200px_minmax(0,calc(1240px-3.5rem))_1fr]
+            w-full h-full m-0 p-0"
       >
         {/* Background Container */}
-        <div
+        {/* <div
           className="absolute top-0 left-0 z-[-2] w-full h-[250px] blur-sm bg-no-repeat  bg-gradient-to-t from-[
         before:content-['']
             before:absolute
@@ -91,7 +90,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
             backgroundPosition: "top 35% center",
             backgroundSize: "100%",
           }}
-        ></div>
+        ></div> */}
         <div className="nav-l grid-in-cover mr-5 mb-5">
           <img
             src={book.cover_image}
