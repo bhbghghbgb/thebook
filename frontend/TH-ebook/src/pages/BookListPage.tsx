@@ -1,41 +1,49 @@
-import { HiArrowLeft } from "react-icons/hi";
+import {HiArrowLeft} from "react-icons/hi";
 import BookListContainer from "../components/BookList/BookListContainer";
-import { Book } from "../models/Book";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {IconButton} from "@material-tailwind/react";
-import LayoutComponent from "../components/Share/LayoutComponent.tsx";
-import withFetchBook from "../components/Share/withFetchBook.tsx";
+import LayoutComponent from "../components/Share/LayoutComponent";
+import withFetchData from "../components/hoc/withFetchData";
+import {Book} from "../models/Book";
 
 interface Props {
-  header: string;
-  books: Book[];
+    header: string;
+    data: Book[];
+    isLoading: boolean;
+    error: Error | null;
 }
 
-const BookListPage = ({ header, books }: Props) => {
-  const navigate = useNavigate();
-  const handleBookClick = (bookId: string) => {
-    navigate(`/book/${bookId}`);
-  };
+const BookListPage = ({header, data}: Props) => {
+    const navigate = useNavigate();
 
-  const handleBackClick = () => {
-    navigate(-1);
-  };
+    const handleBookClick = (bookId: string) => {
+        navigate(`/book/${bookId}`);
+    };
 
-  return (
-    <>
-      <LayoutComponent isMobile={false}>
-        <div className="page-container p-6">
-          <div className="flex items-center mb-6 mt-2">
-            <IconButton onClick={handleBackClick}>
-              <HiArrowLeft className="text-2xl"/>
-            </IconButton>
-            <h1 className="text-2xl font-bold">{header}</h1>
-          </div>
-          <BookListContainer books={books} onClick={handleBookClick}/>
-        </div>
-      </LayoutComponent>
-    </>
-  );
+    const handleBackClick = () => {
+        navigate(-1);
+    };
+
+    return (
+        <LayoutComponent isMobile={false}>
+            <div className="page-container p-6">
+                <div className="flex items-center mb-6 mt-2">
+                    <IconButton onClick={handleBackClick} placeholder={undefined}
+                                onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <HiArrowLeft className="text-2xl"/>
+                    </IconButton>
+                    <h1 className="text-2xl font-bold">{header}</h1>
+                </div>
+                <BookListContainer books={data} onClick={handleBookClick}/>
+            </div>
+        </LayoutComponent>
+    );
 };
 
-export default withFetchBook(BookListPage);
+const EnhancedBookListPage = withFetchData<Props>(
+    BookListPage,
+    '/books',
+    'books'
+);
+
+export default EnhancedBookListPage;

@@ -2,7 +2,6 @@ import { Typography } from "@material-tailwind/react";
 import { Book } from "../../models/Book";
 import TagComponent from "../BookDetail/TagComponent.tsx";
 import RatingsContainer from "../BookDetail/RatingsContainer";
-import withFetchBook from "../Share/withFetchBook.tsx";
 
 interface Props {
   books: Book[];
@@ -26,7 +25,9 @@ const BookListContainer = ({ books, onClick }: Props) => {
               src={book.cover_image}
               alt={book.title}
             />
-            <Typography className="font-bold title grid-in-title text-4xl lg:text-3xl md:text-2xl sm:text-xl" variant="h2">
+            <Typography className="font-bold title grid-in-title text-4xl lg:text-3xl md:text-2xl sm:text-xl"
+                        variant="h2"  placeholder={undefined} onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}>
               {book.title}
             </Typography>
             <div className="author grid-in-author p-5">
@@ -49,8 +50,8 @@ const BookListContainer = ({ books, onClick }: Props) => {
               />
             </div>
             <Typography
-              className="description py-2  grid-in-description"
-            >
+                className="description py-2  grid-in-description"  placeholder={undefined}
+                onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               {book.description}
             </Typography>
           </div>
@@ -60,4 +61,4 @@ const BookListContainer = ({ books, onClick }: Props) => {
   );
 };
 
-export default withFetchBook(BookListContainer);
+export default BookListContainer;

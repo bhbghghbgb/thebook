@@ -1,12 +1,9 @@
+// src/hooks/useFetchData.ts
 import { useQuery } from 'react-query';
-import { fetchBooks, fetchBook } from '../service/api/bookAPI';
+import api  from '../service/api/fetchData.ts';
 
-export const useFetchBooks = () => {
-    return useQuery('books', fetchBooks);
+const useFetchData = (url: string) => {
+    return useQuery([url], () => api(url));
 };
 
-export const useFetchBook = (bookId: string) => {
-    return useQuery(['book', bookId], () => fetchBook(bookId), {
-        enabled: !!bookId,
-    });
-};
+export default useFetchData;
