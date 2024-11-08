@@ -22,9 +22,8 @@ const NavBar = ({ isMobile }: NavBarProps) => {
   return (
     <>
       <Navbar
-        variant="gradient"
         color="transparent"
-        className="navbar mx-auto max-w-full w-full from-blue-gray-900 to-blue-gray-800 px-4 py-3"
+        className="navbar mx-auto max-w-full w-full px-4 py-3"
       >
         <div className="icon-bar flex flex-wrap items-center justify-between gap-y-4 text-white">
           <div className="flex items-center">

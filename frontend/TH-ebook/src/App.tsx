@@ -19,18 +19,18 @@ function App() {
   const books = useSelector((state: RootState) => {
     return state.books;
   });
-
   return (
     <>
       {/* <div className="App flex flex-grow text-color"> */}
       <div className="App flex flex-col flex-grow w-full h-full">
         {!location.pathname.startsWith("/auth") && (
-          <div className="h-[var(--navbar-height)]">
+          <div className="h-[var(--navbar-height)] outline-none outline-amber-900">
             <NavBar isMobile={isMobile} />
           </div>
         )}
         <div className="md-content flex-grow">
           <Routes>
+            <Route path="*" element={"404 Not Found"}></Route>
             <Route path="/auth">
               <Route path="signup" element={<SignUpPage />} />
               <Route path="signin" element={<SignInPage />} />

@@ -12,18 +12,9 @@ import {
 } from "react-icons/hi";
 import { TbSunMoon } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
+import ReaderRenderer from "../components/Reader/ReaderRenderer";
 
-export default function ReaderPage() {
-  const navigate = useNavigate();
-  const params = useParams<{ id: string; pg: string }>();
-  useEffect(() => {
-    if (!params.pg) {
-      navigate(`/reader/${params.id}/${1}`, {
-        replace: true,
-      });
-    }
-  }, [navigate, params.pg, params.id]);
-
+function NavigationBar() {
   return (
     <div className="grid grid-cols-3 w-full h-16">
       <div className="flex flex-row gap-4 place-items-center justify-start">
@@ -60,5 +51,25 @@ export default function ReaderPage() {
         </IconButton>
       </div>
     </div>
+  );
+}
+
+export default function ReaderPage() {
+  const navigate = useNavigate();
+  const params = useParams<{ id: string; pg: string }>();
+  useEffect(() => {
+    if (!params.pg) {
+      navigate(`/reader/${params.id}/${1}`, {
+        replace: true,
+      });
+    }
+  }, [navigate, params.pg, params.id]);
+
+  return (
+    <>
+      <NavigationBar />
+      <ReaderRenderer />
+      <NavigationBar />
+    </>
   );
 }
