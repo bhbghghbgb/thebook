@@ -13,7 +13,7 @@ interface Props {
     error: Error | null;
 }
 
-const BookListPage = ({header, data}: Props) => {
+const BookListPage = ({header, data, isLoading, error}: Props) => {
     const navigate = useNavigate();
 
     const handleBookClick = (bookId: string) => {
@@ -23,6 +23,9 @@ const BookListPage = ({header, data}: Props) => {
     const handleBackClick = () => {
         navigate(-1);
     };
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <LayoutComponent isMobile={false}>
