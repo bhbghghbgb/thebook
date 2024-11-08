@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {User} from "../../models/User.ts";
 
-const initialState= {
+const initialState: {users: User[]; isLogin: boolean}= {
     users: [],
     isLogin: false,
 };

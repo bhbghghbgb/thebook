@@ -1,3 +1,17 @@
+// HOC Pattern
+/*
+*
+*
+* Higher-order components (HOCs) are a pattern in React that allows you to reuse
+component logic across multiple components. They are functions that take a
+component and return a new component with additional functionality.
+* Instead of duplicating the fetching logic in each
+component, you can create an HOC to handle the data fetching and pass the fetched
+data as props to the wrapped components.
+*
+*
+* */
+
 import React from 'react';
 import { useFetchBooks, useFetchBook } from '../../hooks/useFetchBook.ts';
 interface WithFetchBookProps {
@@ -19,13 +33,13 @@ const withFetchBook = <P extends object>(Component: React.ComponentType<P>) => {
         const { data: book, error: bookError, isLoading: bookLoading } = useFetchBook(bookId || '');
 
         if (bookId) {
-            if (bookLoading) return <div>Loading...</div>;
-            if (bookError) return <div>Error loading book</div>;
+            if (bookLoading) return <div className="text-2xl ">Loading...</div>;
+            if (bookError) return <div className="text-2xl text-red-900">Error loading book</div>;
             return <Component {...(props as P)} book={book} />;
         } else {
-            if (booksLoading) return <div>Loading...</div>;
-            if (booksError) return <div>Error loading books</div>;
-            return <Component {...(props as P)} books={books} />;
+            if (booksLoading) return <div className="text-2xl ">Loading...</div>;
+            if (booksError) return <div className="text-2xl text-red-900">Error loading books</div>;
+            return <Component {...(props as P)} books={books}/>;
         }
     };
 };

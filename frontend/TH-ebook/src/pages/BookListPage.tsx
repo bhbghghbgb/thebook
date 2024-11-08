@@ -4,6 +4,7 @@ import { Book } from "../models/Book";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IconButton} from "@material-tailwind/react";
 import LayoutComponent from "../components/Share/LayoutComponent.tsx";
+import withFetchBook from "../components/Share/withFetchBook.tsx";
 
 interface Props {
   header: string;
@@ -37,4 +38,4 @@ const BookListPage = ({ header, books }: Props) => {
   );
 };
 
-export default BookListPage;
+export default withFetchBook(BookListPage);
