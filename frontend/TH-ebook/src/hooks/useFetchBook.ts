@@ -1,6 +1,4 @@
-// src/hooks/useFetchData.ts
-import { useQuery } from '@tanstack/react-query';
-import {fetchData}  from '../service/api/fetchData.ts';
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Book } from "../models/Book";
 
@@ -9,12 +7,8 @@ const fetchBooks = async (): Promise<Book[]> => {
     return response.data;
 };
 
-const useFetchData = (url: string) => {
-    return useQuery([url], () => fetchData(url));
-};
-
 const useFetchBooks = () => {
     return useQuery<Book[], Error>("books", fetchBooks);
 };
 
-export {useFetchData, useFetchBooks}
+export default useFetchBooks;
