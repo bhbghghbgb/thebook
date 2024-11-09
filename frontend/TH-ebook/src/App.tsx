@@ -27,6 +27,7 @@ function App() {
             <div className="App flex flex-col flex-grow w-full h-full">
                 <div className="md-content flex-grow">
                     <Routes>
+                        <Route path="*" element={"404 Not Found"}></Route>
                         <Route path="/auth">
                             <Route path="signup" element={<SignUpPage/>}/>
                             <Route path="signin" element={<SignInPage/>}/>

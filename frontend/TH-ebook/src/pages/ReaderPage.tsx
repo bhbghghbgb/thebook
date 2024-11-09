@@ -13,18 +13,9 @@ import {
 import { TbSunMoon } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
 import LayoutComponent from "../components/Share/LayoutComponent.tsx";
+import ReaderRenderer from "../components/Reader/ReaderRenderer";
 
-export default function ReaderPage() {
-  const navigate = useNavigate();
-  const params = useParams<{ id: string; pg: string }>();
-  useEffect(() => {
-    if (!params.pg) {
-      navigate(`/reader/${params.id}/${1}`, {
-        replace: true,
-      });
-    }
-  }, [navigate, params.pg, params.id]);
-
+function NavigationBar() {
   return (
       <LayoutComponent isMobile={false}>
         <div className="grid grid-cols-3 w-full h-16">
@@ -63,5 +54,25 @@ export default function ReaderPage() {
           </div>
         </div>
       </LayoutComponent>
+  );
+}
+
+export default function ReaderPage() {
+  const navigate = useNavigate();
+  const params = useParams<{ id: string; pg: string }>();
+  useEffect(() => {
+    if (!params.pg) {
+      navigate(`/reader/${params.id}/${1}`, {
+        replace: true,
+      });
+    }
+  }, [navigate, params.pg, params.id]);
+
+  return (
+    <>
+      <NavigationBar />
+      <ReaderRenderer />
+      <NavigationBar />
+    </>
   );
 }

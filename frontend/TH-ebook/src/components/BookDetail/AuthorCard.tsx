@@ -12,7 +12,6 @@ const AuthorCard = ({ book, onAuthorClick }: AuthorProps) => {
   const authorChips = book.authors.map((author) => (
     <Chip
       key={author.name}
-      variant="gradient"
       value={author.name}
       color="gray"
       onClick={() => onAuthorClick(author.name)}

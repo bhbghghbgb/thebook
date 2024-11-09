@@ -1,10 +1,11 @@
-import { Navbar, Typography, IconButton, Card } from "@material-tailwind/react";
+import { Navbar, Typography, IconButton } from "@material-tailwind/react";
 import { HiMenu, HiSearch, HiUser } from "react-icons/hi";
 import { useState } from "react";
 import { DrawerDefault } from "./DrawerDefault.tsx";
 import SearchBar from "./SearchBar.tsx";
 import OverlayComponent from "../Share/OverlayComponent.tsx";
 import CardPricing from "../Card/CardPricing.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface NavBarProps {
   isMobile: boolean;
@@ -12,6 +13,7 @@ interface NavBarProps {
 
 const NavBar = ({ isMobile }: NavBarProps) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false); // State for toggling SearchBar
   const [openPricing, setOpenPricing] = useState(false);
   const openDrawer = () => setOpen(true);
@@ -20,9 +22,8 @@ const NavBar = ({ isMobile }: NavBarProps) => {
   return (
     <>
       <Navbar
-        variant="gradient"
         color="transparent"
-        className="navbar mx-auto max-w-full w-full from-blue-gray-900 to-blue-gray-800 px-4 py-3"
+        className="navbar mx-auto max-w-full w-full px-4 py-3"
       >
         <div className="icon-bar flex flex-wrap items-center justify-between gap-y-4 text-white">
           <div className="flex items-center">
@@ -60,7 +61,10 @@ const NavBar = ({ isMobile }: NavBarProps) => {
               <SearchBar />
             )}
             <IconButton className="ml-2">
-              <HiUser className="w-6 h-6 text-white" />
+              <HiUser
+                className="w-6 h-6 text-white"
+                onClick={() => navigate("/auth/signin")}
+              />
             </IconButton>
           </div>
         </div>
