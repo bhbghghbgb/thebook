@@ -1,31 +1,33 @@
 import React from 'react';
-import { useQuery } from 'react-query';
-import { fetchData } from '../../service/api/fetchData.ts';
-import { ApiResponse } from '../../models/type/ApiResponse.ts';
+import {useQuery} from '@tanstack/react-query';
+import {fetchData} from '../../service/api/fetchData.ts';
+import {ApiResponse} from '../../models/type/ApiResponse.ts';
 
-interface WithFetchDataProps {
+interface WithFetchDataProps<T> {
   isLoading: boolean;
   error: Error | null;
-  data: any;
+  data: T;
 }
 
-const withFetchData = <P extends WithFetchDataProps>(
+const withFetchData = <P extends WithFetchDataProps<T>, T>(
   WrappedComponent: React.ComponentType<P>, // Component to be wrapped
   endpoint: string, // API endpoint
   queryKey: string | string[] // Query key use for React Query to uniquely identify the query
 ) => {
-  return (props: Omit<P, keyof WithFetchDataProps>) => {
-    const { data, isLoading, error } = useQuery<ApiResponse<any>, Error>(
-      queryKey,
-      async () => {
-        const response = await fetchData(endpoint);
-        return response.data;
-      }
+  return (props: Omit<P, keyof WithFetchDataProps<T>>) => {
+
+    const { data, isLoading, error } = useQuery<ApiResponse<T>, Error>(
+        {
+          queryKey: [queryKey],
+          queryFn: () => fetchData(endpoint),
+        }
     );
+
+    console.log(data);
 
     const componentProps = {
       ...props,
-      data: data?.data,
+      data: data,
       isLoading,
       error,
     } as P;

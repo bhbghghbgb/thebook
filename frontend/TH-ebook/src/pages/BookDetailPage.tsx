@@ -28,7 +28,7 @@ const BookDetailPage = ({ isMobile, data, isLoading, error }: Props) => {
 
 const BookDetailPageWithParams: React.FC<Omit<Props, 'data' | 'isLoading' | 'error'>> = ({ isMobile }) => {
     const { id } = useParams<{ id: string }>() as { id: string };
-    const WrappedComponent = withFetchData<Props>(
+    const WrappedComponent = withFetchData<Props, { book: Book }>(
       BookDetailPage,
       `/books/${id}`,
       ['book', id]

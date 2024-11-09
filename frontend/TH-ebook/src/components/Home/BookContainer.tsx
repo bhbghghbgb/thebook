@@ -6,7 +6,6 @@ import { Book } from "../../models/Book.ts";
 import { HiOutlineArrowSmRight, HiOutlineChevronDoubleRight} from "react-icons/hi";
 import CardDefault from "../Card/CardDefault.tsx";
 import { Button, IconButton } from "@material-tailwind/react";
-import {useNavigate} from "react-router-dom"
 
 interface Props {
   books: Book[];
@@ -16,15 +15,7 @@ interface Props {
 }
 
 const BookContainer = ({ books, header, onClick, onListClick }: Props) => {
-  const navigate = useNavigate();
 
-  // const handleBookClick = (bookId: string) => {
-  //   navigate(`/book/${bookId}`);
-  // };
-
-  // const handleListClick = () => {
-  //   navigate("/book/trending");
-  // }
   return (
     <>
       <div className="w-full">
