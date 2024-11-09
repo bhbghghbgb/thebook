@@ -68,6 +68,7 @@ export default function ReaderPage() {
   return (
     <>
       <NavigationBar />
+      <h1>me may beo</h1>
       <ReaderRenderer />
       <NavigationBar />
     </>

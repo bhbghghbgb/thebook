@@ -786,6 +786,18 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@open-iframe-resizer/core@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@open-iframe-resizer/core/-/core-1.1.3.tgz#1fe109259230b1582a8e597572275fb883c79ffc"
+  integrity sha512-llu4UXasX2X28sojatW+r4PqIynXvuuNKxkTqICWaPQ9r73fAk7ZlY71SSb8JMg0gMwNlLrwlxC0oPS/+3Cwcw==
+
+"@open-iframe-resizer/react@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@open-iframe-resizer/react/-/react-1.1.3.tgz#4be06d4ddb71da99fe361099d9a598adf58206c8"
+  integrity sha512-ZwnpWfz2aYVsnYYNwP9gOfhU29k1x1IPnTvICGzjnTtP3cq4NahVhOtoDHF53PdUaRrRp69VWEbm7UvAx1Me+g==
+  dependencies:
+    "@open-iframe-resizer/core" "1.1.3"
+
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
