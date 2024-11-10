@@ -1,3 +1,4 @@
+import useFitTextTuViet from "../../hooks/_Common/useFitTextTuViet.ts";
 import { Book } from "../../models/Book.ts";
 
 interface Props {
@@ -5,18 +6,23 @@ interface Props {
 }
 
 const TitleContainer = ({ book }: Props) => {
+  // const { ref } = useFitTextTuViet({ getHeightFn: () => 180 });
   return (
     <>
-      <div className="title ">
+      <div className="title flex flex-col h-60 w-full">
         <span
-          className="mb-1 block text-5xl font-bold sm:text-3xl md:text-4xl"
+          // ref={ref}
+          // className="mb-1 block text-5xl font-bold sm:text-3xl md:text-4xl"
+          className="mb-1 block text-5xl font-bold w-full"
           style={{
-            textShadow: "rgba(0, 0, 0, 0.3) 1px 2px 4px"
+            textShadow: "rgba(0, 0, 0, 0.3) 1px 2px 4px",
           }}
         >
           {book.title}
         </span>
-        <span className="text-3xl font-normal line-clamp-2 sm:text-xl md:text-2xl inline-block leading-5">Cross Method in the Dead of Night</span>
+        <span className="text-3xl font-normal line-clamp-2 sm:text-xl md:text-2xl inline-block leading-5">
+          Cross Method in the Dead of Night
+        </span>
         <div className="flex-grow hidden sm:block"></div>
 
         <span className="block font-normal text-2xl md:text-xl sm:text-base sm:truncate flex-shrink-0">

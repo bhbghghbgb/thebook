@@ -13,7 +13,7 @@ const ReaderRenderer = () => {
   if (error) {
     return <span>Error: {error.message}</span>;
   }
-  return <div className="w-full">{parse(data)}</div>;
+  return <div id="reader" className="w-full">{parse(data)}</div>;
 };
 
 export default ReaderRenderer;

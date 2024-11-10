@@ -67,7 +67,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
       {/* Container */}
       <div
         className="
-            container grid px-4
+            container grid gap-4 px-4
             grid-areas-product-detail-mobile grid-cols-[200px_auto]
             md:grid-areas-product-detail md:grid-cols-[1fr_200px_minmax(0,calc(1240px-3.5rem))_1fr]
             w-full h-full m-0 p-0"
@@ -91,12 +91,8 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
             backgroundSize: "100%",
           }}
         ></div> */}
-        <div className="nav-l grid-in-cover mr-5 mb-5">
-          <img
-            src={book.cover_image}
-            alt=""
-            className="w-52 h-80 object-cover"
-          />
+        <div className="nav-l grid-in-cover">
+          <img src={book.cover_image} alt="" className="w-full" />
         </div>
         {/*Tile*/}
         <div className="grid-in-title">
@@ -116,7 +112,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
         </div>
 
         {/* category */}
-        <div className="grid-in-info sm:mx-2">
+        <div className="grid-in-info">
           <CategoryContainer
             book={book}
             onCategoryClick={handleCategoryClick}
@@ -124,7 +120,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
         </div>
 
         {/* rating */}
-        <div className="grid-in-stats sm:mx-2 mt-auto sm:mt-0">
+        <div className="grid-in-stats">
           <RatingsContainer />
         </div>
 
