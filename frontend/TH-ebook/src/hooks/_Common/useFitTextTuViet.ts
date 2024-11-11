@@ -498,7 +498,9 @@ const useFitTextTuViet = ({
           "1.3125rem",
           "1rem",
           "0.875rem",
-        ].map((s) => parseFloat(s) * 16),
+        ]
+          .map((s) => parseFloat(s) * 16)
+          .sort((a, b) => a - b),
       };
     if (fixedFontSizes) {
       return {
@@ -592,7 +594,11 @@ const useFitTextTuViet = ({
       }
       // start iterating
       for (let current = fixedFontSizes.length - 1; current >= 0; current--) {
-        console.info(`${moduleName} loop${current} fs${sprintf(current)}`);
+        console.info(
+          `${moduleName} loop${fixedFontSizes.length - current} fs${sprintf(
+            current
+          )}`
+        );
         setCloneFsi(current);
         if (!isOverflow()) {
           applySizeAndCleanUp(current);

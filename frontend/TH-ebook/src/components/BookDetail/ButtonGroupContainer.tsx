@@ -1,5 +1,5 @@
 import { Button, IconButton } from "@material-tailwind/react";
-import { HiArrowUp, HiBookOpen, HiFlag, HiDotsVertical } from "react-icons/hi";
+import { HiArrowUp, HiBookOpen, HiDotsVertical, HiFlag } from "react-icons/hi";
 import MenuDefault from "../Share/MenuDefault";
 
 interface Props {
@@ -97,7 +97,7 @@ const ButtonGroupContainer = ({
             <HiBookOpen />
           </IconButton>
           <IconButton
-            color="light-blue"
+            color="purple"
             size="lg"
             onClick={() => onFlag()}
             placeholder={undefined}

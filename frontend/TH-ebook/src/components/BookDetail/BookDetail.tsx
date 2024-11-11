@@ -1,17 +1,17 @@
+import { Typography } from "@material-tailwind/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Book } from "../../models/Book.ts";
-import CategoryContainer from "./CategoryContainer.tsx";
-import RatingsContainer from "./RatingsContainer.tsx";
-import {
-  TitleContainerFittyR,
-  TitleContainerFittyF,
-} from "./TitleContainer.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
+import CategoryContainer from "./CategoryContainer.tsx";
+import PartComponent from "./PartComponent.tsx";
+import RatingsContainer from "./RatingsContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
 import TagComponent from "./TagComponent.tsx";
-import PartComponent from "./PartComponent.tsx";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
+import {
+  TitleContainerFittyF,
+  TitleContainerFittyR,
+} from "./TitleContainer.tsx";
 interface BookDetailProps {
   book: Book;
   isMobile: boolean;
@@ -98,6 +98,11 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
         ></div> */}
         <div className="nav-l grid-in-cover">
           <img src={book.cover_image} alt="" className="w-full" />
+          <Typography
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >{`Fit Text mode: ${rangeMode ? "Range" : "Fixed"}`}</Typography>
         </div>
         {/*Tile*/}
         <div className="grid-in-title">
