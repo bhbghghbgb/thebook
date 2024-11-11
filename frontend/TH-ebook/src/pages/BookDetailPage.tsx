@@ -1,6 +1,7 @@
 import { Book } from "../models/Book.ts";
 import BookDetail from "../components/BookDetail/BookDetail.tsx";
 import { useParams } from "react-router-dom";
+import LayoutComponent from "../components/Share/LayoutComponent.tsx";
 // import {useLocation} from "react-router-dom";
 
 interface Props {
@@ -20,9 +21,11 @@ const BookDetailPage = ({ isMobile, books }: Props) => {
   }
   return (
     <>
-      <div className="place-items-center">
-        <BookDetail book={book} isMobile={isMobile} />
-      </div>
+      <LayoutComponent isMobile={isMobile}>
+        <div className="place-items-center">
+          <BookDetail book={book} isMobile={isMobile} />
+        </div>
+      </LayoutComponent>
     </>
   );
 };

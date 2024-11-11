@@ -1,17 +1,14 @@
+import { useMediaQuery } from "@mui/material";
+import { useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar.tsx";
 import BookDetailPage from "./pages/BookDetailPage.tsx";
-import { useMediaQuery } from "@mui/material";
-import HomePage from "./pages/HomePage.tsx";
-// import { Category } from "./models/Category.ts";
-import { Route, Routes } from "react-router-dom";
-// import { Book } from "./models/Book.ts";
 import BookListPage from "./pages/BookListPage.tsx";
-import { useSelector } from "react-redux";
-import { RootState } from "./store/store.ts";
-import SignUpPage from "./pages/SignUpPage.tsx";
-import SignInPage from "./pages/SignInPage.tsx";
+import HomePage from "./pages/HomePage.tsx";
 import ReaderPage from "./pages/ReaderPage.tsx";
-
+import SignInPage from "./pages/SignInPage.tsx";
+import SignUpPage from "./pages/SignUpPage.tsx";
+import { RootState } from "./store/store.ts";
 function App() {
   // Define the media query
   const isMobile = useMediaQuery("(max-width: 1060px)");
@@ -45,7 +42,7 @@ function App() {
             />
             <Route
               path="/book/trending"
-              element={<BookListPage header={"Trending"} />}
+              element={<BookListPage header={"Trending"} books={books} />}
             />
             <Route path="/reader/:id/:pg?" element={<ReaderPage />}></Route>
           </Routes>

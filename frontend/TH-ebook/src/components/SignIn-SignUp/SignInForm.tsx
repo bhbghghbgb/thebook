@@ -10,11 +10,15 @@ import {
 } from "@material-tailwind/react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useState} from "react";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {User} from "../../models/User.ts";
 
-interface ISignInSchema {
-    nameoremail: string,
-    password: string,
-}
+const ISignInSchema = yup.object().shape({
+        nameoremail: yup.string().required(),
+        password: yup.string().required(),
+    }
+)
 
 const SignInForm = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -23,13 +27,8 @@ const SignInForm = () => {
         handleSubmit,
         // watch,
         formState: {errors}
-    } = useForm<ISignInSchema>({
-        defaultValues: {
-            nameoremail: "",
-            password: "",
-        }
-    });
-    const onSubmit: SubmitHandler<ISignInSchema> = (data) => {
+    } = useForm({ resolver: yupResolver(ISignInSchema) });
+    const onSubmit = (data: User) => {
         console.log(data);
     }
     return (
@@ -41,7 +40,7 @@ const SignInForm = () => {
                     className="mb-4 grid h-28 place-items-center"
                 >
                     <Typography variant="h3" color="white">
-                        Sign Up
+                        Sign In
                     </Typography>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
@@ -79,11 +78,12 @@ const SignInForm = () => {
                         Don&apos;t have an account?
                         <Typography
                             as="a"
-                            href="#signup"
+                            href="/auth/signup"
                             variant="small"
                             color="blue-gray"
                             className="ml-1 font-bold"
                             onClick={() => {
+                                // navigate("/auth/signup");
                             }}
                         >
                             Sign Up

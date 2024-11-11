@@ -3,15 +3,15 @@ import BookContainer from "../components/Home/BookContainer";
 // import { Category } from "../models/Category";
 import { Book } from "../models/Book";
 import BannerSlider from "../components/Home/BannerSlider";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import LayoutComponent from "../components/Share/LayoutComponent.tsx";
 
 interface Props {
   isMobile: boolean;
   books: Book[];
 }
 
-
-const HomePage = ({isMobile, books}:Props) => {
+const HomePage = ({ isMobile, books }: Props) => {
   // const { data: books, error, isLoading } = useFetchBooks();
 
   // if (isLoading) {
@@ -30,26 +30,45 @@ const HomePage = ({isMobile, books}:Props) => {
 
   const handleBannerClick = (book: Book) => {
     navigate(`/book/${book.id}`, { state: { book } });
-  }
+  };
 
   const hanleBookClick = (book: Book) => {
     navigate(`/book/${book.id}`, { state: { book } });
-  }
+  };
 
   const hanleBookListClick = (books: Book[]) => {
     navigate(`/book/trending`, { state: { books } });
-  }
-  
+  };
+
   return (
-    <div
-      className="home-page gap-y-10"
-    >
-      <BannerSlider books={books} isMobile={isMobile}  onClick={handleBannerClick}/>
-      <BookContainer header="Trending" books={books}  onClick={hanleBookClick} onListClick={hanleBookListClick}/>
-      <div className="flex-grow hidden sm:block" />
-      <BookContainer header="New" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
-      <div className="flex-grow hidden sm:block" />
-      <BookContainer header="Features" books={books} onClick={hanleBookClick} onListClick={hanleBookListClick}/>
+    <div className="home-page gap-y-10">
+      <LayoutComponent isMobile={isMobile}>
+        <BannerSlider
+          books={books}
+          isMobile={isMobile}
+          onClick={handleBannerClick}
+        />
+        <BookContainer
+          header="Trending"
+          books={books}
+          onClick={hanleBookClick}
+          onListClick={hanleBookListClick}
+        />
+        <div className="flex-grow hidden sm:block" />
+        <BookContainer
+          header="New"
+          books={books}
+          onClick={hanleBookClick}
+          onListClick={hanleBookListClick}
+        />
+        <div className="flex-grow hidden sm:block" />
+        <BookContainer
+          header="Features"
+          books={books}
+          onClick={hanleBookClick}
+          onListClick={hanleBookListClick}
+        />
+      </LayoutComponent>
     </div>
   );
 };

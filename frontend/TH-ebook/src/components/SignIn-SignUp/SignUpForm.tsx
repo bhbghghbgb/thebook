@@ -105,11 +105,12 @@ const SignUpForm = () => {
                         Already have an account?
                         <Typography
                             as="a"
-                            href="#signup"
+                            href="/auth/signin"
                             variant="small"
                             color="blue-gray"
                             className="ml-1 font-bold"
                             onClick={() => {
+                                // navigate("");
                             }}
                         >
                             Sign In

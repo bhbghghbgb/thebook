@@ -2,6 +2,7 @@ import { Typography } from "@material-tailwind/react";
 import { Book } from "../../models/Book";
 import TagComponent from "../BookDetail/TagComponent.tsx";
 import RatingsContainer from "../BookDetail/RatingsContainer";
+import withFetchBook from "../Share/withFetchBook.tsx";
 
 interface Props {
   books: Book[];
@@ -59,4 +60,4 @@ const BookListContainer = ({ books, onClick }: Props) => {
   );
 };
 
-export default BookListContainer;
+export default withFetchBook(BookListContainer);
