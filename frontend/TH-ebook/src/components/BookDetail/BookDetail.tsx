@@ -67,7 +67,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
       {/* Container */}
       <div
         className="
-            container grid gap-4 px-4
+            grid gap-4 px-4
             grid-areas-product-detail-mobile grid-cols-[200px_auto]
             md:grid-areas-product-detail md:grid-cols-[1fr_200px_minmax(0,calc(1240px-3.5rem))_1fr]
             w-full h-full m-0 p-0"

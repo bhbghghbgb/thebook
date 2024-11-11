@@ -214,8 +214,8 @@ export type TOptions = {
   minFontSize?: number;
   resolution?: number;
   depthLimit?: number;
-  getWidthFn?: () => string | number;
-  getHeightFn?: () => string | number;
+  getWidthFn?: () => string | number | null;
+  getHeightFn?: () => string | number | null;
 };
 
 const useFitTextTuViet = ({
@@ -248,7 +248,7 @@ const useFitTextTuViet = ({
   maxFontSize = 4.5 * 16,
   minFontSize = 0.875 * 16,
   resolution = 0.05 * 16,
-  depthLimit = 5,
+  depthLimit = 10,
   getWidthFn,
   getHeightFn,
 }: TOptions = {}) => {
@@ -261,15 +261,16 @@ const useFitTextTuViet = ({
   const ref = useRef<HTMLDivElement>(null);
   const isCalculatingRef = useRef(false);
   const countRef = useRef(0);
+  const moduleName = "[use-fit-text-tuviet]";
   const raf = useAnimationFrame(() => {
-    console.info("[use-fit-text-tuviet] animation");
+    console.info(
+      `${moduleName} animation count${countRef.current}, ffs${JSON.stringify(
+        fixedFontSizes
+      )}, mxfs${maxFontSize}, mnfs${minFontSize}`
+    );
     const origEl = ref.current;
     if (!origEl) return;
     countRef.current += 1;
-    // Don't start calculating font size until the `resizeKey` is incremented
-    // above in the `ResizeObserver` callback. This avoids an extra resize
-    // on initialization.
-    if (countRef.current < 2) return;
     if (isCalculatingRef.current) return;
     // acquire lock
     isCalculatingRef.current = true;
@@ -285,25 +286,37 @@ const useFitTextTuViet = ({
     // g.style.top = -(x * 2) + "px",
     // g.style.width = f.width + "px",
     // g.style.height = x + "px";
-    const width = parseFloat(getWidthFn());
-    const height = parseFloat(getHeightFn());
+    const goalWidth = parseFloat(getWidthFn() ?? 0);
+    const goalHeight = parseFloat(getHeightFn() ?? 0);
+    if (!goalWidth || !goalHeight) {
+      console.info(
+        `${moduleName} width${goalWidth}/height${goalHeight} is null, skipping`
+      );
+      return;
+    }
     // hide the element from view
-    cloneEl.css({
-      position: "fixed",
-      visibility: "hidden",
-      left: -(width * 2) + "px",
-      top: -(height * 2) + "px",
-      width: width + "px",
-      height: height + "px",
-    });
+    cloneEl
+      .css({
+        position: "fixed",
+        visibility: "hidden",
+        left: -(goalWidth * 2) + "px",
+        top: -(goalHeight * 2) + "px",
+        width: goalWidth + "px",
+        height: "auto",
+      })
+      .addClass("__fittexttuviet-clone");
     // styles won't be calculated if element not present in DOM
     $("body").append(cloneEl);
     // some utility functions
     const isWithinResolution = (fontSize, fontSizePrev) =>
       Math.abs(fontSize - fontSizePrev) <= resolution;
-    const isOverflow = () =>
-      cloneEl[0].scrollHeight > cloneEl[0].offsetHeight ||
-      cloneEl[0].scrollWidth > cloneEl[0].offsetWidth;
+    const isOverflow = () => {
+      const oh = cloneEl[0].scrollHeight > goalHeight;
+      console.info(
+        `${moduleName} overflow${cloneEl[0].scrollHeight}>${goalHeight}${oh}`
+      );
+      return oh;
+    };
     const isFailed = (fontSize, fontSizePrev) =>
       isOverflow() && fontSize === fontSizePrev;
     const isAsc = (fontSize, fontSizePrev) => fontSize > fontSizePrev;
@@ -316,15 +329,17 @@ const useFitTextTuViet = ({
     //       fontSizeMin: minFontSize,
     //     };
     //   }, [maxFontSize, minFontSize]);
-    let fs = maxFontSize;
+    // use current font size as starting point instead of always converge from max
+    let fs = parseFloat(window.getComputedStyle(cloneEl[0]).fontSize);
     let fsp = minFontSize;
     let fsmx = maxFontSize;
     let fsmn = minFontSize;
     for (let depth = 1; ; depth++) {
+      console.info(
+        `${moduleName} begin loop${depth}, fs${fs}, fsp${fsp}, fsmx${fsmx}, fsmn${fsmn}`
+      );
       if (depth > depthLimit) {
-        console.info(
-          "[use-fit-text-tuviet] depth limit reached without fitting text"
-        );
+        console.info("${moduleName} depth limit reached without fitting text");
         break;
       }
       // Return if the font size has been adjusted "enough" (change within `resolution`)
@@ -332,13 +347,13 @@ const useFitTextTuViet = ({
       if (isWithinResolution(fs, fsp)) {
         if (isFailed(fs, fsp)) {
           console.info(
-            `[use-fit-text-tuviet] reached \`minFontSize = ${minFontSize}\` without fitting text`
+            `${moduleName} reached minFontSize${minFontSize} or delta0 at an iteration without fitting text`
           );
           break;
         } else if (isOverflow()) {
           fs = isAsc(fs, fsp) ? fsp : fsmn;
         } else {
-          console.info("[use-fit-text-tuviet] completed fitting text");
+          console.info(`${moduleName} completed fitting text`);
           break;
         }
       }
@@ -359,36 +374,49 @@ const useFitTextTuViet = ({
       fsmn = newMin;
       // Set the guessed font size to the element
       cloneEl.css("font-size", fs);
+      console.info(
+        `${moduleName} end loop${depth}, fs${fs}, fsp${fsp}, fsmx${fsmx}, fsmn${fsmn}`
+      );
     }
     // whether failed or not, set the guessed font-size to the original element anyway
     $(origEl).css("font-size", fs);
     // release lock
+    $(cloneEl).remove();
+    $(".__fittexttuviet-clone").remove();
     isCalculatingRef.current = false;
+    console.info(`${moduleName} cleanup`);
   });
-  let rafId: number | null = null;
+  const rafId = useRef<number>(null);
   const db = useDebounce(() => {
-    console.info("[use-fit-text-tuviet] debounce");
-    rafId = raf();
+    console.info(`${moduleName} debounce`);
+    rafId.current = raf();
   }, 200);
-  let dbId: number | null = null;
+  const dbId = useRef<number>(null);
   useResizeObserver<HTMLDivElement>({
     // observe parent element instead (flexbox)
     ref: ref.current?.parentElement,
     onResize: ({ width, height }) => {
-      console.info(`[use-fit-text-tuviet] resize ${width}x${height}`);
+      console.info(`${moduleName} resize ${width}x${height}`);
       if (width && height) {
-        dbId = db();
+        dbId.current = db();
       }
     },
   });
   useEffect(() => {
+    console.info(
+      `${moduleName} mount rafId${rafId.current} dbId${dbId.current}`
+    );
+    dbId.current = db();
     return () => {
+      console.info(
+        `${moduleName} unmount rafId${rafId.current} dbId${dbId.current}`
+      );
       if (rafId) cancelAnimationFrame(rafId);
       if (dbId) clearTimeout(dbId);
       // resize observer can stop automatically
     };
-  }, [dbId, rafId]);
-  return { ref };
+  }, [db, dbId, rafId]);
+  return ref;
 };
 
 export default useFitTextTuViet;

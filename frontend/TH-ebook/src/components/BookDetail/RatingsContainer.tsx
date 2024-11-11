@@ -3,15 +3,14 @@ function RatingsContainer() {
     <div className="flex gap-3">
       <span className="flex">
         <svg
-          data-v-9ba4cb7e=""
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           className="feather feather-star icon rel text-primary mr-1 mt-1 text-custom-orange"
           viewBox="0 0 24 24"
         >
@@ -21,7 +20,6 @@ function RatingsContainer() {
       </span>
       <span className="flex">
         <svg
-          data-v-9ba4cb7e=""
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -31,9 +29,9 @@ function RatingsContainer() {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
           ></path>
         </svg>
@@ -41,8 +39,6 @@ function RatingsContainer() {
       </span>
       <span className="flex">
         <svg
-          data-v-9ba4cb7e=""
-          data-v-89359c03=""
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -52,9 +48,9 @@ function RatingsContainer() {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
           ></path>
         </svg>
@@ -62,16 +58,14 @@ function RatingsContainer() {
       </span>
       <span className="flex text-gray-500 font-bold">
         <svg
-          data-v-9ba4cb7e=""
-          data-v-65e4b371=""
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           className="feather feather-eye icon rel mr-1 mt-1"
           viewBox="0 0 24 24"
         >

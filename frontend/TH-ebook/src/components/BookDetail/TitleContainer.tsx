@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import useFitTextTuViet from "../../hooks/_Common/useFitTextTuViet.ts";
 import { Book } from "../../models/Book.ts";
 
@@ -6,12 +7,19 @@ interface Props {
 }
 
 const TitleContainer = ({ book }: Props) => {
-  // const { ref } = useFitTextTuViet({ getHeightFn: () => 180 });
+  const flexRef = useRef<HTMLDivElement>(null);
+  const ftRef = useFitTextTuViet({
+    getHeightFn: () => {
+      const flex = flexRef.current;
+      if (!flex) return null;
+      return $(flex).height() - $(flex).children().not(".title, .spacer").map();
+    },
+  });
   return (
     <>
-      <div className="title flex flex-col h-60 w-full">
+      <div ref={flexRef} className="title flex flex-col h-60 w-full">
         <span
-          // ref={ref}
+          ref={ftRef}
           // className="mb-1 block text-5xl font-bold sm:text-3xl md:text-4xl"
           className="mb-1 block text-5xl font-bold w-full"
           style={{
@@ -23,7 +31,7 @@ const TitleContainer = ({ book }: Props) => {
         <span className="text-3xl font-normal line-clamp-2 sm:text-xl md:text-2xl inline-block leading-5">
           Cross Method in the Dead of Night
         </span>
-        <div className="flex-grow hidden sm:block"></div>
+        <div className="spacer flex-grow hidden sm:block"></div>
 
         <span className="block font-normal text-2xl md:text-xl sm:text-base sm:truncate flex-shrink-0">
           {book.authors.map((author) => author.name).join(", ")}
