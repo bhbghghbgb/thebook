@@ -43,7 +43,7 @@ const BookListPage = ({header, data, isLoading, error}: Props) => {
     );
 };
 
-const EnhancedBookListPage = withFetchData<Props>(
+const EnhancedBookListPage = withFetchData<Props, Book[]>(
     BookListPage,
     '/books',
     'books'

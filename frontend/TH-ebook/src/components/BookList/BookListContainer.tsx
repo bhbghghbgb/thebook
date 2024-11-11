@@ -10,9 +10,6 @@ interface Props {
 }
 
 const BookListContainer = ({ books, onClick }: Props) => {
-
-    console.log(books);
-
   return (
     <>
       <div className="grid gap-y-2">

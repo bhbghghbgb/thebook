@@ -8,7 +8,7 @@ import {
     Checkbox,
     Button,
 } from "@material-tailwind/react";
-import {useForm, SubmitHandler} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { addUser } from "../../features/user/userSlice.ts";
