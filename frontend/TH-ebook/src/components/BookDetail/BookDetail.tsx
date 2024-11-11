@@ -1,7 +1,7 @@
 import { Book } from "../../models/Book.ts";
 import CategoryContainer from "./CategoryContainer.tsx";
 import RatingsContainer from "./RatingsContainer.tsx";
-import TitleContainer from "./TitleContainer.tsx";
+import { TitleContainerFitty } from "./TitleContainer.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
 import TagComponent from "./TagComponent.tsx";
@@ -96,7 +96,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
         </div>
         {/*Tile*/}
         <div className="grid-in-title">
-          <TitleContainer book={book} />
+          <TitleContainerFitty book={book} />
         </div>
 
         {/*ButtonGroup*/}

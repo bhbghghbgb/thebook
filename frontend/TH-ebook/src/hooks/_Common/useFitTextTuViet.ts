@@ -1,6 +1,4 @@
-// CHUA DUOC
-
-// using hook implementation of saltycrane/use-fit-text (https://github.com/saltycrane/use-fit-text/tree/39d540ad7eafde9ce8cb4335a023664c5023416b)
+// using hook implementation of (https://github.com/saltycrane/use-fit-text/tree/39d540ad7eafde9ce8cb4335a023664c5023416b)
 // borrowing some element processing logic of STRML/textFit (https://github.com/STRML/textFit/blob/7a1eed6db54a97798556eed3c57b2ce1f87dbab4/textFit.js)
 // with some adjustments:
 // - dumb down to only project requirement
@@ -14,8 +12,8 @@
 // - use-resize-observer
 // - react-timing-hooks
 // - jquery
-//
-// original implementation v2.4.0
+
+// original implementation saltycrane/use-fit-text v2.4.0
 // import {
 //   useCallback,
 //   useEffect,
@@ -204,6 +202,252 @@
 
 // export default useFitText;
 
+// original implementation STRML/textFit v2.3.1
+// /**
+//  * textFit v2.3.1
+//  * Previously known as jQuery.textFit
+//  * 11/2014 by STRML (strml.github.com)
+//  * MIT License
+//  *
+//  * To use: textFit(document.getElementById('target-div'), options);
+//  *
+//  * Will make the *text* content inside a container scale to fit the container
+//  * The container is required to have a set width and height
+//  * Uses binary search to fit text with minimal layout calls.
+//  * Version 2.0 does not use jQuery.
+//  */
+// /*global define:true, document:true, window:true, HTMLElement:true*/
+
+// (function(root, factory) {
+//   "use strict";
+
+//   // UMD shim
+//   if (typeof define === "function" && define.amd) {
+//     // AMD
+//     define([], factory);
+//   } else if (typeof exports === "object") {
+//     // Node/CommonJS
+//     module.exports = factory();
+//   } else {
+//     // Browser
+//     root.textFit = factory();
+//   }
+
+// }(typeof global === "object" ? global : this, function () {
+//   "use strict";
+
+//   var defaultSettings = {
+//     alignVert: false, // if true, textFit will align vertically using css tables
+//     alignHoriz: false, // if true, textFit will set text-align: center
+//     multiLine: false, // if true, textFit will not set white-space: no-wrap
+//     detectMultiLine: true, // disable to turn off automatic multi-line sensing
+//     minFontSize: 6,
+//     maxFontSize: 80,
+//     reProcess: true, // if true, textFit will re-process already-fit nodes. Set to 'false' for better performance
+//     widthOnly: false, // if true, textFit will fit text to element width, regardless of text height
+//     alignVertWithFlexbox: false, // if true, textFit will use flexbox for vertical alignment
+//   };
+
+//   return function textFit(els, options) {
+
+//     if (!options) options = {};
+
+//     // Extend options.
+//     var settings = {};
+//     for(var key in defaultSettings){
+//       if(options.hasOwnProperty(key)){
+//         settings[key] = options[key];
+//       } else {
+//         settings[key] = defaultSettings[key];
+//       }
+//     }
+
+//     // Convert jQuery objects into arrays
+//     if (typeof els.toArray === "function") {
+//       els = els.toArray();
+//     }
+
+//     // Support passing a single el
+//     var elType = Object.prototype.toString.call(els);
+//     if (elType !== '[object Array]' && elType !== '[object NodeList]' &&
+//             elType !== '[object HTMLCollection]'){
+//       els = [els];
+//     }
+
+//     // Process each el we've passed.
+//     for(var i = 0; i < els.length; i++){
+//       processItem(els[i], settings);
+//     }
+//   };
+
+//   /**
+//    * The meat. Given an el, make the text inside it fit its parent.
+//    * @param  {DOMElement} el       Child el.
+//    * @param  {Object} settings     Options for fit.
+//    */
+//   function processItem(el, settings){
+//     if (!isElement(el) || (!settings.reProcess && el.getAttribute('textFitted'))) {
+//       return false;
+//     }
+
+//     // Set textFitted attribute so we know this was processed.
+//     if(!settings.reProcess){
+//       el.setAttribute('textFitted', 1);
+//     }
+
+//     var innerSpan, originalHeight, originalHTML, originalWidth;
+//     var low, mid, high;
+
+//     // Get element data.
+//     originalHTML = el.innerHTML;
+//     originalWidth = innerWidth(el);
+//     originalHeight = innerHeight(el);
+
+//     // Don't process if we can't find box dimensions
+//     if (!originalWidth || (!settings.widthOnly && !originalHeight)) {
+//       if(!settings.widthOnly)
+//         throw new Error('Set a static height and width on the target element ' + el.outerHTML +
+//           ' before using textFit!');
+//       else
+//         throw new Error('Set a static width on the target element ' + el.outerHTML +
+//           ' before using textFit!');
+//     }
+
+//     // Add textFitted span inside this container.
+//     if (originalHTML.indexOf('textFitted') === -1) {
+//       innerSpan = document.createElement('span');
+//       innerSpan.className = 'textFitted';
+//       // Inline block ensure it takes on the size of its contents, even if they are enclosed
+//       // in other tags like <p>
+//       innerSpan.style['display'] = 'inline-block';
+//       innerSpan.innerHTML = originalHTML;
+//       el.innerHTML = '';
+//       el.appendChild(innerSpan);
+//     } else {
+//       // Reprocessing.
+//       innerSpan = el.querySelector('span.textFitted');
+//       // Remove vertical align if we're reprocessing.
+//       if (hasClass(innerSpan, 'textFitAlignVert')){
+//         innerSpan.className = innerSpan.className.replace('textFitAlignVert', '');
+//         innerSpan.style['height'] = '';
+//         el.className.replace('textFitAlignVertFlex', '');
+//       }
+//     }
+
+//     // Prepare & set alignment
+//     if (settings.alignHoriz) {
+//       el.style['text-align'] = 'center';
+//       innerSpan.style['text-align'] = 'center';
+//     }
+
+//     // Check if this string is multiple lines
+//     // Not guaranteed to always work if you use wonky line-heights
+//     var multiLine = settings.multiLine;
+//     if (settings.detectMultiLine && !multiLine &&
+//         innerSpan.getBoundingClientRect().height >= parseInt(window.getComputedStyle(innerSpan)['font-size'], 10) * 2){
+//       multiLine = true;
+//     }
+
+//     // If we're not treating this as a multiline string, don't let it wrap.
+//     if (!multiLine) {
+//       el.style['white-space'] = 'nowrap';
+//     }
+
+//     low = settings.minFontSize;
+//     high = settings.maxFontSize;
+
+//     // Binary search for highest best fit
+//     var size = low;
+//     while (low <= high) {
+//       mid = (high + low) >> 1;
+//       innerSpan.style.fontSize = mid + 'px';
+//       var innerSpanBoundingClientRect = innerSpan.getBoundingClientRect();
+//       if (
+//         innerSpanBoundingClientRect.width <= originalWidth
+//         && (settings.widthOnly || innerSpanBoundingClientRect.height <= originalHeight)
+//       ) {
+//         size = mid;
+//         low = mid + 1;
+//       } else {
+//         high = mid - 1;
+//       }
+//       // await injection point
+//     }
+//     // found, updating font if differs:
+//     if( innerSpan.style.fontSize != size + 'px' ) innerSpan.style.fontSize = size + 'px';
+
+//     // Our height is finalized. If we are aligning vertically, set that up.
+//     if (settings.alignVert) {
+//       addStyleSheet();
+//       var height = innerSpan.scrollHeight;
+//       if (window.getComputedStyle(el)['position'] === "static"){
+//         el.style['position'] = 'relative';
+//       }
+//       if (!hasClass(innerSpan, "textFitAlignVert")){
+//         innerSpan.className = innerSpan.className + " textFitAlignVert";
+//       }
+//       innerSpan.style['height'] = height + "px";
+//       if (settings.alignVertWithFlexbox && !hasClass(el, "textFitAlignVertFlex")) {
+//         el.className = el.className + " textFitAlignVertFlex";
+//       }
+//     }
+//   }
+
+//   // Calculate height without padding.
+//   function innerHeight(el){
+//     var style = window.getComputedStyle(el, null);
+//     return el.getBoundingClientRect().height -
+//       parseInt(style.getPropertyValue('padding-top'), 10) -
+//       parseInt(style.getPropertyValue('padding-bottom'), 10);
+//   }
+
+//   // Calculate width without padding.
+//   function innerWidth(el){
+//     var style = window.getComputedStyle(el, null);
+//     return el.getBoundingClientRect().width -
+//       parseInt(style.getPropertyValue('padding-left'), 10) -
+//       parseInt(style.getPropertyValue('padding-right'), 10);
+//   }
+
+//   //Returns true if it is a DOM element
+//   function isElement(o){
+//     return (
+//       typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+//       o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+//     );
+//   }
+
+//   function hasClass(element, cls) {
+//     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+//   }
+
+//   // Better than a stylesheet dependency
+//   function addStyleSheet() {
+//     if (document.getElementById("textFitStyleSheet")) return;
+//     var style = [
+//       ".textFitAlignVert{",
+//         "position: absolute;",
+//         "top: 0; right: 0; bottom: 0; left: 0;",
+//         "margin: auto;",
+//         "display: flex;",
+//         "justify-content: center;",
+//         "flex-direction: column;",
+//       "}",
+//       ".textFitAlignVertFlex{",
+//         "display: flex;",
+//       "}",
+//       ".textFitAlignVertFlex .textFitAlignVert{",
+//         "position: static;",
+//       "}",].join("");
+
+//     var css = document.createElement("style");
+//     css.type = "text/css";
+//     css.id = "textFitStyleSheet";
+//     css.innerHTML = style;
+//     document.body.appendChild(css);
+//   }
+// }));
+
 import { useEffect, useRef } from "react";
 import useResizeObserver from "use-resize-observer";
 import { useDebounce, useAnimationFrame } from "react-timing-hooks";
@@ -259,6 +503,7 @@ const useFitTextTuViet = ({
   }
 
   const ref = useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
   const isCalculatingRef = useRef(false);
   const countRef = useRef(0);
   const moduleName = "[use-fit-text-tuviet]";
@@ -288,6 +533,7 @@ const useFitTextTuViet = ({
     // g.style.height = x + "px";
     const goalWidth = parseFloat(getWidthFn() ?? 0);
     const goalHeight = parseFloat(getHeightFn() ?? 0);
+    console.info(`${moduleName} goal width${goalWidth}/height${goalHeight}`);
     if (!goalWidth || !goalHeight) {
       console.info(
         `${moduleName} width${goalWidth}/height${goalHeight} is null, skipping`
@@ -308,8 +554,8 @@ const useFitTextTuViet = ({
     // styles won't be calculated if element not present in DOM
     $("body").append(cloneEl);
     // some utility functions
-    const isWithinResolution = (fontSize, fontSizePrev) =>
-      Math.abs(fontSize - fontSizePrev) <= resolution;
+    const isWithinResolution = () =>
+      high == null ? false : Math.abs(low - high) <= resolution;
     const isOverflow = () => {
       const oh = cloneEl[0].scrollHeight > goalHeight;
       console.info(
@@ -317,74 +563,88 @@ const useFitTextTuViet = ({
       );
       return oh;
     };
-    const isFailed = (fontSize, fontSizePrev) =>
-      isOverflow() && fontSize === fontSizePrev;
-    const isAsc = (fontSize, fontSizePrev) => fontSize > fontSizePrev;
-    // font size init impl   const initState = useCallback(() => {
-    //     return {
-    //       calcKey: 0,
-    //       fontSize: maxFontSize,
-    //       fontSizePrev: minFontSize,
-    //       fontSizeMax: maxFontSize,
-    //       fontSizeMin: minFontSize,
-    //     };
-    //   }, [maxFontSize, minFontSize]);
-    // use current font size as starting point instead of always converge from max
-    let fs = parseFloat(window.getComputedStyle(cloneEl[0]).fontSize);
-    let fsp = minFontSize;
-    let fsmx = maxFontSize;
-    let fsmn = minFontSize;
+    const tryLastFit = () => {
+      if (lastFit) {
+        console.info(`${moduleName} bad try lastFit${lastFit} used`);
+        current = lastFit;
+      } else {
+        console.info(`${moduleName} bad try mnfs${minFontSize} used`);
+      }
+    };
+    function setCloneFs(mid: number) {
+      cloneEl.css("font-size", mid);
+    }
+    // whether failed or not, set the guessed font-size to the original element anyway
+    function applySizeAndCleanUp(fs: number) {
+      $(origEl).css("font-size", fs);
+      // release lock
+      $(cloneEl).remove();
+      $(".__fittexttuviet-clone").remove();
+      isCalculatingRef.current = false;
+      console.info(`${moduleName} cleanup`);
+    }
+    // try at max and min font size first
+    setCloneFs(maxFontSize);
+    if (!isOverflow()) {
+      console.info(`${moduleName} best case max${maxFontSize} fit`);
+      applySizeAndCleanUp(maxFontSize);
+      return;
+    } else console.info(`${moduleName} best case max${maxFontSize} not fit`);
+    setCloneFs(minFontSize);
+    if (isOverflow()) {
+      console.info(`${moduleName} best case min${minFontSize} still overflow`);
+      applySizeAndCleanUp(minFontSize);
+      return;
+    } else console.info(`${moduleName} best case min${minFontSize} still fit`);
+    // setup to bisection
+    let low = minFontSize;
+    let high = maxFontSize;
+    let current = parseFloat(window.getComputedStyle(cloneEl[0]).fontSize);
+    let lastFit: number | null = null;
     for (let depth = 1; ; depth++) {
+      const mid = depth === 1 ? current : (low + high) / 2;
       console.info(
-        `${moduleName} begin loop${depth}, fs${fs}, fsp${fsp}, fsmx${fsmx}, fsmn${fsmn}`
+        `${moduleName} begin loop${depth}, low${low}, high${high}, mid${mid}, lastFit${lastFit}`
       );
       if (depth > depthLimit) {
-        console.info("${moduleName} depth limit reached without fitting text");
+        console.info(`${moduleName} depth limit reached without fitting text`);
+        tryLastFit();
         break;
       }
       // Return if the font size has been adjusted "enough" (change within `resolution`)
       // reduce font size by one increment if it's overflowing.
-      if (isWithinResolution(fs, fsp)) {
-        if (isFailed(fs, fsp)) {
+      if (isWithinResolution()) {
+        if (isOverflow()) {
           console.info(
-            `${moduleName} reached minFontSize${minFontSize} or delta0 at an iteration without fitting text`
+            `${moduleName} reached low${low}~high${high} still overflowing at current${current}, lastFit${lastFit}/mnfs${minFontSize}`
           );
-          break;
-        } else if (isOverflow()) {
-          fs = isAsc(fs, fsp) ? fsp : fsmn;
+          tryLastFit();
         } else {
-          console.info(`${moduleName} completed fitting text`);
-          break;
+          console.info(
+            `${moduleName} completed fitting text at current${current}`
+          );
         }
+        break;
+      } else if (low >= high) {
+        // Binary search guard to adjust font size
+        console.info(
+          `${moduleName} reached low${low}>=high${high} probably found good size${current}`
+        );
+        break;
       }
-      // Binary search to adjust font size
-      let delta: number;
-      let newMax = fsmx;
-      let newMin = fsmn;
-      if (isOverflow()) {
-        delta = isAsc(fs, fsp) ? fsp - fs : fsmn - fs;
-        newMax = Math.min(fsmx, fs);
-      } else {
-        delta = isAsc(fs, fsp) ? fsmx - fs : fsp - fs;
-        newMin = Math.max(fsmn, fs);
-      }
-      fsp = fs;
-      fs = fs + delta / 2;
-      fsmx = newMax;
-      fsmn = newMin;
       // Set the guessed font size to the element
-      cloneEl.css("font-size", fs);
+      setCloneFs(mid);
+      if (isOverflow()) {
+        high = mid;
+      } else {
+        lastFit = low = mid;
+      }
       console.info(
-        `${moduleName} end loop${depth}, fs${fs}, fsp${fsp}, fsmx${fsmx}, fsmn${fsmn}`
+        `${moduleName} end loop${depth}, low${low}, high${high}, mid${mid}, lastFit${lastFit}`
       );
+      current = mid;
     }
-    // whether failed or not, set the guessed font-size to the original element anyway
-    $(origEl).css("font-size", fs);
-    // release lock
-    $(cloneEl).remove();
-    $(".__fittexttuviet-clone").remove();
-    isCalculatingRef.current = false;
-    console.info(`${moduleName} cleanup`);
+    applySizeAndCleanUp(current);
   });
   const rafId = useRef<number>(null);
   const db = useDebounce(() => {
@@ -393,8 +653,8 @@ const useFitTextTuViet = ({
   }, 200);
   const dbId = useRef<number>(null);
   useResizeObserver<HTMLDivElement>({
-    // observe parent element instead (flexbox)
-    ref: ref.current?.parentElement,
+    // observe parent element instead (use case flexbox)
+    ref: parentRef,
     onResize: ({ width, height }) => {
       console.info(`${moduleName} resize ${width}x${height}`);
       if (width && height) {
@@ -416,7 +676,7 @@ const useFitTextTuViet = ({
       // resize observer can stop automatically
     };
   }, [db, dbId, rafId]);
-  return ref;
+  return { ref, parentRef };
 };
 
 export default useFitTextTuViet;
