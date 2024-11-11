@@ -448,12 +448,12 @@
 //   }
 // }));
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useResizeObserver from "use-resize-observer";
 import { useDebounce, useAnimationFrame } from "react-timing-hooks";
 import $ from "jquery";
 export type TOptions = {
-  fixedFontSizes?: number[];
+  fixedFontSizes?: number[] | "mangadex";
   maxFontSize?: number;
   minFontSize?: number;
   resolution?: number;
@@ -474,21 +474,7 @@ const useFitTextTuViet = ({
   //     size: 0,
   //     lastSize: -1
   // }
-  fixedFontSizes = [
-    "4.5rem",
-    "4rem",
-    "3.5rem",
-    "3rem",
-    "2.5rem",
-    "2rem",
-    "1.75rem",
-    "1.5rem",
-    "1.3125rem",
-    "1rem",
-    "0.875rem",
-  ].map(function (s) {
-    return parseFloat(s) * 16;
-  }),
+  fixedFontSizes,
   maxFontSize = 4.5 * 16,
   minFontSize = 0.875 * 16,
   resolution = 0.05 * 16,
@@ -496,12 +482,37 @@ const useFitTextTuViet = ({
   getWidthFn,
   getHeightFn,
 }: TOptions = {}) => {
-  if (fixedFontSizes) {
-    fixedFontSizes.sort((a, b) => a - b);
-    maxFontSize = fixedFontSizes[fixedFontSizes.length - 1];
-    minFontSize = fixedFontSizes[0];
-  }
-
+  // fixed font sizes mode vs normal min/max mode
+  ({ fixedFontSizes, maxFontSize, minFontSize } = useMemo(() => {
+    let ffs: number[] | undefined;
+    if (fixedFontSizes === "mangadex")
+      return {
+        fixedFontSizes: [
+          "4.5rem",
+          "4rem",
+          "3.5rem",
+          "3rem",
+          "2.5rem",
+          "2rem",
+          "1.75rem",
+          "1.5rem",
+          "1.3125rem",
+          "1rem",
+          "0.875rem",
+        ].map((s) => parseFloat(s) * 16),
+        maxFontSize: 10,
+        minFontSize: 0,
+      };
+    if (fixedFontSizes) {
+      ffs = fixedFontSizes.toSorted((a, b) => a - b);
+      return {
+        fixedFontSizes: ffs,
+        maxFontSize: ffs.length - 1,
+        minFontSize: 0,
+      };
+    }
+    return { maxFontSize, minFontSize };
+  }, [fixedFontSizes, maxFontSize, minFontSize]));
   const ref = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
   const isCalculatingRef = useRef(false);
@@ -513,7 +524,7 @@ const useFitTextTuViet = ({
         fixedFontSizes
       )}, mxfs${maxFontSize}, mnfs${minFontSize}`
     );
-    const origEl = ref.current;
+    const origEl = ref.current as HTMLDivElement;
     if (!origEl) return;
     countRef.current += 1;
     if (isCalculatingRef.current) return;
@@ -531,8 +542,8 @@ const useFitTextTuViet = ({
     // g.style.top = -(x * 2) + "px",
     // g.style.width = f.width + "px",
     // g.style.height = x + "px";
-    const goalWidth = parseFloat(getWidthFn() ?? 0);
-    const goalHeight = parseFloat(getHeightFn() ?? 0);
+    const goalWidth = parseFloat((getWidthFn() as string) ?? "0");
+    const goalHeight = parseFloat((getHeightFn() as string) ?? "0");
     console.info(`${moduleName} goal width${goalWidth}/height${goalHeight}`);
     if (!goalWidth || !goalHeight) {
       console.info(
@@ -646,12 +657,12 @@ const useFitTextTuViet = ({
     }
     applySizeAndCleanUp(current);
   });
-  const rafId = useRef<number>(null);
+  const rafId = useRef<number | null>(null);
   const db = useDebounce(() => {
     console.info(`${moduleName} debounce`);
     rafId.current = raf();
   }, 200);
-  const dbId = useRef<number>(null);
+  const dbId = useRef<number | null>(null);
   useResizeObserver<HTMLDivElement>({
     // observe parent element instead (use case flexbox)
     ref: parentRef,
@@ -671,8 +682,8 @@ const useFitTextTuViet = ({
       console.info(
         `${moduleName} unmount rafId${rafId.current} dbId${dbId.current}`
       );
-      if (rafId) cancelAnimationFrame(rafId);
-      if (dbId) clearTimeout(dbId);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+      if (dbId.current) clearTimeout(dbId.current);
       // resize observer can stop automatically
     };
   }, [db, dbId, rafId]);

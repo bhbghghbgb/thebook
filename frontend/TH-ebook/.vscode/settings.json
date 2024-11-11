@@ -2,6 +2,8 @@
   "vite.autoStart": false,
   "vite.browserType": "system",
   "prettier.tabWidth": 2,
-  "typescript.validate.enable": false, // tat typescript mac dinh de xai eslint neu ko se bi hien 2 loi tu 2 extension cung luc ma cai typescipt thi ko setup dc
+  // tat typescript mac dinh de xai eslint neu ko se bi hien 2 loi tu 2 extension cung luc ma cai typescipt thi ko setup dc
+  // bat lai vi eslint deo type checking dc
+  "typescript.validate.enable": true,
   "editor.tabSize": 2
 }
