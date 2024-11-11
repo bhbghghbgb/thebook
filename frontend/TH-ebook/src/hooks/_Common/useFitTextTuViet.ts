@@ -452,7 +452,7 @@ import { useEffect, useMemo, useRef } from "react";
 import useResizeObserver from "use-resize-observer";
 import { useDebounce, useAnimationFrame } from "react-timing-hooks";
 import $ from "jquery";
-export type TOptions = {
+type TOptions = {
   fixedFontSizes?: number[] | "mangadex";
   maxFontSize?: number;
   minFontSize?: number;
@@ -475,16 +475,15 @@ const useFitTextTuViet = ({
   //     lastSize: -1
   // }
   fixedFontSizes,
-  maxFontSize = 4.5 * 16,
-  minFontSize = 0.875 * 16,
-  resolution = 0.05 * 16,
+  maxFontSize,
+  minFontSize,
+  resolution,
   depthLimit = 10,
   getWidthFn,
   getHeightFn,
 }: TOptions = {}) => {
   // fixed font sizes mode vs normal min/max mode
-  ({ fixedFontSizes, maxFontSize, minFontSize } = useMemo(() => {
-    let ffs: number[] | undefined;
+  ({ fixedFontSizes, maxFontSize, minFontSize, resolution } = useMemo(() => {
     if (fixedFontSizes === "mangadex")
       return {
         fixedFontSizes: [
@@ -500,25 +499,25 @@ const useFitTextTuViet = ({
           "1rem",
           "0.875rem",
         ].map((s) => parseFloat(s) * 16),
-        maxFontSize: 10,
-        minFontSize: 0,
       };
     if (fixedFontSizes) {
-      ffs = fixedFontSizes.toSorted((a, b) => a - b);
       return {
-        fixedFontSizes: ffs,
-        maxFontSize: ffs.length - 1,
-        minFontSize: 0,
+        fixedFontSizes: fixedFontSizes.toSorted((a, b) => a - b),
       };
     }
-    return { maxFontSize, minFontSize };
-  }, [fixedFontSizes, maxFontSize, minFontSize]));
+    // min/max mode
+    return {
+      maxFontSize: maxFontSize ?? 4.5 * 16,
+      minFontSize: minFontSize ?? 0.875 * 16,
+      resolution: resolution ?? 0.05 * 16,
+    };
+  }, [fixedFontSizes, maxFontSize, minFontSize, resolution]));
   const ref = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
   const isCalculatingRef = useRef(false);
   const countRef = useRef(0);
   const moduleName = "[use-fit-text-tuviet]";
-  const raf = useAnimationFrame(() => {
+  const af = useAnimationFrame(() => {
     console.info(
       `${moduleName} animation count${countRef.current}, ffs${JSON.stringify(
         fixedFontSizes
@@ -535,6 +534,15 @@ const useFitTextTuViet = ({
     // define how to get dimensions
     if (!getWidthFn) getWidthFn = () => origEl.offsetWidth;
     if (!getHeightFn) getHeightFn = () => origEl.offsetHeight;
+    const goalWidth = parseFloat((getWidthFn() as string) ?? 0);
+    const goalHeight = parseFloat((getHeightFn() as string) ?? 0);
+    console.info(`${moduleName} goal width${goalWidth}/height${goalHeight}`);
+    if (!goalWidth || !goalHeight) {
+      console.info(
+        `${moduleName} width${goalWidth}/height${goalHeight} is null, element is not rendered? skipping`
+      );
+      return;
+    }
     // mangadex impl:
     // g.style.position = "fixed",
     // g.style.visibility = "hidden",
@@ -542,15 +550,6 @@ const useFitTextTuViet = ({
     // g.style.top = -(x * 2) + "px",
     // g.style.width = f.width + "px",
     // g.style.height = x + "px";
-    const goalWidth = parseFloat((getWidthFn() as string) ?? "0");
-    const goalHeight = parseFloat((getHeightFn() as string) ?? "0");
-    console.info(`${moduleName} goal width${goalWidth}/height${goalHeight}`);
-    if (!goalWidth || !goalHeight) {
-      console.info(
-        `${moduleName} width${goalWidth}/height${goalHeight} is null, skipping`
-      );
-      return;
-    }
     // hide the element from view
     cloneEl
       .css({
@@ -564,6 +563,52 @@ const useFitTextTuViet = ({
       .addClass("__fittexttuviet-clone");
     // styles won't be calculated if element not present in DOM
     $("body").append(cloneEl);
+    // is fixed mode or range mode
+    if (fixedFontSizes) {
+      // fixed mode, just iterate
+      console.info(`${moduleName} fixedmode`);
+      // some utility functions
+      const isOverflow = () => {
+        const oh = cloneEl[0].scrollHeight > goalHeight;
+        console.info(
+          `${moduleName} overflow${cloneEl[0].scrollHeight}>${goalHeight}${oh}`
+        );
+        return oh;
+      };
+      const itos = (index: number) => fixedFontSizes[index];
+      const sprintf = (index: number) => `${index}:${itos(index)}`;
+      function setCloneFsi(index: number) {
+        cloneEl.css("font-size", itos(index));
+      }
+      // whether failed or not, set the guessed font-size to the original element anyway
+      function applySizeAndCleanUp(fsi: number) {
+        console.info(`${moduleName} set fs to ${sprintf(fsi)}`);
+        $(origEl).css("font-size", itos(fsi));
+        // release lock
+        $(cloneEl).remove();
+        $(".__fittexttuviet-clone").remove();
+        isCalculatingRef.current = false;
+        console.info(`${moduleName} cleanup`);
+      }
+      // start iterating
+      for (let current = fixedFontSizes.length - 1; current >= 0; current--) {
+        console.info(`${moduleName} loop${current} fs${sprintf(current)}`);
+        setCloneFsi(current);
+        if (!isOverflow()) {
+          applySizeAndCleanUp(current);
+          return;
+        }
+      }
+      console.info(`${moduleName} mnfs${sprintf(0)} not fit`);
+      applySizeAndCleanUp(0);
+      return;
+    }
+    // range mode, use bisection
+    console.info(`${moduleName} rangemode`);
+    if (minFontSize == null || maxFontSize == null || resolution == null) {
+      console.info(`${moduleName} invalid arguments`);
+      return;
+    }
     // some utility functions
     const isWithinResolution = () =>
       high == null ? false : Math.abs(low - high) <= resolution;
@@ -580,6 +625,7 @@ const useFitTextTuViet = ({
         current = lastFit;
       } else {
         console.info(`${moduleName} bad try mnfs${minFontSize} used`);
+        current = minFontSize;
       }
     };
     function setCloneFs(mid: number) {
@@ -600,7 +646,7 @@ const useFitTextTuViet = ({
       console.info(`${moduleName} best case max${maxFontSize} fit`);
       applySizeAndCleanUp(maxFontSize);
       return;
-    } else console.info(`${moduleName} best case max${maxFontSize} not fit`);
+    } else console.info(`${moduleName} best case min${maxFontSize} not fit`);
     setCloneFs(minFontSize);
     if (isOverflow()) {
       console.info(`${moduleName} best case min${minFontSize} still overflow`);
@@ -660,7 +706,7 @@ const useFitTextTuViet = ({
   const rafId = useRef<number | null>(null);
   const db = useDebounce(() => {
     console.info(`${moduleName} debounce`);
-    rafId.current = raf();
+    rafId.current = af();
   }, 200);
   const dbId = useRef<number | null>(null);
   useResizeObserver<HTMLDivElement>({
