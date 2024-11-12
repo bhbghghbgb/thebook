@@ -5,16 +5,20 @@ import LayoutComponent from "../components/Share/LayoutComponent.tsx";
 import withFetchData from "../components/hoc/withFetchData.tsx";
 // import {useLocation} from "react-router-dom";
 
+/*
+*
+*
+* Ở đây phải đĩnh nghĩa props `data`
+* vì type checking của typescript sẽ báo lỗi nếu không có chúng.
+*
+* */
+
 interface Props {
   isMobile: boolean;
   data: Book;
-  isLoading: boolean;
-  error: Error | null;
 }
 
-const BookDetailPage = ({ isMobile, data, isLoading, error }: Props) => {
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+const BookDetailPage = ({ isMobile, data}: Props) => {
   return (
     <>
       <LayoutComponent isMobile={isMobile}>
@@ -26,7 +30,15 @@ const BookDetailPage = ({ isMobile, data, isLoading, error }: Props) => {
   );
 };
 
-const BookDetailPageWithParams: React.FC<Omit<Props, 'data' | 'isLoading' | 'error'>> = ({ isMobile }) => {
+/*
+*
+*
+* Các props `data`, `isLoading`, và `error` được loại bỏ trong `BookDetailPageWithParams` vì chúng được cung cấp bởi higher-order component (HOC) `withFetchData`.
+* HOC này sẽ fetch dữ liệu và truyền các props này vào component được bọc (`BookDetailPage`).
+* Do đó, chúng không cần thiết làm input props cho `BookDetailPageWithParams`.
+*
+* */
+const BookDetailPageWithParams = ({ isMobile }: Omit<Props, 'data' | 'isLoading' | 'error'>) => {
     const { id } = useParams<{ id: string }>() as { id: string };
     const WrappedComponent = withFetchData<Props, Book>(
       BookDetailPage,
