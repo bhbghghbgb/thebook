@@ -1,7 +1,6 @@
 import React from 'react';
-import {useQuery} from '@tanstack/react-query';
-import {fetchData} from '../../service/api/fetchData.ts';
 import {ApiResponse} from '../../type/ApiResponse.ts';
+import useFetchData from "../../hooks/useFetchData.ts";
 
 interface WithFetchDataProps<T> {
     data: T;
@@ -24,13 +23,7 @@ const withFetchData = <P extends WithFetchDataProps<T>, T>(
     * */
     return (props: Omit<P, keyof WithFetchDataProps<T>>) => {
 
-        const {data, isLoading, error} = useQuery<ApiResponse<T>, Error>(
-            {
-                queryKey: [queryKey],
-                queryFn: () => fetchData(endpoint),
-            }
-        );
-
+        const {data, isLoading, error} = useFetchData<ApiResponse<T>>(endpoint, queryKey);
         if (isLoading) return (
                 <div className="text-2xl">Loading...</div>
         );
