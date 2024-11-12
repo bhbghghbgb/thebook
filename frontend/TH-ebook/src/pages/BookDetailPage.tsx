@@ -38,7 +38,7 @@ const BookDetailPage = ({ isMobile, data}: Props) => {
 * Do đó, chúng không cần thiết làm input props cho `BookDetailPageWithParams`.
 *
 * */
-const BookDetailPageWithParams = ({ isMobile }: Omit<Props, 'data' | 'isLoading' | 'error'>) => {
+const BookDetailPageWithParams = ({ isMobile }: Props) => {
     const { id } = useParams<{ id: string }>() as { id: string };
     const WrappedComponent = withFetchData<Props, Book>(
       BookDetailPage,

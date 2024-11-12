@@ -1,4 +1,4 @@
-import {Book} from "../Book.ts";
+import {Book} from "../models/Book.ts";
 
 export type BooksStateType = {
     data: Book[] | null;

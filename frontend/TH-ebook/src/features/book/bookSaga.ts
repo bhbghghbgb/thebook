@@ -7,7 +7,6 @@ import {
 } from './bookActions';
 import {Book} from "../../models/Book.ts";
 import useFetchData from "../../hooks/useFetchData.ts";
-import {ApiResponse} from "../../models/type/ApiResponse.ts";
 
 /* 
 
@@ -23,18 +22,18 @@ yield call(axios.get, API_URL): Hàm call() được sử dụng để gọi m�
 function* fetchBooksSaga(){
     try {
         // Gọi API để lấy dữ liệu sách
-        const response: AxiosResponse<ApiResponse<Book[]>, Book[]> = yield call(() => {
-            const {data, error} = useFetchData("books");
+        const response: AxiosResponse<Book[]> = yield call(() => {
+            const {data, error} = useFetchData<Book[]>("books");
             if (error) {
                 throw new Error(error.message);
             }
             return data;
         });
         // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
-        yield put(getBooksSuccess(response.data.data));
-    } catch (error) {
+        yield put(getBooksSuccess(response.data));
+    } catch (error: unknown) {
         // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
-        yield put(getBooksFailure(error.message));
+        yield put(getBooksFailure((error as Error).message));
     }
 }
 

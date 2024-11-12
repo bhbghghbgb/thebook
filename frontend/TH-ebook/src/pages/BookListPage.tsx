@@ -3,17 +3,15 @@ import BookListContainer from "../components/BookList/BookListContainer";
 import {useNavigate} from "react-router-dom";
 import {IconButton} from "@material-tailwind/react";
 import LayoutComponent from "../components/Share/LayoutComponent";
-import withFetchData from "../components/hoc/withFetchData";
 import {Book} from "../models/Book";
+import withFetchRedux from "../components/hoc/withFetchRedux.tsx";
 
 interface Props {
     header: string;
     data: Book[];
-    isLoading: boolean;
-    error: Error | null;
 }
 
-const BookListPage = ({header, data, isLoading, error}: Props) => {
+const BookListPage = ({header, data}: Props) => {
     const navigate = useNavigate();
 
     const handleBookClick = (bookId: string) => {
@@ -24,8 +22,6 @@ const BookListPage = ({header, data, isLoading, error}: Props) => {
         navigate(-1);
     };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <LayoutComponent isMobile={false}>
@@ -43,10 +39,11 @@ const BookListPage = ({header, data, isLoading, error}: Props) => {
     );
 };
 
-const EnhancedBookListPage = withFetchData<Props, Book[]>(
-    BookListPage,
-    '/books',
-    'books'
-);
+const EnhancedBookListPage = ({ header }: Props) => {
+    const WrappedComponent = withFetchRedux<Props, Book[]>(
+        BookListPage,
+    );
 
+    return <WrappedComponent header={header} />;
+};
 export default EnhancedBookListPage;

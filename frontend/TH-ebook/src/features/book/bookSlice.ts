@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Book} from '../../models/Book';
-import {BooksStateType} from "../../models/type/BooksStateType.ts";
+import {BooksStateType} from "../../type/BooksStateType.ts";
 
 
 const initialState: BooksStateType = {
