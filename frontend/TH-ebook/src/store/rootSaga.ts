@@ -1,6 +1,7 @@
-import { all, fork } from 'redux-saga/effects';
-import bookSaga from '../features/book/bookSaga';
+import { all } from 'redux-saga/effects';
+import {watchFetchBookData} from '../features/book/bookSaga';
 
 export default function* rootSaga() {
-  yield all([fork(bookSaga)]);
+  console.log('Root saga started');
+  yield all([watchFetchBookData()]);
 }

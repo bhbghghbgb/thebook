@@ -1,42 +1,36 @@
-import React, {useEffect} from 'react';
-import {getBooks} from "../../features/book/bookActions.ts";
-import {StateType} from "../../store/rootReducer.ts";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
+import { StateType } from "../../store/rootReducer.ts";
 
-interface WithFetchReduxProps<T> {
+interface WithReduxDataProps<T> {
     data: T;
 }
 
-const withFetchRedux = <P extends WithFetchReduxProps<T>, T>(
-    WrappedComponent: React.ComponentType<P> // Component to be wrapped
+const withReduxData = <P extends WithReduxDataProps<T>, T>(
+    WrappedComponent: React.ComponentType<P>
 ) => {
-    return (props: Omit<P, keyof WithFetchReduxProps<T>>) => {
-
-        const dispatch = useDispatch();
-        const {data, errors, isLoading} = useSelector((state: StateType) => state.books);
-
-        useEffect(() => {
-            dispatch(getBooks());
-        }, [dispatch]);
-
-
-        if (isLoading) return (
-                <div className="text-2xl">Loading...</div>
+    return (props: Omit<P, keyof WithReduxDataProps<T>>) => {
+        const { data, errors, isLoading } = useSelector(
+            (state: StateType) => state.books
         );
-        if (errors) return (
-                <div className="text-2xl text-red-900">Error loading data</div>
-        );
+
+        console.log('data in HOC:', data);
+
+        if (isLoading) {
+            return <div className="text-2xl">Loading...</div>;
+        }
+
+        if (errors) {
+            return <div className="text-2xl text-red-900">Error loading data</div>;
+        }
 
         const componentProps = {
             ...props,
-            data: data,
+            data
         } as P;
 
         return <WrappedComponent {...componentProps} />;
-    }
-}
+    };
+};
 
-export default withFetchRedux;
-
-
-
+export default withReduxData;

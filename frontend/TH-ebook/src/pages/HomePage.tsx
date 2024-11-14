@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import LayoutComponent from '../components/Share/LayoutComponent';
 import BannerSlider from '../components/Home/BannerSlider';

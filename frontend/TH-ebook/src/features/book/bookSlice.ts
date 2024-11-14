@@ -13,15 +13,15 @@ export const bookSlice = createSlice({
     name: 'books',
     initialState,
     reducers: {
-        getBooks(state: BooksStateType) {
+        getBooksAction(state: BooksStateType) {
             state.isLoading = true;
             state.errors = ''
         },
-        getBooksSuccess(state, {payload: books}: PayloadAction<Book[]>) {
+        getBooksSuccessAction(state, {payload: books}: PayloadAction<Book[]>) {
             state.data = books;
             state.isLoading = false;
         },
-        getBooksFailure(state, {payload: error}: PayloadAction<string>) {
+        getBooksFailureAction(state, {payload: error}: PayloadAction<string>) {
             state.errors = error;
             state.isLoading = false;
         },
@@ -30,9 +30,9 @@ export const bookSlice = createSlice({
 
 
 export const {
-    getBooks,
-    getBooksSuccess,
-    getBooksFailure
+    getBooksAction,
+    getBooksSuccessAction,
+    getBooksFailureAction
 } = bookSlice.actions;
 
 export default bookSlice.reducer;

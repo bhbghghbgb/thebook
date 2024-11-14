@@ -1,12 +1,11 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects';
-import {AxiosResponse} from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import {
-    getBooks,
-    getBooksSuccess,
-    getBooksFailure,
-} from './bookActions';
+    getBooksAction,
+    getBooksSuccessAction,
+    getBooksFailureAction,
+} from './bookSlice.ts';
 import {Book} from "../../models/Book.ts";
-import useFetchData from "../../hooks/useFetchData.ts";
 
 /* 
 
@@ -19,32 +18,29 @@ yield call(axios.get, API_URL): Hàm call() được sử dụng để gọi m�
 */
 
 
-function* fetchBooksSaga(){
+function* fetchBooksSaga() {
+    console.log("fetchBooksSaga");
     try {
         // Gọi API để lấy dữ liệu sách
-        const response: AxiosResponse<Book[]> = yield call(() => {
-            const {data, error} = useFetchData<Book[]>("books");
-            if (error) {
-                throw new Error(error.message);
-            }
-            return data;
-        });
+        const response: AxiosResponse<Book[]> = yield axios.get("http://localhost:8000/books");
+        console.log("fetchBooksSaga Data");
+        console.log(response.data);
         // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
-        yield put(getBooksSuccess(response.data));
+        yield put(getBooksSuccessAction(response.data));
     } catch (error: unknown) {
         // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
-        yield put(getBooksFailure((error as Error).message));
+        yield put(getBooksFailureAction((error as Error).message));
     }
 }
 
 
-
-export function* watchBookData(): Generator<unknown, void, unknown> {
-    yield takeLatest(getBooks.type, fetchBooksSaga);
+export function* watchFetchBookData() {
+    // Lắng nghe action getBooksAction và gọi hàm fetchBooksSaga khi action được dispatch
+    yield takeLatest(getBooksAction.type, fetchBooksSaga);
 }
 
 export default function* bookSaga(): Generator<unknown, void, unknown> {
     yield all([
-        call(watchBookData),
+        call(watchFetchBookData),
     ]);
 }

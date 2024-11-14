@@ -3,7 +3,6 @@ import BookDetail from "../components/BookDetail/BookDetail.tsx";
 import { useParams } from "react-router-dom";
 import LayoutComponent from "../components/Share/LayoutComponent.tsx";
 import withFetchData from "../components/hoc/withFetchData.tsx";
-// import {useLocation} from "react-router-dom";
 
 /*
 *
@@ -38,7 +37,7 @@ const BookDetailPage = ({ isMobile, data}: Props) => {
 * Do đó, chúng không cần thiết làm input props cho `BookDetailPageWithParams`.
 *
 * */
-const BookDetailPageWithParams = ({ isMobile }: Props) => {
+const BookDetailPageWithParams = ({ isMobile }: Omit<Props, 'data'>) => {
     const { id } = useParams<{ id: string }>() as { id: string };
     const WrappedComponent = withFetchData<Props, Book>(
       BookDetailPage,
