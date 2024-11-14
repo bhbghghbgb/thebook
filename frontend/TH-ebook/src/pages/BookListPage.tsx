@@ -5,10 +5,11 @@ import { IconButton } from "@material-tailwind/react";
 import LayoutComponent from "../components/Share/LayoutComponent";
 // import { Book } from "../models/Book";
 // import withFetchRedux from "../components/hoc/withFetchRedux";
-import React, {useCallback, useEffect} from "react";
-import {getBooksAction} from "../features/book/bookSlice.ts";
-import {useDispatch, useSelector} from "react-redux";
-import {StateType} from "../store/rootReducer.ts";
+import /*React, */{useCallback} from "react";
+import useBooksRedux from "../hooks/useBooksRedux.ts";
+// import {getBooksAction} from "../features/book/bookSlice.ts";
+// import {useDispatch, useSelector} from "react-redux";
+// import {StateType} from "../store/rootReducer.ts";
 
 interface Props {
     header: string;
@@ -27,27 +28,28 @@ const BookListPage = ({ header }: Props) => {
         navigate(-1);
     }, [navigate]);
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        console.log('Component mounted');
-        console.log('Action type:', getBooksAction.type);
-        const action = getBooksAction();
-        console.log('Dispatching action:', action);
-        dispatch(action);
-    }, []); // Chỉ chạy một lần khi component được render
-
-    const { data, errors, isLoading } = useSelector(
-        (state: StateType) => state.books
-    );
-
-    if (isLoading) {
-        return <div className="text-2xl">Loading...</div>;
-    }
-
-    if (errors) {
-        return <div className="text-2xl text-red-900">Error loading data</div>;
-    }
+    // const dispatch = useDispatch();
+    //
+    // useEffect(() => {
+    //     console.log('Component mounted');
+    //     console.log('Action type:', getBooksAction.type);
+    //     const action = getBooksAction();
+    //     console.log('Dispatching action:', action);
+    //     dispatch(action);
+    // }, []); // Chỉ chạy một lần khi component được render
+    //
+    // const { data, errors, isLoading } = useSelector(
+    //     (state: StateType) => state.books
+    // );
+    //
+    // if (isLoading) {
+    //     return <div className="text-2xl">Loading...</div>;
+    // }
+    //
+    // if (errors) {
+    //     return <div className="text-2xl text-red-900">Error loading data</div>;
+    // }
+    const { books, errors, isLoading } = useBooksRedux();
     return (
         <LayoutComponent isMobile={false}>
             <div className="page-container p-6">
@@ -62,7 +64,7 @@ const BookListPage = ({ header }: Props) => {
                     </IconButton>
                     <h1 className="text-2xl font-bold">{header}</h1>
                 </div>
-                <BookListContainer books={data || []} onClick={handleBookClick}/>
+                <BookListContainer onClick={handleBookClick} books={books}  errors={errors} isLoading={isLoading}/>
             </div>
         </LayoutComponent>
     );
