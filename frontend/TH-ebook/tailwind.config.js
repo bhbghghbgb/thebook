@@ -31,10 +31,16 @@ const config = {
           "synopsis synopsis",
           "content  content ",
         ],
-        "product-list": [
+        "product-list-comp-dense": [
           "cover title author stats status",
           "cover tags tags tags tags",
           "cover description description description description",
+        ],
+        "product-list-comp-sparse": [
+          "cover title title",
+          "cover stats status",
+          "cover tags tags",
+          "cover description description",
         ],
       },
       // screens: {

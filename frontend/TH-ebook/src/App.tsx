@@ -9,6 +9,7 @@ import ReaderPage from "./pages/ReaderPage.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import { RootState } from "./store/store.ts";
+import BookListComponent from "./components/BookList/BookListComponent.tsx";
 function App() {
   // Define the media query
   const isMobile = useMediaQuery("(max-width: 1060px)");
@@ -45,6 +46,10 @@ function App() {
               element={<BookListPage header={"Trending"} books={books} />}
             />
             <Route path="/reader/:id/:pg?" element={<ReaderPage />}></Route>
+            <Route
+              path="/book/comp"
+              element={<BookListComponent book={books[0]} />}
+            ></Route>
           </Routes>
         </div>
       </div>

@@ -26,7 +26,13 @@ const BookListContainer = ({ books, onClick }: Props) => {
               src={book.cover_image}
               alt={book.title}
             />
-            <Typography className="font-bold title grid-in-title text-4xl lg:text-3xl md:text-2xl sm:text-xl" variant="h2">
+            <Typography
+              className="font-bold title grid-in-title text-4xl lg:text-3xl md:text-2xl sm:text-xl"
+              variant="h2"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
               {book.title}
             </Typography>
             <div className="author grid-in-author p-5">
@@ -50,6 +56,9 @@ const BookListContainer = ({ books, onClick }: Props) => {
             </div>
             <Typography
               className="description py-2  grid-in-description"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               {book.description}
             </Typography>
