@@ -1,4 +1,5 @@
-import { IconButton, Tooltip } from "@material-tailwind/react";
+import { IconButton, Tooltip, Typography } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 import {
   HiBookmark,
   HiChevronDoubleLeft,
@@ -10,12 +11,16 @@ import {
   HiPlus,
 } from "react-icons/hi";
 import { TbSunMoon } from "react-icons/tb";
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReaderRenderer, {
   ReaderProps,
 } from "../components/Reader/ReaderRenderer";
-import { useEffect, useState } from "react";
 type StringNumberObject = { [key: string]: number };
+type IntParams = {
+  id: number;
+  vl: number;
+  pg: number;
+};
 // Interface/StringNumberObject Type: Defines a type where keys are strings and values are numbers.
 // Example Object: Demonstrates creating an object that adheres to this type.
 // Function to Parse Values: parseAllFields function converts all string values to numbers.
@@ -27,37 +32,6 @@ function parseAllFields(obj: { [key: string]: string }): StringNumberObject {
     }
   }
   return parsedObj;
-}
-function lastVolume(navigate: NavigateFunction, id: number, vl: number) {
-  return _navigate(navigate, id, vl > 1 ? vl - 1 : 1, 1);
-}
-function nextVolume(navigate: NavigateFunction, id: number, vl: number) {
-  return _navigate(navigate, id, vl + 1, 1);
-}
-function lastPage(
-  navigate: NavigateFunction,
-  id: number,
-  vl: number,
-  pg: number
-) {
-  return _navigate(navigate, id, vl, pg > 1 ? pg - 1 : 1);
-}
-function nextPage(
-  navigate: NavigateFunction,
-  id: number,
-  vl: number,
-  pg: number
-) {
-  return _navigate(navigate, id, vl, pg + 1);
-}
-function _navigate(
-  navigate: NavigateFunction,
-  id: number,
-  vl: number,
-  pg: number
-) {
-  navigate(`/book/${id}/${vl}/${pg}`);
-  return { id, vl, pg };
 }
 function NavigationBar({
   bookId,
@@ -194,10 +168,39 @@ function NavigationBar({
 export default function ReaderPage() {
   const navigate = useNavigate();
   const params = useParams<{ id: string; vl: string; pg: string }>();
-  const [{ id, vl, pg }, setParams] = useState(parseAllFields(params));
-  useEffect(() => {
-    setParams(parseAllFields(params));
-  }, [params]);
+  const [intParams, setIntParams] = useState<IntParams>(
+    parseAllFields(params) as IntParams
+  );
+  const { id, vl, pg } = intParams;
+  // Update state when params change
+  useEffect(
+    () => setIntParams(parseAllFields(params) as IntParams),
+    [params, id, vl, pg]
+  );
+  const lastVolume = () => {
+    const newVl = Math.max(1, vl - 1);
+    navigate(`/book/${id}/${newVl}/${1}`, { replace: true });
+    setIntParams({ id: id, vl: newVl, pg: 1 });
+  };
+
+  const nextVolume = () => {
+    const newVl = vl + 1;
+    navigate(`/book/${id}/${newVl}/${1}`, { replace: true });
+    setIntParams({ id: id, vl: newVl, pg: 1 });
+  };
+
+  const lastPage = () => {
+    const newPg = Math.max(1, pg - 1);
+    navigate(`/book/${id}/${vl}/${newPg}`, { replace: true });
+    setIntParams({ id: id, vl: vl, pg: newPg });
+  };
+
+  const nextPage = () => {
+    const newPg = pg + 1;
+    navigate(`/book/${id}/${vl}/${newPg}`, { replace: true });
+    setIntParams({ id: id, vl: vl, pg: newPg });
+  };
+
   if (!id || !vl || !pg) {
     return <>Url malfunction.</>;
   }
@@ -207,40 +210,37 @@ export default function ReaderPage() {
         bookId={id}
         volumeNth={vl}
         pagePage={pg}
-        lastVolume={() => {
-          setParams(lastVolume(navigate, id, vl));
-        }}
-        lastPage={() => {
-          lastPage(navigate, id, vl, pg);
-        }}
-        nextPage={() => {
-          nextPage(navigate, id, vl, pg);
-        }}
-        nextVolume={() => {
-          nextVolume(navigate, id, vl);
-        }}
+        lastVolume={() => lastVolume()}
+        lastPage={() => lastPage()}
+        nextPage={() => nextPage()}
+        nextVolume={() => nextVolume()}
       />
       <ReaderRenderer bookId={id} volumeNth={vl} pagePage={pg} />
       <NavigationBar
         bookId={id}
         volumeNth={vl}
         pagePage={pg}
-        lastVolume={() => {
-          lastVolume(navigate, id, vl);
-        }}
-        lastPage={() => {
-          lastPage(navigate, id, vl, pg);
-        }}
-        nextPage={() => {
-          nextPage(navigate, id, vl, pg);
-        }}
-        nextVolume={() => {
-          nextVolume(navigate, id, vl);
-        }}
+        lastVolume={() => lastVolume()}
+        lastPage={() => lastPage()}
+        nextPage={() => nextPage()}
+        nextVolume={() => nextVolume()}
       />
-      <h1>me may beo</h1>
-      <h1>(bi anh huong style do o nhiem css tu file doc vao, can fix)</h1>
-      <h1>^ (da fix) ko con bi anh huong do da xai dompurify de loc sach</h1>
+      <Typography
+        variant="h6"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        (bi anh huong style do o nhiem css tu file doc vao, can fix)
+      </Typography>
+      <Typography
+        variant="h5"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        ^ (da fix) ko con bi anh huong do da xai dompurify de loc sach
+      </Typography>
     </>
   );
 }

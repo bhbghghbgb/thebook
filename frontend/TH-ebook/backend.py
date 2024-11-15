@@ -120,7 +120,7 @@ def get_book_by_id(book_id: int) -> Book:
             return book
     raise HTTPException(status_code=404, detail="Book not found")
 
-
+@app.get("/api/books/{book_id}/{volume_number}")
 def get_book_volume(book_id: int, volume_number: int) -> Volume:
     book = get_book_by_id(book_id)
     for volume in book.volumes:

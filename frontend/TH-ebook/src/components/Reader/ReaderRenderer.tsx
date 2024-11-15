@@ -14,9 +14,8 @@ const ReaderRenderer = ({
   volumeNth: vl,
   pagePage: pg,
 }: ReaderProps) => {
-  const { data, isLoading, error } = useFetchData<string>(
-    `books/${id}/${vl}/${pg}`
-  );
+  const lnk = `books/${id}/${vl}/${pg}`;
+  const { data, isLoading, error } = useFetchData<string>(lnk, `reader:${lnk}`);
   if (isLoading) {
     return <span>Loading...</span>;
   }
