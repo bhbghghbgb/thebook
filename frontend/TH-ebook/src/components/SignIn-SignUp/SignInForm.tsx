@@ -9,12 +9,13 @@ import {
     Button,
 } from "@material-tailwind/react";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signIn} from "../../features/user/userSlice.ts";
 import {useNavigate} from "react-router-dom";
+import {StateType} from "../../store/rootReducer.ts";
 
 const ISignInSchema = yup.object().shape({
         nameoremail: yup.string().required(),
@@ -23,7 +24,8 @@ const ISignInSchema = yup.object().shape({
 )
 const SignInForm = () => {
 
-    const navagate = useNavigate();
+    const user = useSelector((state: StateType) => state.user);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const {
@@ -34,8 +36,13 @@ const SignInForm = () => {
     } = useForm({ resolver: yupResolver(ISignInSchema) });
     const onSubmit = (data: { nameoremail: string, password: string }) => {
         dispatch(signIn(data));
-        navagate("/");
     }
+
+    useEffect(() => {
+        if (user.isLogin) {
+            navigate('/');
+        }
+    }, [user.isLogin, navigate]);
     return (
         <Card className="w-96"
               placeholder={undefined}

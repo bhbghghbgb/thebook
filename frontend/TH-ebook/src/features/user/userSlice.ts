@@ -13,11 +13,9 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         signIn: (state: UserStateType<User>, {payload: {nameoremail, password}}: PayloadAction<{nameoremail: string, password: string}>) => {
-            state.isLogin = false;
             state.errors = '';
         },
         signUp: (state: UserStateType<User>, {payload: {username, password, confirmPassword, email}}: PayloadAction<{username: string, password: string, confirmPassword: string, email: string}>) => {
-            state.isLogin = false;
             state.errors = '';
         },
         authSusccess: (state, {payload: user}: PayloadAction<User>) => {
@@ -26,10 +24,14 @@ const userSlice = createSlice({
         },
         authFailure: (state, {payload: error}: PayloadAction<string>) => {
             state.errors = error
+        },
+        logout: (state: UserStateType<User>) => {
+            state.data = null;
+            state.isLogin = false;
         }
      },
 })
 
-export const { signIn, signUp, authSusccess, authFailure} = userSlice.actions;
+export const { signIn, signUp, authSusccess, authFailure, logout} = userSlice.actions;
 
 export default userSlice.reducer;
