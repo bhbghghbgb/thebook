@@ -1,6 +1,6 @@
 import { Book } from "../../models/Book.ts";
 import CategoryContainer from "../BookDetail/CategoryContainer.tsx";
-import TitleContainer from "../BookDetail/TitleContainer.tsx";
+import { TitleContainer } from "../BookDetail/TitleContainer.tsx";
 
 interface Props {
   book: Book;
