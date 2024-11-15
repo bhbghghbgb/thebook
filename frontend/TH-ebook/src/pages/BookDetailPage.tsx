@@ -41,7 +41,7 @@ const BookDetailPageWithParams = ({ isMobile }: Omit<Props, "data">) => {
   const { id } = useParams<{ id: string }>() as { id: string };
   const WrappedComponent = withFetchData<Props, Book>(
     BookDetailPage,
-    `/books/${id}`,
+    `books/${id}`,
     ["book", id]
   );
 

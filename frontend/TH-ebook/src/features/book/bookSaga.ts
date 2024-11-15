@@ -1,11 +1,11 @@
-import {all, call, put, takeLatest} from 'redux-saga/effects';
-import axios, {AxiosResponse} from 'axios';
+import { all, call, put, takeLatest } from "redux-saga/effects";
+import axios, { AxiosResponse } from "axios";
 import {
-    getBooksAction,
-    getBooksSuccessAction,
-    getBooksFailureAction,
-} from './bookSlice.ts';
-import {Book} from "../../models/Book.ts";
+  getBooksAction,
+  getBooksSuccessAction,
+  getBooksFailureAction,
+} from "./bookSlice.ts";
+import { Book } from "../../models/Book.ts";
 
 /* 
 
@@ -18,30 +18,25 @@ yield call(axios.get, API_URL): Hàm call() được sử dụng để gọi m�
 */
 
 function* fetchBooksSaga() {
-    const API_URL: string = import.meta.env.VITE_API_URL;
-    console.log(API_URL);
-    console.log("fetchBooksSaga");
-    try {
-        // Gọi API để lấy dữ liệu sách
-        const response: AxiosResponse<Book[]> = yield axios.get(`${API_URL}/books`);
-        console.log("fetchBooksSaga Data");
-        console.log(response.data);
-        // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
-        yield put(getBooksSuccessAction(response.data));
-    } catch (error: unknown) {
-        // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
-        yield put(getBooksFailureAction((error as Error).message));
-    }
+  const API_URL: string = import.meta.env.VITE_API_URL2;
+  try {
+    // Gọi API để lấy dữ liệu sách
+    const response: AxiosResponse<Book[]> = yield axios.get(`${API_URL}/books`);
+    console.log("fetchBooksSaga Data");
+    console.log(response.data);
+    // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
+    yield put(getBooksSuccessAction(response.data));
+  } catch (error: unknown) {
+    // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
+    yield put(getBooksFailureAction((error as Error).message));
+  }
 }
 
-
 export function* watchFetchBookData() {
-    // Lắng nghe action getBooksAction và gọi hàm fetchBooksSaga khi action được dispatch
-    yield takeLatest(getBooksAction.type, fetchBooksSaga);
+  // Lắng nghe action getBooksAction và gọi hàm fetchBooksSaga khi action được dispatch
+  yield takeLatest(getBooksAction.type, fetchBooksSaga);
 }
 
 export default function* bookSaga(): Generator<unknown, void, unknown> {
-    yield all([
-        call(watchFetchBookData),
-    ]);
+  yield all([call(watchFetchBookData)]);
 }
