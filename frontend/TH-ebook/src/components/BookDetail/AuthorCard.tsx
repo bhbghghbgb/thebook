@@ -21,8 +21,12 @@ const AuthorCard = ({ book, onAuthorClick }: AuthorProps) => {
 
   return (
     <CardDefault
-      ComponentHeader={<h3 className="text-lg font-bold text-black mb-2">Author</h3>}
-      ComponentBody={<div className="category flex flex-wrap gap-1">{authorChips}</div>}
+      ComponentHeader={
+        <h3 className="text-lg font-bold text-black mb-2">Author</h3>
+      }
+      ComponentBody={
+        <div className="category flex flex-wrap gap-1">{authorChips}</div>
+      }
     />
   );
 };
