@@ -17,12 +17,13 @@ yield call(axios.get, API_URL): Hàm call() được sử dụng để gọi m�
 
 */
 
-
 function* fetchBooksSaga() {
+    const API_URL: string = import.meta.env.VITE_API_URL;
+    console.log(API_URL);
     console.log("fetchBooksSaga");
     try {
         // Gọi API để lấy dữ liệu sách
-        const response: AxiosResponse<Book[]> = yield axios.get("http://localhost:8000/books");
+        const response: AxiosResponse<Book[]> = yield axios.get(`${API_URL}/books`);
         console.log("fetchBooksSaga Data");
         console.log(response.data);
         // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được

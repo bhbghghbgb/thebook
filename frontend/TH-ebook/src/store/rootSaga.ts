@@ -1,7 +1,8 @@
 import { all } from 'redux-saga/effects';
-import {watchFetchBookData} from '../features/book/bookSaga';
+import bookSaga from '../features/book/bookSaga';
+import userSaga from "../features/user/userSaga.ts";
 
 export default function* rootSaga() {
   console.log('Root saga started');
-  yield all([watchFetchBookData()]);
+  yield all([bookSaga(), userSaga()]);
 }

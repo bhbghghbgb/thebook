@@ -14,7 +14,7 @@ export const useBooksRedux = () => {
         console.log('Action type:', getBooksAction.type);
         console.log('Dispatching action:', getBooksAction());
         dispatch(getBooksAction());
-    }, []);
+    }, [dispatch]);
 
 
     return {

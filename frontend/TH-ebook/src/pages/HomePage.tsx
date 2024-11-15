@@ -3,13 +3,13 @@ import LayoutComponent from '../components/Share/LayoutComponent';
 import BannerSlider from '../components/Home/BannerSlider';
 import BookContainer from '../components/Home/BookContainer';
 import { Book } from '../models/Book';
+import useBooksRedux from "../hooks/useBooksRedux.ts";
 
 interface Props {
   isMobile: boolean;
-  books: Book[];
 }
 
-const HomePage = ({ isMobile, books }: Props) => {
+const HomePage = ({ isMobile }: Props) => {
   const navigate = useNavigate();
 
   const handleBannerClick = (book: Book) => {
@@ -24,15 +24,17 @@ const HomePage = ({ isMobile, books }: Props) => {
     navigate(`/book/trending`, { state: { books } });
   };
 
+  const { books, errors, isLoading } = useBooksRedux();
+
   return (
     <div className="home-page gap-y-10">
       <LayoutComponent isMobile={isMobile}>
         <BannerSlider books={books} isMobile={isMobile} onClick={handleBannerClick} />
-        <BookContainer header="Trending" books={books} onClick={handleBookClick} onListClick={handleBookListClick} />
+        <BookContainer header="Trending" books={books} onClick={handleBookClick} onListClick={handleBookListClick}  errors={errors} isLoading={isLoading}/>
         <div className="flex-grow hidden sm:block" />
-        <BookContainer header="New" books={books} onClick={handleBookClick} onListClick={handleBookListClick} />
+        <BookContainer header="New" books={books} onClick={handleBookClick} onListClick={handleBookListClick} errors={errors} isLoading={isLoading}/>
         <div className="flex-grow hidden sm:block" />
-        <BookContainer header="Features" books={books} onClick={handleBookClick} onListClick={handleBookListClick} />
+        <BookContainer header="Features" books={books} onClick={handleBookClick} onListClick={handleBookListClick} errors={errors} isLoading={isLoading}/>
       </LayoutComponent>
     </div>
   );

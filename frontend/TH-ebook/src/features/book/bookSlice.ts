@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Book} from '../../models/Book';
-import {BooksStateType} from "../../type/BooksStateType.ts";
+import {BookStateType} from "../../type/BookStateType.ts";
 
 
-const initialState: BooksStateType = {
+const booksInitState: BookStateType<Book[]> = {
     data: null,
     isLoading: false,
     errors: '',
@@ -11,9 +11,9 @@ const initialState: BooksStateType = {
 
 export const bookSlice = createSlice({
     name: 'books',
-    initialState,
+    initialState: booksInitState,
     reducers: {
-        getBooksAction(state: BooksStateType) {
+        getBooksAction(state: BookStateType<Book[]>) {
             state.isLoading = true;
             state.errors = ''
         },

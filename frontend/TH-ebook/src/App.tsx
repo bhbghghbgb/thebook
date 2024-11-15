@@ -27,14 +27,14 @@ function App() {
                         </Route>
                         <Route
                             path="/"
-                            element={<BookListPage header="Trending" />}
+                            element={<HomePage isMobile={isMobile} />}
                         />
                         <Route
                             path="/book/:id"
                             element={<BookDetailPage isMobile={isMobile} />}
                         />
                         <Route
-                            path="/book/trending"
+                            path="/book/list"
                             element={<BookListPage header="Trending" />}
                         />
                         <Route path="/reader/:id/:pg?" element={<ReaderPage />}></Route>
