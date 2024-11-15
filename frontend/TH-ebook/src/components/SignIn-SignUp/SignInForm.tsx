@@ -14,6 +14,7 @@ import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useDispatch} from "react-redux";
 import {signIn} from "../../features/user/userSlice.ts";
+import {useNavigate} from "react-router-dom";
 
 const ISignInSchema = yup.object().shape({
         nameoremail: yup.string().required(),
@@ -22,6 +23,7 @@ const ISignInSchema = yup.object().shape({
 )
 const SignInForm = () => {
 
+    const navagate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const {
@@ -32,6 +34,7 @@ const SignInForm = () => {
     } = useForm({ resolver: yupResolver(ISignInSchema) });
     const onSubmit = (data: { nameoremail: string, password: string }) => {
         dispatch(signIn(data));
+        navagate("/");
     }
     return (
         <Card className="w-96"

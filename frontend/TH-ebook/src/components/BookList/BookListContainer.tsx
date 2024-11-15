@@ -1,6 +1,6 @@
 import {Typography} from "@material-tailwind/react";
 import {Book} from "../../models/Book";
-import TagComponent from "../BookDetail/TagComponent.tsx";
+import AuthorTagComponent from "../BookDetail/AuthorTagComponent.tsx";
 import RatingsContainer from "../BookDetail/RatingsContainer";
 
 interface Props {
@@ -39,7 +39,7 @@ const BookListContainer = ({books, onClick, isLoading, errors}: Props) => {
                             {book.title}
                         </Typography>
                         <div className="author grid-in-author p-5">
-                            <TagComponent
+                            <AuthorTagComponent
                                 content={book.authors.map((author) => author.name)}
                                 onContainerClick={(authorName) =>
                                     console.log(`Author clicked: ${authorName}`)
@@ -50,7 +50,7 @@ const BookListContainer = ({books, onClick, isLoading, errors}: Props) => {
                             <RatingsContainer/>
                         </div>
                         <div className="tags grid-in-tags">
-                            <TagComponent
+                            <AuthorTagComponent
                                 content={book.category.map((category) => category.name)}
                                 onContainerClick={(categoryName) =>
                                     console.log(`Category clicked: ${categoryName}`)

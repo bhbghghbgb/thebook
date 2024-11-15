@@ -9,6 +9,7 @@ import {PayloadAction} from "@reduxjs/toolkit";
 const API_URL = import.meta.env.VITE_API_URL;
 function* signUpUserSaga({payload: user}: PayloadAction<User>) {
     try {
+        user.avatar = "https://mangadex.org/img/avatar.png"
         const response: AxiosResponse<User> = yield axios.post( `${API_URL}/customer` , user);
         yield put(authSusccess(response.data));
     } catch (error: unknown) {

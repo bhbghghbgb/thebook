@@ -21,7 +21,7 @@ const HomePage = ({ isMobile }: Props) => {
   };
 
   const handleBookListClick = (books: Book[]) => {
-    navigate(`/book/trending`, { state: { books } });
+    navigate(`/book/list`, { state: { books } });
   };
 
   const { books, errors, isLoading } = useBooksRedux();

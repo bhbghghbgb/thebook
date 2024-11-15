@@ -4,7 +4,7 @@ import RatingsContainer from "./RatingsContainer.tsx";
 import TitleContainer from "./TitleContainer.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
-import TagComponent from "./TagComponent.tsx";
+import AuthorTagComponent from "./AuthorTagComponent.tsx";
 import PartComponent from "./PartComponent.tsx";
 import { useNavigate } from "react-router-dom";
 
@@ -47,7 +47,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
       content: (
         <div className="flex gap-6 items-start">
           {/* Author */}
-          <TagComponent
+          <AuthorTagComponent
             header="Author"
             content={authors}
             onContainerClick={handleAuthorClick}
