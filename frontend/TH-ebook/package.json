@@ -23,6 +23,7 @@
     "axios": "^1.7.7",
     "classnames": "^2.5.1",
     "colorthief": "^2.6.0",
+    "dompurify": "^3.2.0",
     "html-react-parser": "^5.1.18",
     "jquery": "^3.7.1",
     "postcss": "^8.4.47",
