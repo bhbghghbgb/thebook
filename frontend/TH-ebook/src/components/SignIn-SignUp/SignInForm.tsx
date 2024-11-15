@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {signIn} from "../../features/user/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import {StateType} from "../../store/rootReducer.ts";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const ISignInSchema = yup.object().shape({
         nameoremail: yup.string().required(),
@@ -31,18 +32,21 @@ const SignInForm = () => {
     const {
         register,
         handleSubmit,
-        // watch,
         formState: {errors}
     } = useForm({ resolver: yupResolver(ISignInSchema) });
     const onSubmit = (data: { nameoremail: string, password: string }) => {
         dispatch(signIn(data));
     }
 
+    const [userLocalStorage, saveUserIDLocalStorage] = useLocalStorage("userid", null);
+    const [userAvatarLocalStorage, saveUserAvatarLocalStorage] = useLocalStorage("useravatar", null);
     useEffect(() => {
         if (user.isLogin) {
+            saveUserIDLocalStorage(user.data?.id);
+            saveUserAvatarLocalStorage(user.data?.avatar);
             navigate('/');
         }
-    }, [user.isLogin, navigate]);
+    }, [user.isLogin, navigate, saveUserIDLocalStorage, saveUserIDLocalStorage]);
     return (
         <Card className="w-96"
               placeholder={undefined}

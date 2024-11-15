@@ -11,10 +11,12 @@ export const useBooksRedux = () => {
     );
 
     useEffect(() => {
-        console.log('Action type:', getBooksAction.type);
-        console.log('Dispatching action:', getBooksAction());
-        dispatch(getBooksAction());
-    }, [dispatch]);
+        if (!data || data.length === 0) {
+            console.log('Action type:', getBooksAction.type);
+            console.log('Dispatching action:', getBooksAction());
+            dispatch(getBooksAction());
+        }
+    }, [data, dispatch]);
 
 
     return {

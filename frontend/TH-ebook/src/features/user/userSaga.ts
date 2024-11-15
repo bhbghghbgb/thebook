@@ -1,6 +1,6 @@
 import {all, put, takeLatest} from 'redux-saga/effects';
 import axios, {AxiosResponse} from 'axios';
-import userSlice, {authFailure, authSusccess, logout, signIn, signUp} from './userSlice';
+import {authFailure, authSusccess, logout, signIn, signUp} from './userSlice';
 import {User} from "../../models/User.ts";
 import {PayloadAction} from "@reduxjs/toolkit";
 

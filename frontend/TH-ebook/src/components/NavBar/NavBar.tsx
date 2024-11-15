@@ -23,6 +23,11 @@ const NavBar = ({isMobile}: NavBarProps) => {
     const openDrawer = () => setOpen(true);
     const closeDrawer = () => setOpen(false);
     const user = useSelector((state: StateType) => state.user);
+    const userLocalStorage = localStorage.getItem("useravatar");
+
+    console.log("User Local:", userLocalStorage);
+    console.log("User State:", user);
+
     const handleOnSignIn = () => {
         navigate("/auth/signin");
     }
@@ -32,7 +37,11 @@ const NavBar = ({isMobile}: NavBarProps) => {
     const dispatch = useDispatch();
     const handleOnLogout = useCallback(() => {
         dispatch(logout());
+        localStorage.removeItem("useravatar");
+        localStorage.removeItem("userid");
+        navigate("/")
     }, [dispatch]);
+
     const menuItems = [
         {
             node: (
@@ -66,22 +75,6 @@ const NavBar = ({isMobile}: NavBarProps) => {
         },
     ];
 
-    // const handleUserIconClick = () => {
-    //     if (user.isLogin) {
-    //         <Button
-    //             variant="filled"
-    //             onClick={handleOnSignUp}
-    //             size="lg"
-    //             color="deep-orange"
-    //             placeholder={undefined}
-    //             onPointerEnterCapture={undefined}
-    //             onPointerLeaveCapture={undefined}>
-    //             Logout
-    //         </Button>
-    //     } else {
-    //
-    //     }
-    // }
     return (
         <>
             <Navbar
@@ -136,10 +129,10 @@ const NavBar = ({isMobile}: NavBarProps) => {
                             <SearchBar/>
                         )}
                         <div>
-                            {user.isLogin ? (
+                            {user.isLogin || userLocalStorage ? (
                                 <MenuDefault handlerButton={
                                     <img
-                                        src={user.data?.avatar}
+                                        src={user.data?.avatar || (userLocalStorage ? JSON.parse(userLocalStorage) : '')}
                                         alt="User Avatar"
                                         className="w-10 h-10 ml-2 rounded-full object-cover object-center"
                                     />
