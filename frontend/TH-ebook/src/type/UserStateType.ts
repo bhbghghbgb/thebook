@@ -1,6 +1,6 @@
 
 export type UserStateType<T>= {
-    user: T | null;
+    data: T | null;
     isLogin: boolean;
     errors: string;
 }

@@ -2,12 +2,12 @@ import {all, put, takeLatest} from 'redux-saga/effects';
 import axios, {AxiosResponse} from 'axios';
 import {authFailure, authSusccess, signIn, signUp} from './userSlice';
 import {User} from "../../models/User.ts";
-import {Action} from "redux-saga";
+import {PayloadAction} from "@reduxjs/toolkit";
 
 // Định nghĩa signUp và signIn saga có kiểu dữ liệu payload cụ thể
 
-const API_URL = import.meta.env.REACT_APP_API_URL;
-function* signUpUserSaga({payload: user}: Action & { payload: User }) {
+const API_URL = import.meta.env.VITE_API_URL;
+function* signUpUserSaga({payload: user}: PayloadAction<User>) {
     try {
         const response: AxiosResponse<User> = yield axios.post( `${API_URL}/customer` , user);
         yield put(authSusccess(response.data));
@@ -16,10 +16,12 @@ function* signUpUserSaga({payload: user}: Action & { payload: User }) {
     }
 }
 
-function* signInUserSaga({payload: {username, password}}: Action & { payload: { username: string, password: string } }) {
+function* signInUserSaga({payload: {nameoremail, password}}: PayloadAction<{nameoremail: string, password: string} >) {
     try {
+        console.log("signInUserSaga");
+        console.log(`${API_URL}/customer`);
         const response: AxiosResponse<User[]> = yield axios.get(`${API_URL}/customer`);
-        const user: User | undefined = response.data.find((user) => (user.username === username || user.email === username) && user.password === password);
+        const user: User | undefined = response.data.find((user) => (user.username === nameoremail || user.email === nameoremail) && user.password === password);
         if (user) {
             yield put(authSusccess(user));
         } else {

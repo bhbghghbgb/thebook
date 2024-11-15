@@ -15,7 +15,6 @@ import {signUp} from "../../features/user/userSlice.ts";
 import {RootState} from "../../store/store.ts";
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import {User} from "../../models/User.ts";
 
 const ISignUpSchema = yup.object().shape({
         username: yup.string().required(),
@@ -34,7 +33,7 @@ const SignUpForm = () => {
     } = useForm({resolver: yupResolver(ISignUpSchema)});
     const dispatch = useDispatch();
 
-    const onSubmit = (data: User) => {
+    const onSubmit = (data: {username: string, password: string, confirmPassword: string, email: string}) => {
         dispatch(signUp(data));
     }
 

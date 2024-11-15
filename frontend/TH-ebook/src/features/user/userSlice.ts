@@ -3,7 +3,7 @@ import {User} from "../../models/User.ts";
 import {UserStateType} from "../../type/UserStateType.ts";
 
 const initialState: UserStateType<User>= {
-    user: null,
+    data: null,
     isLogin: false,
     errors: '',
 };
@@ -12,16 +12,16 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        signIn: (state: UserStateType<User>, {payload: user}: PayloadAction<User>) => {
+        signIn: (state: UserStateType<User>, {payload: {nameoremail, password}}: PayloadAction<{nameoremail: string, password: string}>) => {
             state.isLogin = false;
             state.errors = '';
         },
-        signUp: (state: UserStateType<User>, {payload: user}: PayloadAction<User> ) => {
+        signUp: (state: UserStateType<User>, {payload: {username, password, confirmPassword, email}}: PayloadAction<{username: string, password: string, confirmPassword: string, email: string}>) => {
             state.isLogin = false;
             state.errors = '';
         },
         authSusccess: (state, {payload: user}: PayloadAction<User>) => {
-            state.user = user;
+            state.data = user;
             state.isLogin = true;
         },
         authFailure: (state, {payload: error}: PayloadAction<string>) => {

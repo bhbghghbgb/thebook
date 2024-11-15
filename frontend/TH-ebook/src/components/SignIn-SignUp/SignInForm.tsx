@@ -12,7 +12,6 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {User} from "../../models/User.ts";
 import {useDispatch} from "react-redux";
 import {signIn} from "../../features/user/userSlice.ts";
 
@@ -31,7 +30,7 @@ const SignInForm = () => {
         // watch,
         formState: {errors}
     } = useForm({ resolver: yupResolver(ISignInSchema) });
-    const onSubmit = (data: User) => {
+    const onSubmit = (data: { nameoremail: string, password: string }) => {
         dispatch(signIn(data));
     }
     return (
