@@ -1,6 +1,7 @@
 import Typography from "@material-tailwind/react/components/Typography";
 import { Book } from "../../models/Book";
-import TagComponent from "../BookDetail/TagComponent";
+
+import AuthorTagComponent from "../BookDetail/AuthorTagComponent";
 import RatingsContainer from "../BookDetail/RatingsContainer";
 import classNames from "classnames";
 import { useState } from "react";
@@ -54,7 +55,7 @@ export default function BookListComponent({ book }: { book: Book }) {
         <RatingsContainer />
       </div>
       <div className="tags grid-in-tags">
-        <TagComponent
+        <AuthorTagComponent
           content={book.category.map((category) => category.name)}
           onContainerClick={(categoryName) =>
             console.log(`Category clicked: ${categoryName}`)

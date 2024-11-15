@@ -2,12 +2,14 @@ import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Book } from "../../models/Book.ts";
+
+import AuthorTagComponent from "./AuthorTagComponent.tsx";
 import ButtonGroupContainer from "./ButtonGroupContainer.tsx";
 import CategoryContainer from "./CategoryContainer.tsx";
 import PartComponent from "./PartComponent.tsx";
 import RatingsContainer from "./RatingsContainer.tsx";
 import TabDefault from "./TabDefault.tsx";
-import TagComponent from "./TagComponent.tsx";
+
 import {
   TitleContainerFittyF,
   TitleContainerFittyR,
@@ -51,7 +53,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
       content: (
         <div className="flex gap-6 items-start">
           {/* Author */}
-          <TagComponent
+          <AuthorTagComponent
             header="Author"
             content={authors}
             onContainerClick={handleAuthorClick}

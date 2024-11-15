@@ -15,6 +15,7 @@ import {signUp} from "../../features/user/userSlice.ts";
 import {RootState} from "../../store/store.ts";
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import {useNavigate} from "react-router-dom";
 
 const ISignUpSchema = yup.object().shape({
         username: yup.string().required(),
@@ -25,6 +26,7 @@ const ISignUpSchema = yup.object().shape({
 )
 const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -35,6 +37,7 @@ const SignUpForm = () => {
 
     const onSubmit = (data: {username: string, password: string, confirmPassword: string, email: string}) => {
         dispatch(signUp(data));
+        navigate("/");
     }
 
     const users = useSelector((state: RootState) => state.user);

@@ -9,11 +9,14 @@ import {
     Button,
 } from "@material-tailwind/react";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signIn} from "../../features/user/userSlice.ts";
+import {useNavigate} from "react-router-dom";
+import {StateType} from "../../store/rootReducer.ts";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const ISignInSchema = yup.object().shape({
         nameoremail: yup.string().required(),
@@ -21,7 +24,8 @@ const ISignInSchema = yup.object().shape({
     }
 )
 const SignInForm = () => {
-
+    const user = useSelector((state: StateType) => state.user);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const {
@@ -33,6 +37,15 @@ const SignInForm = () => {
     const onSubmit = (data: { nameoremail: string, password: string }) => {
         dispatch(signIn(data));
     }
+    const [userLocalStorage, saveUserIDLocalStorage] = useLocalStorage("userid", null);
+    const [userAvatarLocalStorage, saveUserAvatarLocalStorage] = useLocalStorage("useravatar", null);
+    useEffect(() => {
+        if (user.isLogin) {
+            saveUserIDLocalStorage(user.data?.id);
+            saveUserAvatarLocalStorage(user.data?.avatar);
+            navigate('/');
+        }
+    }, [user.isLogin, navigate, saveUserIDLocalStorage, saveUserIDLocalStorage]);
     return (
         <Card className="w-96"
               placeholder={undefined}
