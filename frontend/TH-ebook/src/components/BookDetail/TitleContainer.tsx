@@ -18,7 +18,7 @@ const TitleContainer = ({ book }: Props) => {
           {book.title}
         </span>
         <span className="text-3xl font-normal line-clamp-2 sm:text-xl md:text-2xl inline-block leading-5">
-          Cross Method in the Dead of Night
+          {book.altTitle}
         </span>
         <div className="spacer flex-grow hidden sm:block"></div>
 

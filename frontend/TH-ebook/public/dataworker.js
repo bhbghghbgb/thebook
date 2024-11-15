@@ -136,3 +136,61 @@ const generateFileArray = (dirPath) => {
     console.error("Error reading directory:", error);
   }
 };
+function addAltTitles() {
+  import { readFileSync, createReadStream, writeFileSync } from "fs";
+  import { join } from "path";
+  import { createInterface } from "readline";
+
+  // Read JSON file synchronously
+  const readJsonFile = (filePath) => {
+    return JSON.parse(readFileSync(filePath, "utf8"));
+  };
+  const dirname =
+    "C:/Users/ACER/source/repos/THebook/frontend/TH-ebook/public/api";
+
+  // File paths
+  const inputFilePath = join(dirname, "input.json");
+  const outputFilePath = join(dirname, "output.txt");
+
+  // Read input JSON file
+  const inputData = readJsonFile(inputFilePath);
+
+  // Function to read lines from text file
+  const readLines = async (filePath) => {
+    const lines = [];
+    const fileStream = createReadStream(filePath);
+    const rl = createInterface({
+      input: fileStream,
+      crlfDelay: Infinity,
+    });
+
+    for await (const line of rl) {
+      lines.push(line);
+    }
+
+    return lines;
+  };
+
+  // Main function to update data and print
+  const updateDataWithAltTitles = async () => {
+    try {
+      const outputLines = await readLines(outputFilePath);
+
+      const updatedData = inputData.map((item, index) => {
+        item.altTitle = outputLines[index] || ""; // Handle cases where there may be fewer lines than data objects
+        return item;
+      });
+
+      // Print the updated data
+      writeFileSync(
+        join(dirname, "books.json"),
+        JSON.stringify(updatedData, null, 2)
+      );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // Call the main function
+  updateDataWithAltTitles();
+}
