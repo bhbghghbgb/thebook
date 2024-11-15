@@ -139,7 +139,7 @@ const SignUpForm = () => {
                             className="ml-1 font-bold"
                             onClick={() => {
                                 // navigate("");
-                            }}REACT_APP_API_URL
+                            }}
                             placeholder={undefined}
                             onPointerEnterCapture={undefined}
                             onPointerLeaveCapture={undefined}>
