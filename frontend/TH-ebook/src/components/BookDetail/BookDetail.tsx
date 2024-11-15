@@ -42,7 +42,7 @@ const BookDetail = ({ book, isMobile }: BookDetailProps) => {
   const handleAuthorClick = (authorName: string) => {
     console.log(`Author clicked: ${authorName}`);
   };
-  const handleReadClick = () => navigate(`/reader/${book.id}`);
+  const handleReadClick = () => navigate(`/book/${book.id}/${1}/${1}`);
   const authors = book.authors.map((author) => author.name);
   const tabData = [
     {

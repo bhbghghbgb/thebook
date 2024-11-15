@@ -1,5 +1,5 @@
 from os.path import exists, join
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -105,7 +105,11 @@ with open("./public/books", "r", encoding="utf-8") as file:
 
 
 @app.get("/api/books")
-def get_all_books() -> List[Book]:
+def get_all_books(
+    feature: Optional[Literal["trending", "new", "featured"]] = None
+) -> List[Book]:
+    if feature:
+        return [book for book in books if book.type.name.lower() == feature.lower()]
     return books
 
 

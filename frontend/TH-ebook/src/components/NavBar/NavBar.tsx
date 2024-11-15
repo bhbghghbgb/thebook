@@ -24,10 +24,19 @@ const NavBar = ({ isMobile }: NavBarProps) => {
       <Navbar
         color="transparent"
         className="navbar mx-auto max-w-full w-full px-4 py-3"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
       >
         <div className="icon-bar flex flex-wrap items-center justify-between gap-y-4 text-white">
           <div className="flex items-center">
-            <IconButton className="ml-2" onClick={openDrawer}>
+            <IconButton
+              className="ml-2"
+              onClick={openDrawer}
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
               <HiMenu className="w-6 h-6 text-white" />
             </IconButton>
             <Typography
@@ -35,6 +44,9 @@ const NavBar = ({ isMobile }: NavBarProps) => {
               href="/"
               variant="h6"
               className="mr-4 ml-2 cursor-pointer py-1.5 text-white text-3xl"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               TH Ebook
             </Typography>
@@ -46,6 +58,9 @@ const NavBar = ({ isMobile }: NavBarProps) => {
               onClick={() => {
                 setOpenPricing(true);
               }}
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               <a href="#" className="flex items-center">
                 Pricing
@@ -54,13 +69,24 @@ const NavBar = ({ isMobile }: NavBarProps) => {
           </div>
           <div className="flex items-center">
             {isMobile ? (
-              <IconButton className="ml-2" onClick={() => setSearchOpen(true)}>
+              <IconButton
+                className="ml-2"
+                onClick={() => setSearchOpen(true)}
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 <HiSearch className="w-6 h-6 text-white" />
               </IconButton>
             ) : (
               <SearchBar />
             )}
-            <IconButton className="ml-2">
+            <IconButton
+              className="ml-2"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
               <HiUser
                 className="w-6 h-6 text-white"
                 onClick={() => navigate("/auth/signin")}

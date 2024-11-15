@@ -1,16 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import parse from "html-react-parser";
 import $ from "jquery";
 import DOMPurify from "dompurify";
-const ReaderRenderer = () => {
-  const { data, error, isLoading } = useQuery<string>({
-    queryKey: ["reader"],
-    queryFn: () =>
-      axios
-        .get("/content/1/2-bctcqcbc.htm", { responseType: "text" })
-        .then((res) => res.data),
-  });
+import useFetchData from "../../hooks/useFetchData";
+
+export type ReaderProps = {
+  bookId: number;
+  volumeNth: number;
+  pagePage: number;
+};
+
+const ReaderRenderer = ({
+  bookId: id,
+  volumeNth: vl,
+  pagePage: pg,
+}: ReaderProps) => {
+  const { data, isLoading, error } = useFetchData<string>(
+    `books/${id}/${vl}/${pg}`
+  );
   if (isLoading) {
     return <span>Loading...</span>;
   }

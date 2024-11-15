@@ -21,24 +21,19 @@ function App() {
         <div className="md-content flex-grow">
           <Routes>
             <Route path="*" element={"404 Not Found"}></Route>
-            <Route path="/auth">
+            <Route index element={<HomePage isMobile={isMobile} />} />
+            <Route path="auth">
               <Route path="signup" element={<SignUpPage />} />
               <Route path="signin" element={<SignInPage />} />
             </Route>
-            <Route path="/" element={<HomePage isMobile={isMobile} />} />
-            <Route
-              path="/book/:id"
-              element={<BookDetailPage isMobile={isMobile} />}
-            />
-            <Route
-              path="/book/list"
-              element={<BookListPage header="Trending" />}
-            />
-            <Route path="/reader/:id/:pg?" element={<ReaderPage />}></Route>
-            {/* <Route
-              path="/book/comp"
-              element={<BookListComponent book={books[0]} />}
-            ></Route> */}
+            <Route path="book">
+              <Route index element={<BookListPage header="Trending" />} />
+              <Route
+                path=":id"
+                element={<BookDetailPage isMobile={isMobile} />}
+              />
+              <Route path=":id/:vl/:pg" element={<ReaderPage />} />
+            </Route>
           </Routes>
         </div>
       </div>

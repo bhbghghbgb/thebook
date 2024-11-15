@@ -4,12 +4,12 @@ import TagComponent from "../BookDetail/TagComponent";
 import RatingsContainer from "../BookDetail/RatingsContainer";
 import classNames from "classnames";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function BookListComponent({ book }: { book: Book }) {
   const [viewMode, setViewMode] = useState("dense");
   const isDense = viewMode === "dense";
   const isSparse = !isDense;
-  console.log(viewMode);
   return (
     <div
       key={book.id}
@@ -29,22 +29,27 @@ export default function BookListComponent({ book }: { book: Book }) {
         onClick={() => setViewMode(viewMode === "dense" ? "sparse" : "dense")}
       />
       <Typography
-        className="font-bold title grid-in-title whitespace-nowrap"
-        variant="h2"
+        className="font-bold text-xl title grid-in-title min-w-0 whitespace-nowrap overflow-ellipsis overflow-hidden"
+        variant="paragraph"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
-        {book.title}
+        <Link to={`/book/${book.id}`}>{book.title}</Link>
       </Typography>
-      <div className={`author ${classNames({ hidden: isSparse })}`}>
-        <TagComponent
-          content={book.authors.map((author) => author.name)}
-          onContainerClick={(authorName) =>
-            console.log(`Author clicked: ${authorName}`)
+      <Typography
+        className={`text-lg title grid-in-author min-w-0 whitespace-nowrap overflow-ellipsis overflow-hidden ${classNames(
+          {
+            hidden: isSparse,
           }
-        />
-      </div>
+        )}`}
+        variant="paragraph"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        {book.authors.map((author) => author.name).join(", ")}
+      </Typography>
       <div className="rating grid-in-stats">
         <RatingsContainer />
       </div>
