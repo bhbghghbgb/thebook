@@ -1,12 +1,14 @@
-import { useQuery } from "react-query";
-import { fetchBooks, fetchBook } from "../service/api/bookAPI";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Book } from "../models/Book";
 
-export const useFetchBooks = () => {
-  return useQuery("books", fetchBooks);
+const fetchBooks = async (): Promise<Book[]> => {
+  const response = await axios.get("http://localhost:5024/api/Book");
+  return response.data;
 };
 
-export const useFetchBook = (bookId: string) => {
-  return useQuery(["book", bookId], () => fetchBook(bookId), {
-    enabled: !!bookId,
-  });
+const useFetchBooks = () => {
+  return useQuery<Book[], Error>("books", fetchBooks);
 };
+
+export default useFetchBooks;

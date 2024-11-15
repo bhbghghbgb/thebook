@@ -2,15 +2,22 @@ import { Typography } from "@material-tailwind/react";
 import { Book } from "../../models/Book";
 import TagComponent from "../BookDetail/TagComponent.tsx";
 import RatingsContainer from "../BookDetail/RatingsContainer";
-import withFetchBook from "../Share/withFetchBook.tsx";
 
 interface Props {
   books: Book[];
   onClick: (bookId: string) => void;
-  //   onClick: (book: Book) => void;
+  isLoading: boolean;
+  errors: string;
 }
 
-const BookListContainer = ({ books, onClick }: Props) => {
+const BookListContainer = ({ books, onClick, isLoading, errors }: Props) => {
+  if (isLoading) {
+    return <div className="text-2xl">Loading...</div>;
+  }
+  if (errors) {
+    return <div className="text-2xl text-red-900">Error loading data</div>;
+  }
+
   return (
     <>
       <div className="grid gap-y-2">
@@ -19,7 +26,6 @@ const BookListContainer = ({ books, onClick }: Props) => {
             key={book.id}
             className="manga-card grid grid-areas-product-list grid-cols-[84px auto 1fr auto auto] bg-gray-800"
             onClick={() => onClick(book.id)}
-            // onClick={() => onClick(book)}
           >
             <img
               className="cover grid-in-cover w-35 h-40 mr-5"
@@ -69,4 +75,4 @@ const BookListContainer = ({ books, onClick }: Props) => {
   );
 };
 
-export default withFetchBook(BookListContainer);
+export default BookListContainer;

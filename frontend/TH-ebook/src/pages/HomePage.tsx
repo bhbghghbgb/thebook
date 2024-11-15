@@ -1,44 +1,30 @@
-import BookContainer from "../components/Home/BookContainer";
-// import useFetchBooks from "../hooks/useFetchBook";
-// import { Category } from "../models/Category";
-import { Book } from "../models/Book";
-import BannerSlider from "../components/Home/BannerSlider";
 import { useNavigate } from "react-router-dom";
-import LayoutComponent from "../components/Share/LayoutComponent.tsx";
+import LayoutComponent from "../components/Share/LayoutComponent";
+import BannerSlider from "../components/Home/BannerSlider";
+import BookContainer from "../components/Home/BookContainer";
+import { Book } from "../models/Book";
+import useBooksRedux from "../hooks/useBooksRedux.ts";
 
 interface Props {
   isMobile: boolean;
-  books: Book[];
 }
 
-const HomePage = ({ isMobile, books }: Props) => {
-  // const { data: books, error, isLoading } = useFetchBooks();
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
-
-  // if (!books) {
-  //   return <div>No books available</div>;
-  // }
-
+const HomePage = ({ isMobile }: Props) => {
   const navigate = useNavigate();
 
   const handleBannerClick = (book: Book) => {
     navigate(`/book/${book.id}`, { state: { book } });
   };
 
-  const hanleBookClick = (book: Book) => {
+  const handleBookClick = (book: Book) => {
     navigate(`/book/${book.id}`, { state: { book } });
   };
 
-  const hanleBookListClick = (books: Book[]) => {
+  const handleBookListClick = (books: Book[]) => {
     navigate(`/book/trending`, { state: { books } });
   };
+
+  const { books, errors, isLoading } = useBooksRedux();
 
   return (
     <div className="home-page gap-y-10">
@@ -51,22 +37,28 @@ const HomePage = ({ isMobile, books }: Props) => {
         <BookContainer
           header="Trending"
           books={books}
-          onClick={hanleBookClick}
-          onListClick={hanleBookListClick}
+          onClick={handleBookClick}
+          onListClick={handleBookListClick}
+          errors={errors}
+          isLoading={isLoading}
         />
         <div className="flex-grow hidden sm:block" />
         <BookContainer
           header="New"
           books={books}
-          onClick={hanleBookClick}
-          onListClick={hanleBookListClick}
+          onClick={handleBookClick}
+          onListClick={handleBookListClick}
+          errors={errors}
+          isLoading={isLoading}
         />
         <div className="flex-grow hidden sm:block" />
         <BookContainer
           header="Features"
           books={books}
-          onClick={hanleBookClick}
-          onListClick={hanleBookListClick}
+          onClick={handleBookClick}
+          onListClick={handleBookListClick}
+          errors={errors}
+          isLoading={isLoading}
         />
       </LayoutComponent>
     </div>
