@@ -16,6 +16,7 @@ import {RootState} from "../../store/store.ts";
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import {useNavigate} from "react-router-dom";
+import {StateType} from "../../store/rootReducer.ts";
 
 const ISignUpSchema = yup.object().shape({
         username: yup.string().required(),
@@ -25,6 +26,7 @@ const ISignUpSchema = yup.object().shape({
     }
 )
 const SignUpForm = () => {
+    const user = useSelector((state: StateType) => state.user);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const {
@@ -37,11 +39,11 @@ const SignUpForm = () => {
 
     const onSubmit = (data: {username: string, password: string, confirmPassword: string, email: string}) => {
         dispatch(signUp(data));
-        navigate("/");
+        if (user.isLogin){
+            navigate("/");
+        }
     }
 
-    const users = useSelector((state: RootState) => state.user);
-    console.log("All users:", users);
     return (
         <Card className="w-96"
               placeholder={undefined} onPointerEnterCapture={undefined}
@@ -97,7 +99,7 @@ const SignUpForm = () => {
                         crossOrigin={undefined}
                         label="Confirm Password"
                         {...register("confirmPassword", {required: true, maxLength: 10})}
-                        type="password"/>
+                        type={showPassword ? "text" : "password"}/>
                     {errors.confirmPassword && <p className="text-red-900">{errors.confirmPassword.message}</p>}
 
                     <Input

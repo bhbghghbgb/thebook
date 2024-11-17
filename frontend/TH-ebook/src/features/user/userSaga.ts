@@ -6,7 +6,7 @@ import {PayloadAction} from "@reduxjs/toolkit";
 
 // Định nghĩa signUp và signIn saga có kiểu dữ liệu payload cụ thể
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL2;
 function* signUpUserSaga({payload: user}: PayloadAction<User>) {
     try {
         user.avatar = "https://mangadex.org/img/avatar.png"
