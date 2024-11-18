@@ -37,15 +37,15 @@ const SignInForm = () => {
     const onSubmit = (data: { nameoremail: string, password: string }) => {
         dispatch(signIn(data));
     }
-    const [userLocalStorage, saveUserIDLocalStorage] = useLocalStorage("userid", null);
     const [userAvatarLocalStorage, saveUserAvatarLocalStorage] = useLocalStorage("useravatar", null);
+    const [isLoginLocalStorage, saveIsLoginLocalStorage] = useLocalStorage("islogin", false);
     useEffect(() => {
         if (user.isLogin) {
-            saveUserIDLocalStorage(user.data?.id);
             saveUserAvatarLocalStorage(user.data?.avatar);
+            saveIsLoginLocalStorage(true);
             navigate('/');
         }
-    }, [user.isLogin, navigate, saveUserIDLocalStorage, saveUserIDLocalStorage]);
+    });
     return (
         <Card className="w-96"
               placeholder={undefined}

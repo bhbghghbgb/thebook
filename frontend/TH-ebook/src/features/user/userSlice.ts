@@ -15,7 +15,7 @@ const userSlice = createSlice({
         signIn: (state: UserStateType<User>, {payload: {nameoremail, password}}: PayloadAction<{nameoremail: string, password: string}>) => {
             state.errors = '';
         },
-        signUp: (state: UserStateType<User>, {payload: {username, password, confirmPassword, email}}: PayloadAction<{username: string, password: string, confirmPassword: string, email: string}>) => {
+        signUp: (state: UserStateType<User>, {payload: {username, password, email}}: PayloadAction<{username: string, password: string, email: string}>) => {
             state.errors = '';
         },
         authSusccess: (state, {payload: user}: PayloadAction<User>) => {

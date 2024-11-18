@@ -9,14 +9,14 @@ import {
     Button,
 } from "@material-tailwind/react";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {signUp} from "../../features/user/userSlice.ts";
-import {RootState} from "../../store/store.ts";
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import {useNavigate} from "react-router-dom";
 import {StateType} from "../../store/rootReducer.ts";
+import {useLocalStorage} from "@uidotdev/usehooks";
 
 const ISignUpSchema = yup.object().shape({
         username: yup.string().required(),
@@ -37,12 +37,19 @@ const SignUpForm = () => {
     } = useForm({resolver: yupResolver(ISignUpSchema)});
     const dispatch = useDispatch();
 
-    const onSubmit = (data: {username: string, password: string, confirmPassword: string, email: string}) => {
+    const onSubmit = (data: {username: string, password: string, email: string}) => {
         dispatch(signUp(data));
-        if (user.isLogin){
-            navigate("/");
-        }
     }
+
+    const [userAvatarLocalStorage, saveUserAvatarLocalStorage] = useLocalStorage("useravatar", null);
+    const [isLoginLocalStorage, saveIsLoginLocalStorage] = useLocalStorage("islogin", false);
+    useEffect(() => {
+        if (user.isLogin) {
+            saveUserAvatarLocalStorage(user.data?.avatar);
+            saveIsLoginLocalStorage(true);
+            navigate('/');
+        }
+    });
 
     return (
         <Card className="w-96"
