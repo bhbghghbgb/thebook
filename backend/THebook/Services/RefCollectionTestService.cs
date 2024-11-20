@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using THebook.Models.Entities;
 using THebook.Repository;
 
@@ -9,12 +10,10 @@ namespace THebook.Services
 
         public async Task CreateOneLevelNest(string documentName, string childrenName)
         {
+            var children = new NestedCollectionTest { Name = childrenName };
+            await _irctRepository.InsertAsync(children);
             await _irctRepository.InsertAsync(
-                new NestedCollectionTest
-                {
-                    Name = documentName,
-                    Children = new NestedCollectionTest { Name = childrenName },
-                }
+                new NestedCollectionTest { Name = documentName, ChildrenId = children.Id }
             );
         }
 

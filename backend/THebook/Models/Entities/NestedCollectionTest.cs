@@ -10,8 +10,13 @@ namespace THebook.Models.Entities
         [JsonPropertyName("name")]
         public string? Name { get; set; } = null!;
 
-        [BsonElement("description")]
-        [JsonPropertyName("description")]
-        public NestedCollectionTest? Children { get; set; } = null!;
+        [BsonElement("children")]
+        [JsonIgnore]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? ChildrenId { get; set; } = null!;
+
+        [BsonElement("children_object")]
+        [JsonPropertyName("children")]
+        public IEnumerable<NestedCollectionTest>? Children { get; set; } = null!;
     }
 }
