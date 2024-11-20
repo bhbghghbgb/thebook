@@ -17,6 +17,6 @@ namespace THebook.Models.Entities
 
         [BsonElement("children_object")]
         [JsonPropertyName("children")]
-        public IEnumerable<NestedCollectionTest>? Children { get; set; } = null!;
+        public NestedCollectionTest? Children { get; set; } = null!;
     }
 }

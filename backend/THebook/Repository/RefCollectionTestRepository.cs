@@ -15,7 +15,7 @@ public partial class RefCollectionTestRepository(
 {
     public new async Task<IEnumerable<NestedCollectionTest>> FindAllAsync()
     {
-        // Define the lookup stage
+        // add them 1 field vao object, su dung so sanh objectid de tim
         var lookupStage = new BsonDocument(
             "$lookup",
             new BsonDocument
@@ -26,7 +26,16 @@ public partial class RefCollectionTestRepository(
                 { "as", "children_object" },
             }
         );
-        var pipeline = new[] { lookupStage };
+        // vi ket qua field ra la array, dung unwind de thanh 1 phan tu dau tien
+        var unwindStage = new BsonDocument(
+            "$unwind",
+            new BsonDocument
+            {
+                { "path", "$children_object" },
+                { "preserveNullAndEmptyArrays", true },
+            }
+        );
+        var pipeline = new[] { lookupStage, unwindStage };
         return await _collection.Aggregate<NestedCollectionTest>(pipeline).ToListAsync();
     }
 }
