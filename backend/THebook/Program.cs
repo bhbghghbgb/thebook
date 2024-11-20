@@ -11,6 +11,7 @@ using MongoDB.Infrastructure;
 using MongoDB.Infrastructure.Extensions;
 using MongoDB.UnitOfWork.Abstractions.Extensions;
 using THebook.Common;
+using THebook.Infrastructure;
 using THebook.Models.Queries;
 using THebook.Repository;
 using THebook.Services;

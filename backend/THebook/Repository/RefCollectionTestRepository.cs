@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.UnitOfWork;
 using THebook.Models.Entities;
 
 namespace THebook.Repository;
@@ -8,11 +9,14 @@ namespace THebook.Repository;
 public partial class RefCollectionTestRepository(
     ThEbookContext context,
     IOptions<MongoDbSettings> mongoDbSettings,
-    ILogger<RefCollectionTestRepository> logger
+    ILogger<RefCollectionTestRepository> logger,
+    IMongoDbUnitOfWork<ThEbookContext> unitOfWork
 )
     : CrudRepository<NestedCollectionTest>(context, mongoDbSettings, logger),
         IRefCollectionTestRepository
 {
+    private readonly IMongoDbUnitOfWork<ThEbookContext> _unitOfWork = unitOfWork;
+
     private IAggregateFluent<NestedCollectionTest> GetDefaultPipeline()
     {
         // MongoDB.Driver.Linq.ExpressionNotSupportedException: Expression not supported: asField.Children.

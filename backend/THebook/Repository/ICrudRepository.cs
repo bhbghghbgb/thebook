@@ -1,8 +1,9 @@
+using MongoDB.Repository;
 using THebook.Models;
 
 namespace THebook.Repository
 {
-    public interface ICrudRepository<T>
+    public interface ICrudRepository<T> : IMongoDbRepository<T>
         where T : BaseDbModel
     {
         Task<IEnumerable<T>> FindAllAsync();

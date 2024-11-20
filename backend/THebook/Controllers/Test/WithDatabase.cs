@@ -27,9 +27,16 @@ namespace THebook.Controllers.Test
 
         [HttpPut]
         [Route("nest")]
-        public async Task PutNestTest(string documentName, string childrenName)
+        public async Task PutNestTest(
+            string documentName,
+            string childrenName,
+            bool error = false
+        )
         {
-            await _rctService.CreateOneLevelNest(documentName, childrenName);
+            if (error)
+                await _rctService.CreateOneLevelNestError(documentName, childrenName);
+            else
+                await _rctService.CreateOneLevelNestOk(documentName, childrenName);
         }
     }
 }
