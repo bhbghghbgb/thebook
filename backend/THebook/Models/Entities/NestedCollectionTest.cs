@@ -6,17 +6,20 @@ namespace THebook.Models.Entities
 {
     public class NestedCollectionTest : BaseDbModel
     {
+        public const string CHILDREN = "children";
+        public const string CHILDREN_OBJ = "children_object";
+
         [BsonElement("name")]
         [JsonPropertyName("name")]
         public string? Name { get; set; } = null!;
 
-        [BsonElement("children")]
+        [BsonElement(CHILDREN)]
         [JsonIgnore]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? ChildrenId { get; set; } = null!;
 
-        [BsonElement("children_object")]
-        [JsonPropertyName("children")]
+        [BsonElement(CHILDREN_OBJ)]
+        [JsonPropertyName(CHILDREN)]
         public NestedCollectionTest? Children { get; set; } = null!;
     }
 }

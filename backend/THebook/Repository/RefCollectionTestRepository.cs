@@ -13,17 +13,35 @@ public partial class RefCollectionTestRepository(
     : CrudRepository<NestedCollectionTest>(context, mongoDbSettings, logger),
         IRefCollectionTestRepository
 {
-    public new async Task<IEnumerable<NestedCollectionTest>> FindAllAsync()
+    private IAggregateFluent<NestedCollectionTest> GetDefaultPipeline()
     {
+        // MongoDB.Driver.Linq.ExpressionNotSupportedException: Expression not supported: asField.Children.
+        // var collectionName = _settings.Value.CollectionNames[nameof(NestedCollectionTest)];
+        // return _collection
+        //     .Aggregate()
+        //     .Lookup<NestedCollectionTest, NestedCollectionTest, NestedCollectionTest>(
+        //         _collection,
+        //         localField => localField.ChildrenId,
+        //         foreignField => foreignField.Id,
+        //         asField => asField.Children
+        //     )
+        //     .Unwind(
+        //         field => field.Children,
+        //         new AggregateUnwindOptions<NestedCollectionTest>
+        //         {
+        //             PreserveNullAndEmptyArrays = true,
+        //         }
+        //     );
+        var collectionName = _settings.Value.CollectionNames[nameof(NestedCollectionTest)];
         // add them 1 field vao object, su dung so sanh objectid de tim
         var lookupStage = new BsonDocument(
             "$lookup",
             new BsonDocument
             {
-                { "from", "nested_collection_test" },
-                { "localField", "children" },
+                { "from", collectionName },
+                { "localField", NestedCollectionTest.CHILDREN },
                 { "foreignField", "_id" },
-                { "as", "children_object" },
+                { "as", NestedCollectionTest.CHILDREN_OBJ },
             }
         );
         // vi ket qua field ra la array, dung unwind de thanh 1 phan tu dau tien
@@ -31,11 +49,18 @@ public partial class RefCollectionTestRepository(
             "$unwind",
             new BsonDocument
             {
-                { "path", "$children_object" },
+                { "path", $"${NestedCollectionTest.CHILDREN_OBJ}" },
                 { "preserveNullAndEmptyArrays", true },
             }
         );
-        var pipeline = new[] { lookupStage, unwindStage };
-        return await _collection.Aggregate<NestedCollectionTest>(pipeline).ToListAsync();
+        return _collection
+            .Aggregate()
+            .AppendStage<NestedCollectionTest>(lookupStage)
+            .AppendStage<NestedCollectionTest>(unwindStage);
+    }
+
+    public new async Task<IEnumerable<NestedCollectionTest>> FindAllAsync()
+    {
+        return await GetDefaultPipeline().ToListAsync();
     }
 }

@@ -4,14 +4,9 @@ using THebook.Repository;
 
 namespace THebook.Services
 {
-    public class TagService
+    public class TagService(ITagRepository tagRepository)
     {
-        private readonly ITagRepository _tagRepository;
-
-        public TagService(ITagRepository tagRepository)
-        {
-            _tagRepository = tagRepository;
-        }
+        private readonly ITagRepository _tagRepository = tagRepository;
 
         public async Task<IEnumerable<TagEntity>> GetTagsAsync(TagCriteria criteria)
         {
