@@ -45,6 +45,8 @@ builder.Services.AddDbContext<MongoDbContextEf>();
 // builder.Services.AddSingleton<MongoDbCollection>();
 builder.Services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IRefCollectionTestRepository, RefCollectionTestRepository>();
+builder.Services.AddScoped<RefCollectionTestService>();
 builder.Services.AddScoped<TagService>(); // Change from AddSingleton to AddScoped
 
 // Thêm dòng này để cấu hình logging
@@ -72,8 +74,7 @@ var databaseSettings = builder
 var clientSettings = MongoClientSettings.FromConnectionString(connectionString);
 clientSettings.LoggingSettings = new LoggingSettings(
     LoggerFactory.Create(loggingBuilder =>
-        loggingBuilder.AddConfiguration(builder.Configuration.GetSection("Logging"))
-        .AddConsole()
+        loggingBuilder.AddConfiguration(builder.Configuration.GetSection("Logging")).AddConsole()
     ),
     builder.Configuration.GetSection("MongoDB:LoggingMaxDocumentSize").Get<int>()
 );
