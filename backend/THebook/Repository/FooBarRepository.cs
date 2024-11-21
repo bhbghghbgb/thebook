@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.UnitOfWork;
 using THebook.Models.Entities;
@@ -34,6 +35,8 @@ public partial class FooBarRepository(
                 foreignField => foreignField.Id,
                 @as => @as.Foo
             )
+            // comment if decide to override "foo" instead of making an extra field "foo_object" FooBar.cs
+            .AppendStage<Bar>(new BsonDocument { { "$unset", "foo" } })
             .Unwind(
                 field => field.Foo,
                 new AggregateUnwindOptions<Bar> { PreserveNullAndEmptyArrays = true }

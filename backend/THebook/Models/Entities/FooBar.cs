@@ -13,7 +13,8 @@ public class Foo : BaseDbModel
 
 public class Bar : Foo
 {
-    [BsonElement("foo")]
+    // [BsonElement("foo")]
+    [BsonElement("foo_object")]
     [JsonPropertyName("foo")]
     public Foo? Foo { get; set; } = null!;
 }
