@@ -6,9 +6,9 @@ namespace THebook.Controllers.Test
 {
     [ApiController]
     [Route("test/db")]
-    public class WithDatabase(RefCollectionTestService rctService) : ControllerBase
+    public class WithDatabase(FooBarService fooBarService) : ControllerBase
     {
-        private readonly RefCollectionTestService _rctService = rctService;
+        private readonly FooBarService _fooBarService = fooBarService;
 
         [HttpGet]
         [Route("tag")]
@@ -19,24 +19,20 @@ namespace THebook.Controllers.Test
         }
 
         [HttpGet]
-        [Route("nest")]
-        public async Task<IEnumerable<NestedCollectionTest>> GetNestTest()
+        [Route("foobar")]
+        public Task<FooBar> GetFoobarTest()
         {
-            return await _rctService.Get();
+            return _fooBarService.Get();
         }
 
         [HttpPut]
-        [Route("nest")]
-        public async Task PutNestTest(
-            string documentName,
-            string childrenName,
-            bool error = false
-        )
+        [Route("foobar")]
+        public async Task PutFooBarTest(string barName, string fooName, bool error = false)
         {
             if (error)
-                await _rctService.CreateOneLevelNestError(documentName, childrenName);
+                await _fooBarService.CreateOneLevelNestError(barName, fooName);
             else
-                await _rctService.CreateOneLevelNestOk(documentName, childrenName);
+                await _fooBarService.CreateOneLevelNestOk(barName, fooName);
         }
     }
 }

@@ -57,6 +57,11 @@ public partial class CrudRepository<T> : MongoDbRepository<T>, ICrudRepository<T
         await _collection.DeleteOneAsync(document => document.Id == id);
     }
 
+    public IMongoCollection<T> GetAggregateCollection()
+    {
+        return _collection;
+    }
+
     [LoggerMessage(Level = LogLevel.Debug, Message = "Find fluent generated {findFluent}.")]
     protected static partial void LogFinder(ILogger logger, IFindFluent<T, T> findFluent);
 }

@@ -1,3 +1,4 @@
+using MongoDB.Driver;
 using MongoDB.Repository;
 using THebook.Models;
 
@@ -11,5 +12,6 @@ namespace THebook.Repository
         Task InsertAsync(T entity);
         Task ReplaceAsync(string id, T entity);
         Task DeleteAsync(string id);
+        IMongoCollection<T> GetAggregateCollection();
     }
 }
