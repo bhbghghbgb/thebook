@@ -10,111 +10,75 @@ import {
 } from "@material-tailwind/react";
 import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
-import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useDispatch, useSelector} from "react-redux";
-import {signIn} from "../../features/user/userSlice.ts";
+import * as yup from "yup";
 import {useNavigate} from "react-router-dom";
-import {StateType} from "../../store/rootReducer.ts";
-import { useLocalStorage } from "@uidotdev/usehooks";
+import { useAuth } from "../../context/AuthContext";
 
 const ISignInSchema = yup.object().shape({
-        nameoremail: yup.string().required(),
+        usernameoremail: yup.string().required(),
         password: yup.string().required(),
     }
 )
 const SignInForm = () => {
-    const user = useSelector((state: StateType) => state.user);
+    const { signin, user } = useAuth();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,
         handleSubmit,
-        // watch,
         formState: {errors}
     } = useForm({ resolver: yupResolver(ISignInSchema) });
-    const onSubmit = (data: { nameoremail: string, password: string }) => {
-        dispatch(signIn(data));
+
+    const onSubmit = (data: { usernameoremail: string, password: string }) => {
+        signin(data.usernameoremail, data.password);
     }
-    const [userAvatarLocalStorage, saveUserAvatarLocalStorage] = useLocalStorage("useravatar", null);
-    const [isLoginLocalStorage, saveIsLoginLocalStorage] = useLocalStorage("islogin", false);
+
     useEffect(() => {
-        if (user.isLogin) {
-            saveUserAvatarLocalStorage(user.data?.avatar);
-            saveIsLoginLocalStorage(true);
+        if (user) {
             navigate('/');
         }
-    });
+    }, [user, navigate]);
+
     return (
-        <Card className="w-96"
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}>
+        <Card className="w-96">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CardHeader
                     variant="gradient"
                     color="deep-orange"
-                    className="mb-4 grid h-28 place-items-center"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}                >
-                    <Typography variant="h3" color="white"
-                                placeholder={undefined}
-                                onPointerEnterCapture={undefined}
-                                onPointerLeaveCapture={undefined}>
+                    className="mb-4 grid h-28 place-items-center">
+                    <Typography variant="h3" color="white">
                         Sign In
                     </Typography>
                 </CardHeader>
-                <CardBody className="flex flex-col gap-4"
-                          placeholder={undefined}
-                          onPointerEnterCapture={undefined}
-                          onPointerLeaveCapture={undefined}>
+                <CardBody className="flex flex-col gap-4">
                     <Input
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                        crossOrigin={undefined}
-                        {...register("nameoremail", {required: true, maxLength: 20})}
-                        label="UserName"                    />
-                    {errors.nameoremail && <p className="text-red-900">This field is required</p>}
+                        {...register("usernameoremail", {required: true, maxLength: 20})}
+                        label="UserName or Email"                    />
+                    {errors.usernameoremail && <p className="text-red-900">This field is required</p>}
 
                     <div className="relative flex w-full">
                         <Input
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}
-                            crossOrigin={undefined}
                             label="Password"
                             {...register("password", {required: true, maxLength: 10})}
                             type={showPassword ? "text" : "password"}                        />
                         <Checkbox
                             checked={showPassword}
                             onChange={() => setShowPassword(!showPassword)}
-                            label="Show"
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}
-                            crossOrigin={undefined}                        />
+                            label="Show"                        />
                     </div>
                     {errors.password && <p className="text-red-900">This field is required</p>}
 
                 </CardBody>
-                <CardFooter className="pt-0"
-                            placeholder={undefined}
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}>
+                <CardFooter className="pt-0">
                     <Button
                         variant="gradient"
                         color="deep-orange"
                         fullWidth
-                        type="submit" // Trigger the onSubmit function
-                        placeholder={undefined}
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}                    >
+                        type="submit">
                         Sign In
                     </Button>
-                    <Typography variant="small" className="mt-6 flex justify-center"
-                                placeholder={undefined}
-                                onPointerEnterCapture={undefined}
-                                onPointerLeaveCapture={undefined}>
+                    <Typography variant="small" className="mt-6 flex justify-center">
                         Don&apos;t have an account?
                         <Typography
                             as="a"
@@ -123,11 +87,8 @@ const SignInForm = () => {
                             color="blue-gray"
                             className="ml-1 font-bold"
                             onClick={() => {
-                                // navigate("/auth/signup");
-                            }}
-                            placeholder={undefined}
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}                        >
+                                navigate("/auth/signup");
+                            }}>
                             Sign Up
                         </Typography>
                     </Typography>

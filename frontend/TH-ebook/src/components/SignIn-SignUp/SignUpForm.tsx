@@ -8,140 +8,86 @@ import {
     Checkbox,
     Button,
 } from "@material-tailwind/react";
-import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {signUp} from "../../features/user/userSlice.ts";
-import {yupResolver} from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import {useNavigate} from "react-router-dom";
-import {StateType} from "../../store/rootReducer.ts";
-import {useLocalStorage} from "@uidotdev/usehooks";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const ISignUpSchema = yup.object().shape({
-        username: yup.string().required(),
-        password: yup.string().required(),
-        confirmPassword: yup.string().required(),
-        email: yup.string().email().required(),
-    }
-)
+    username: yup.string().required(),
+    password: yup.string().required(),
+    email: yup.string().email().required(),
+});
+
 const SignUpForm = () => {
-    const user = useSelector((state: StateType) => state.user);
-    const [showPassword, setShowPassword] = useState(false);
+    const { signup, user } = useAuth();
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
     const {
         register,
         handleSubmit,
-        // watch,
-        formState: {errors},
-    } = useForm({resolver: yupResolver(ISignUpSchema)});
-    const dispatch = useDispatch();
+        formState: { errors },
+    } = useForm({ resolver: yupResolver(ISignUpSchema) });
 
-    const onSubmit = (data: {username: string, password: string, email: string}) => {
-        dispatch(signUp(data));
-    }
+    const onSubmit = (data: { username: string, password: string, email: string }) => {
+        signup(data.username, data.email, data.password);
+    };
 
-    const [userAvatarLocalStorage, saveUserAvatarLocalStorage] = useLocalStorage("useravatar", null);
-    const [isLoginLocalStorage, saveIsLoginLocalStorage] = useLocalStorage("islogin", false);
     useEffect(() => {
-        if (user.isLogin) {
-            saveUserAvatarLocalStorage(user.data?.avatar);
-            saveIsLoginLocalStorage(true);
+        if (user) {
             navigate('/');
         }
-    });
+    }, [user, navigate]);
 
     return (
-        <Card className="w-96"
-              placeholder={undefined} onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}>
+        <Card className="w-96">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CardHeader
                     variant="gradient"
                     color="deep-orange"
-                    className="mb-4 grid h-28 place-items-center"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}>
-                    <Typography variant="h3" color="white"
-                                placeholder={undefined}
-                                onPointerEnterCapture={undefined}
-                                onPointerLeaveCapture={undefined}>
+                    className="mb-4 grid h-28 place-items-center">
+                    <Typography variant="h3" color="white">
                         Sign Up
                     </Typography>
                 </CardHeader>
-                <CardBody className="flex flex-col gap-4"
-                          placeholder={undefined}
-                          onPointerEnterCapture={undefined}
-                          onPointerLeaveCapture={undefined}>
+                <CardBody className="flex flex-col gap-4">
                     <Input
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                        crossOrigin={undefined}
-                        {...register("username", {required: true, maxLength: 20})}
-                        label="UserName"/>
+                        {...register("username", { required: true, maxLength: 20 })}
+                        label="UserName" />
                     {errors.username && <p className="text-red-900">{errors.username.message}</p>}
 
                     <div className="relative flex w-full">
                         <Input
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}
-                            crossOrigin={undefined}
                             label="Password"
-                            {...register("password", {required: true, maxLength: 10})}
-                            type={showPassword ? "text" : "password"}/>
+                            {...register("password", { required: true, maxLength: 10 })}
+                            type={showPassword ? "text" : "password"} />
                         <Checkbox
                             checked={showPassword}
                             onChange={() => setShowPassword(!showPassword)}
-                            label="Show"
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}
-                            crossOrigin={undefined}/>
+                            label="Show" />
                     </div>
                     {errors.password && <p className="text-red-900">{errors.password.message}</p>}
 
                     <Input
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                        crossOrigin={undefined}
-                        label="Confirm Password"
-                        {...register("confirmPassword", {required: true, maxLength: 10})}
-                        type={showPassword ? "text" : "password"}/>
-                    {errors.confirmPassword && <p className="text-red-900">{errors.confirmPassword.message}</p>}
-
-                    <Input
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                        crossOrigin={undefined}
-                        {...register("email", {required: true, pattern: /^\S+@\S+$/i})}
-                        label="Email"/>
+                        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+                        label="Email" />
                     {errors.email && <p className="text-red-900">{errors.email.message}</p>}
 
                     <div className="-ml-2.5">
-                        <Checkbox label="Remember Me"
-                                  onPointerEnterCapture={undefined}
-                                  onPointerLeaveCapture={undefined}
-                                  crossOrigin={undefined}/>
+                        <Checkbox label="Remember Me" />
                     </div>
-
                 </CardBody>
-                <CardFooter className="pt-0"
-                            placeholder={undefined}
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}>
+                <CardFooter className="pt-0">
                     <Button
                         variant="gradient"
                         color="deep-orange"
                         fullWidth
-                        type="submit" // Trigger the onSubmit function
-                        placeholder={undefined}
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}>
+                        type="submit">
                         Sign Up
                     </Button>
-                    <Typography variant="small" className="mt-6 flex justify-center"
-                                placeholder={undefined} onPointerEnterCapture={undefined}
-                                onPointerLeaveCapture={undefined}>
+                    <Typography variant="small" className="mt-6 flex justify-center">
                         Already have an account?
                         <Typography
                             as="a"
@@ -150,11 +96,8 @@ const SignUpForm = () => {
                             color="blue-gray"
                             className="ml-1 font-bold"
                             onClick={() => {
-                                // navigate("");
-                            }}
-                            placeholder={undefined}
-                            onPointerEnterCapture={undefined}
-                            onPointerLeaveCapture={undefined}>
+                                navigate("/auth/signin");
+                            }}>
                             Sign In
                         </Typography>
                     </Typography>
@@ -162,6 +105,6 @@ const SignUpForm = () => {
             </form>
         </Card>
     );
-}
+};
 
 export default SignUpForm;
