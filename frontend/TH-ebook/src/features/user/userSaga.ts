@@ -25,7 +25,7 @@ function* signUpUserSaga({payload: userPayload}: PayloadAction<User>) {
 function* signInUserSaga({payload: {nameoremail, password}}: PayloadAction<{nameoremail: string, password: string} >) {
     try {
         console.log("signInUserSaga");
-        console.log(`${API_URL}/customer`);
+        console.log(`${API_URL}/${endpoint}`);
         const response: AxiosResponse<User[]> = yield axios.get(`${API_URL}/${endpoint}`);
         const user: User | undefined = response.data.find((user) => (user.username === nameoremail || user.email === nameoremail) && user.password === password);
         if (user) {

@@ -8,7 +8,7 @@ const fetchBooks = async (): Promise<Book[]> => {
 };
 
 const useFetchBooks = () => {
-  return useQuery<Book[], Error>("books", fetchBooks);
+  return useQuery<Book[], Error>("books.json", fetchBooks);
 };
 
 export default useFetchBooks;

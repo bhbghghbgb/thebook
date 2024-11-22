@@ -158,10 +158,10 @@ app.add_middleware(
 )
 
 # Load JSON data
-with open("./public/books", "r", encoding="utf-8") as file:
+with open("public/books.json", "r", encoding="utf-8") as file:
     books = TypeAdapter(List[Book]).validate_json(file.read())
 
-with open("./public/users", "r", encoding="utf-8") as file:
+with open("public/users.json", "r", encoding="utf-8") as file:
     users = TypeAdapter(List[User]).validate_json(file.read())
 
 @app.get("/api/users")
