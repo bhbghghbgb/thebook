@@ -1,6 +1,6 @@
 import {all, put, takeLatest} from 'redux-saga/effects';
 import axios, {AxiosResponse} from 'axios';
-import {authFailure, authSusccess, logout, signIn, signUp} from './userSlice';
+import {authFailure, authSusccess, logoutSlice, signIn, signUp} from './userSlice';
 import {User} from "../../models/User.ts";
 import {PayloadAction} from "@reduxjs/toolkit";
 import {UserRespone} from "../../models/UserRespone.ts";
@@ -40,7 +40,7 @@ function* signInUserSaga({payload: {nameoremail, password}}: PayloadAction<{name
 
 function* logoutUserSaga() {
     try {
-        yield logout();
+        yield logoutSlice();
     } catch (error: unknown) {
         yield put(authFailure((error as Error).message));
     }
@@ -50,6 +50,6 @@ export default function* userSaga() {
     yield all([
         takeLatest(signUp.type, signUpUserSaga),
         takeLatest(signIn.type, signInUserSaga),
-        takeLatest(logout.type, logoutUserSaga),
+        takeLatest(logoutSlice.type, logoutUserSaga),
     ]);
 }

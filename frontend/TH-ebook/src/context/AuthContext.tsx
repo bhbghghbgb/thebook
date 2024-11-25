@@ -23,8 +23,10 @@ export const useAuth = () => {
     return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children,}) => {
-    const [user, setUser] = useState<User | null>(null);
+export const AuthProvider= ({children}: { children: React.ReactNode }) => {
+    const [user, setUser] = useState<User | null>(
+        JSON.parse(localStorage.getItem("user") || "null")
+    )
     const [token, setToken] = useState<string | null>(
         localStorage.getItem("token")
     );
@@ -41,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children,
 
             if (response.user) {
                 setUser(response.user);
+                localStorage.setItem("user", JSON.stringify(response.user));
             }
 
             return actualToken;
@@ -75,6 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children,
         setUser(null);
         setToken(null);
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         // Optionally navigate to signin page
         navigate("/auth/signin");
     }, [navigate]);

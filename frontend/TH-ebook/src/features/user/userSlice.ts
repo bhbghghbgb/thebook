@@ -25,13 +25,13 @@ const userSlice = createSlice({
         authFailure: (state, {payload: error}: PayloadAction<string>) => {
             state.errors = error
         },
-        logout: (state: UserStateType<User>) => {
+        logoutSlice: (state: UserStateType<User>) => {
             state.data = null;
             state.isLogin = false;
         }
      },
 })
 
-export const { signIn, signUp, authSusccess, authFailure, logout} = userSlice.actions;
+export const { signIn, signUp, authSusccess, authFailure, logoutSlice} = userSlice.actions;
 
 export default userSlice.reducer;

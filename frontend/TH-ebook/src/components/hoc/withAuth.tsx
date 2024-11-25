@@ -20,9 +20,11 @@ const withAuth = (WrappedComponent: React.ComponentType<React.PropsWithChildren<
 
 
     return (props: React.PropsWithChildren<Record<string, unknown>>) => {
-        const {user, token, refreshToken} = useAuth();
+        const {user, token} = useAuth();
         const navigate = useNavigate();
 
+        console.log('User: ', user);
+        console.log('Token: ', token);
         useEffect(() => {
             const checkAuth = async () => {
                 if (!token) {
@@ -30,7 +32,7 @@ const withAuth = (WrappedComponent: React.ComponentType<React.PropsWithChildren<
                 }
             }
             checkAuth().then(r => `Checked auth: ${r}`);
-        }, [token, navigate, refreshToken]);
+        }, [token, navigate]);
 
 
         if (!token) {

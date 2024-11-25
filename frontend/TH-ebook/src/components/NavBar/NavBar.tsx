@@ -13,8 +13,9 @@ import CardPricing from "../Card/CardPricing.tsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { StateType } from "../../store/rootReducer.ts";
-import { logout } from "../../features/user/userSlice.ts";
+import { logoutSlice }  from "../../features/user/userSlice.ts" ;
 import MenuDefault from "../Share/MenuDefault.tsx";
+import {useAuth} from "../../context/AuthContext.tsx";
 
 interface NavBarProps {
   isMobile: boolean;
@@ -27,26 +28,22 @@ const NavBar = ({ isMobile }: NavBarProps) => {
   const [openPricing, setOpenPricing] = useState(false);
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
-  const user = useSelector((state: StateType) => state.user);
-  const useravartarLocalStorage = localStorage.getItem("useravatar");
-  const isLoginLocalStorage = localStorage.getItem("islogin");
-
-  console.log("User Local:", useravartarLocalStorage);
-  console.log("User State:", user);
-
+  const userSelector = useSelector((state: StateType) => state.user);
+  const userLocalStorage = localStorage.getItem("user");
+  console.log("User Redux State:", userSelector);
+  console.log("User Local Storage:", userLocalStorage);
   const handleOnSignIn = () => {
     navigate("/auth/signin");
   };
   const handleOnSignUp = () => {
     navigate("/auth/signup");
   };
+  const {logout} = useAuth();
   const dispatch = useDispatch();
   const handleOnLogout = useCallback(() => {
-    dispatch(logout());
-    localStorage.removeItem("useravatar");
-    localStorage.removeItem("islogin");
-    navigate("/");
-  }, [dispatch, localStorage]);
+    dispatch(logoutSlice());
+    logout();
+  }, [dispatch, logout]);
 
   const menuItems = [
     {
@@ -83,8 +80,7 @@ const NavBar = ({ isMobile }: NavBarProps) => {
     },
   ];
 
-  console.log("Is Login State: ", user.isLogin);
-  console.log("Is Login Local: ", isLoginLocalStorage);
+  console.log("Is Login State: ", userSelector.isLogin);
   return (
     <>
       <Navbar
@@ -149,13 +145,14 @@ const NavBar = ({ isMobile }: NavBarProps) => {
             )}
 
             <div>
-              {user.isLogin || isLoginLocalStorage === "true" ? (
+              {userLocalStorage ? (
                 <MenuDefault
                   handlerButton={
                     <img
                       src={
-                        user.data?.avatar ||
-                        (useravartarLocalStorage ? JSON.parse(useravartarLocalStorage) : "")
+                        userLocalStorage
+                          ? JSON.parse(userLocalStorage).avatar
+                          : userSelector.data?.avatar
                       }
                       alt="User Avatar"
                       className=" user-avatar w-10 h-10 ml-2 rounded-full object-cover object-center "

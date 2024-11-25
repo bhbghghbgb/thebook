@@ -9,11 +9,11 @@ import {
     Button,
 } from "@material-tailwind/react";
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import {useAuth} from "../../context/AuthContext";
 import {useDispatch} from "react-redux";
 import {authFailure, authSusccess} from "../../features/user/userSlice.ts";
 import {AuthResponse} from "../../type/AuthResponse.ts";
@@ -24,7 +24,7 @@ const ISignInSchema = yup.object().shape({
 });
 
 const SignInForm = () => {
-    const { signin, user } = useAuth();
+    const {signin} = useAuth();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +35,7 @@ const SignInForm = () => {
         register,
         handleSubmit,
         formState: {errors}
-    } = useForm({ 
+    } = useForm({
         resolver: yupResolver(ISignInSchema),
         mode: 'onChange'
     });
@@ -44,9 +44,9 @@ const SignInForm = () => {
         try {
             setIsLoading(true);
             setMessage("");
-            
+
             const response: AuthResponse = await signin(data.usernameoremail, data.password);
-            
+
             if (!response.success) {
                 setMessage(response.message);
                 dispatch(authFailure(response.message));
@@ -55,6 +55,7 @@ const SignInForm = () => {
 
             if (response.user) {
                 dispatch(authSusccess(response.user));
+                navigate('/');
             }
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : 'An error occurred during sign in';
@@ -65,11 +66,11 @@ const SignInForm = () => {
         }
     };
 
-    useEffect(() => {
-        if (user) {
-            navigate('/');
-        }
-    }, [user, navigate]);
+    // useEffect(() => {
+    //     if (user) {
+    //         navigate('/');
+    //     }
+    // }, [user, navigate]);
 
     return (
         <Card className="w-96"
@@ -100,7 +101,7 @@ const SignInForm = () => {
                         crossOrigin={undefined} {...register("usernameoremail", {required: true, maxLength: 20})}
                         label="Username or Email"
                         error={!!errors.usernameoremail}
-                        disabled={isLoading}                    />
+                        disabled={isLoading}/>
                     {errors.usernameoremail && (
                         <p className="text-red-900 text-sm">
                             {errors.usernameoremail.message as string}
@@ -114,13 +115,13 @@ const SignInForm = () => {
                             {...register("password", {required: true, maxLength: 10})}
                             type={showPassword ? "text" : "password"}
                             error={!!errors.password}
-                            disabled={isLoading}                        />
+                            disabled={isLoading}/>
                         <Checkbox
                             checked={showPassword}
                             onChange={() => setShowPassword(!showPassword)}
                             label="Show"
                             disabled={isLoading} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-                            crossOrigin={undefined}                        />
+                            crossOrigin={undefined}/>
                     </div>
                     {errors.password && (
                         <p className="text-red-900 text-sm">
@@ -134,7 +135,7 @@ const SignInForm = () => {
                         </p>
                     )}
                 </CardBody>
-                <CardFooter className="pt-0"  placeholder={undefined}
+                <CardFooter className="pt-0" placeholder={undefined}
                             onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <Button
                         variant="gradient"
@@ -142,7 +143,7 @@ const SignInForm = () => {
                         fullWidth
                         type="submit"
                         disabled={isLoading} placeholder={undefined}
-                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                    >
+                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {isLoading ? "Signing In..." : "Sign In"}
                     </Button>
                     <Typography variant="small" className="mt-6 flex justify-center"
