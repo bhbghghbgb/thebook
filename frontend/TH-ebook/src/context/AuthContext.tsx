@@ -1,12 +1,13 @@
-import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
-import { User } from '../models/User';
-import { authAPI } from '../service/api/authAPI';
-import setupAxiosInterceptors from '../utils/axiosInterceptors';
+import React, {createContext, useState, useCallback, useContext} from "react";
+import {useNavigate} from "react-router-dom";
+import {User} from "../models/User";
+import {authAPI} from "../service/api/authAPI";
+import {AuthResponse} from "../type/AuthResponse.ts";
 
 interface AuthContextType {
     user: User | null;
     token: string | null;
-    signin: (usernameoremail: string, password: string) => Promise<void>;
+    signin: (usernameoremail: string, password: string) => Promise<AuthResponse>;
     logout: () => void;
     signup: (username: string, email: string, password: string) => Promise<void>;
     refreshToken: () => Promise<void>;
@@ -17,67 +18,101 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
+        throw new Error("useAuth must be used within an AuthProvider");
     }
     return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children,}) => {
     const [user, setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+    const [token, setToken] = useState<string | null>(
+        localStorage.getItem("token")
+    );
+    const navigate = useNavigate();
+    const handleTokenResponse = (response: AuthResponse) => {
+        if (response.success && response.token) {
+            // Extract token if it's in Bearer format, otherwise use as is
+            const actualToken = response.token.startsWith("Bearer ")
+                ? response.token.split(" ")[1]
+                : response.token;
 
-    const signin = async (usernameoremail: string, password: string) => {
-        try {
-            const response = await authAPI.signIn(usernameoremail, password);
-            if (response.success) {
-                setToken(response.token);
-                localStorage.setItem('token', response.token);
+            setToken(actualToken);
+            localStorage.setItem("token", actualToken);
+
+            if (response.user) {
                 setUser(response.user);
             }
+
+            return actualToken;
+        }
+        return null;
+    };
+    const signin = async (usernameoremail: string, password: string) => {
+        try {
+            const response: AuthResponse = await authAPI.signIn(
+                usernameoremail,
+                password
+            );
+            handleTokenResponse(response);
+            return response;
         } catch (error) {
-            console.error('Signin failed', error);
+            console.error("Signin failed:", error);
+            throw error;
         }
     };
 
     const signup = async (username: string, email: string, password: string) => {
         try {
             const response = await authAPI.signUp(username, email, password);
-            if (response.success) {
-                setToken(response.token);
-                localStorage.setItem('token', response.token);
-                setUser(response.user);
-            }
+            handleTokenResponse(response);
         } catch (error) {
-            console.error('Signup failed', error);
+            console.error("Signup failed:", error);
+            throw error;
         }
     };
 
-    const logout = () => {
+    const logout = useCallback(() => {
         setUser(null);
         setToken(null);
-        localStorage.removeItem('token');
-    };
+        localStorage.removeItem("token");
+        // Optionally navigate to signin page
+        navigate("/auth/signin");
+    }, [navigate]);
 
     const refreshToken = useCallback(async () => {
         try {
-            const response = await authAPI.refreshToken(token || '');
-            if (response.success) {
-                setToken(response.token);
-                localStorage.setItem('token', response.token);
+            const response: AuthResponse = await authAPI.refreshToken();
+            const newToken = handleTokenResponse(response);
+            if (!newToken) {
+                throw new Error("Failed to refresh token");
             }
+            return newToken;
         } catch (error) {
-            console.error('Refresh token failed', error);
-            logout();
+            console.error("Token refresh failed:", error);
+            // Handle specific error cases
+            if (error instanceof Error) {
+                const errorMessage = error.message.toLowerCase();
+                if (
+                    errorMessage.includes("no refresh token") ||
+                    errorMessage.includes("invalid refresh token") ||
+                    errorMessage.includes("expired")
+                ) {
+                    logout();
+                }
+            } else {
+                logout();
+            }
+            throw error;
         }
-    }, [token]);
+    }, [logout]);
+    const value = {
+        user,
+        token,
+        signin,
+        logout,
+        signup,
+        refreshToken,
+    };
 
-    useEffect(() => {
-        setupAxiosInterceptors(refreshToken);
-    }, [refreshToken]);
-
-    return (
-        <AuthContext.Provider value={{ user, token, signin, logout, signup, refreshToken }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -8,31 +8,64 @@ import {
     Checkbox,
     Button,
 } from "@material-tailwind/react";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {useForm} from "react-hook-form";
+import {useEffect, useState} from "react";
+import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../../context/AuthContext";
+import {useDispatch} from "react-redux";
+import {authFailure, authSusccess} from "../../features/user/userSlice.ts";
 
 const ISignUpSchema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().required(),
-    email: yup.string().email().required(),
+    username: yup.string()
+        .required('Username is required')
+        .min(3, 'Username must be at least 3 characters')
+        .max(20, 'Username must not exceed 20 characters'),
+    password: yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters')
+        .max(10, 'Password must not exceed 10 characters'),
+    email: yup.string()
+        .required('Email is required')
+        .email('Email is invalid'),
 });
 
 const SignUpForm = () => {
-    const { signup, user } = useAuth();
+    const {signup, user} = useAuth();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
+    const [message, setMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
     const {
         register,
         handleSubmit,
-        formState: { errors },
-    } = useForm({ resolver: yupResolver(ISignUpSchema) });
+        formState: {errors},
+    } = useForm({
+        resolver: yupResolver(ISignUpSchema),
+        mode: 'onChange'
+    });
 
-    const onSubmit = (data: { username: string, password: string, email: string }) => {
-        signup(data.username, data.email, data.password);
+    const onSubmit = async (data: { username: string, password: string, email: string }) => {
+        try {
+            setIsLoading(true);
+            setMessage("");
+
+            await signup(data.username, data.email, data.password);
+
+            // If signup is successful, the user will be automatically signed in
+            // and the AuthContext will update the user state
+            dispatch(authSusccess(user!));
+
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred during sign up';
+            setMessage(errorMessage);
+            dispatch(authFailure(errorMessage));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -42,52 +75,102 @@ const SignUpForm = () => {
     }, [user, navigate]);
 
     return (
-        <Card className="w-96">
+        <Card className="w-96"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CardHeader
                     variant="gradient"
                     color="deep-orange"
-                    className="mb-4 grid h-28 place-items-center">
-                    <Typography variant="h3" color="white">
+                    className="mb-4 grid h-28 place-items-center"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}>
+                    <Typography variant="h3" color="white"
+                                placeholder={undefined}
+                                onPointerEnterCapture={undefined}
+                                onPointerLeaveCapture={undefined}>
                         Sign Up
                     </Typography>
                 </CardHeader>
-                <CardBody className="flex flex-col gap-4">
+                <CardBody className="flex flex-col gap-4"
+                          placeholder={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}>
                     <Input
-                        {...register("username", { required: true, maxLength: 20 })}
-                        label="UserName" />
-                    {errors.username && <p className="text-red-900">{errors.username.message}</p>}
+                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined} {...register("username", {required: true, maxLength: 20})}
+                        label="Username"
+                        error={!!errors.username}
+                        disabled={isLoading}/>
+                    {errors.username && (
+                        <p className="text-red-900 text-sm">
+                            {errors.username.message as string}
+                        </p>
+                    )}
 
                     <div className="relative flex w-full">
                         <Input
+                            onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}
                             label="Password"
-                            {...register("password", { required: true, maxLength: 10 })}
-                            type={showPassword ? "text" : "password"} />
+                            {...register("password", {required: true, maxLength: 10})}
+                            type={showPassword ? "text" : "password"}
+                            error={!!errors.password}
+                            disabled={isLoading}/>
                         <Checkbox
                             checked={showPassword}
                             onChange={() => setShowPassword(!showPassword)}
-                            label="Show" />
+                            label="Show"
+                            disabled={isLoading}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            crossOrigin={undefined}/>
                     </div>
-                    {errors.password && <p className="text-red-900">{errors.password.message}</p>}
+                    {errors.password && (
+                        <p className="text-red-900 text-sm">
+                            {errors.password.message as string}
+                        </p>
+                    )}
 
                     <Input
-                        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-                        label="Email" />
-                    {errors.email && <p className="text-red-900">{errors.email.message}</p>}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined} {...register("email", {required: true, pattern: /^\S+@\S+$/i})}
+                        label="Email"
+                        error={!!errors.email}
+                        disabled={isLoading}/>
+                    {errors.email && (
+                        <p className="text-red-900 text-sm">
+                            {errors.email.message as string}
+                        </p>
+                    )}
 
-                    <div className="-ml-2.5">
-                        <Checkbox label="Remember Me" />
-                    </div>
+                    {message && (
+                        <p className="text-red-900 text-sm text-center">
+                            {message}
+                        </p>
+                    )}
                 </CardBody>
-                <CardFooter className="pt-0">
+                <CardFooter className="pt-0"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}>
                     <Button
                         variant="gradient"
                         color="deep-orange"
                         fullWidth
-                        type="submit">
-                        Sign Up
+                        type="submit"
+                        disabled={isLoading}
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}                    >
+                        {isLoading ? "Signing Up..." : "Sign Up"}
                     </Button>
-                    <Typography variant="small" className="mt-6 flex justify-center">
+                    <Typography variant="small" className="mt-6 flex justify-center"
+                                placeholder={undefined}
+                                onPointerEnterCapture={undefined}
+                                onPointerLeaveCapture={undefined}>
                         Already have an account?
                         <Typography
                             as="a"
@@ -95,9 +178,13 @@ const SignUpForm = () => {
                             variant="small"
                             color="blue-gray"
                             className="ml-1 font-bold"
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.preventDefault();
                                 navigate("/auth/signin");
-                            }}>
+                            }}
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}>
                             Sign In
                         </Typography>
                     </Typography>

@@ -12,7 +12,7 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        signIn: (state: UserStateType<User>, {payload: {nameoremail, password}}: PayloadAction<{nameoremail: string, password: string}>) => {
+        signIn: (state: UserStateType<User>, {payload: {usernameoremail, password}}: PayloadAction<{usernameoremail: string, password: string}>) => {
             state.errors = '';
         },
         signUp: (state: UserStateType<User>, {payload: {username, password, email}}: PayloadAction<{username: string, password: string, email: string}>) => {

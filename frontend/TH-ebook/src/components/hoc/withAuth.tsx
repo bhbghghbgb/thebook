@@ -27,19 +27,11 @@ const withAuth = (WrappedComponent: React.ComponentType<React.PropsWithChildren<
             const checkAuth = async () => {
                 if (!token) {
                     navigate('/auth/signin');
-                } else {
-                    try {
-                        await refreshToken();
-                    } catch (error) {
-                        alert('Failed to refresh token');
-                        console.error('Failed to refresh token', error);
-                        navigate('/signin');
-                    }
                 }
-            };
-
+            }
             checkAuth().then(r => `Checked auth: ${r}`);
         }, [token, navigate, refreshToken]);
+
 
         if (!token) {
             return null;

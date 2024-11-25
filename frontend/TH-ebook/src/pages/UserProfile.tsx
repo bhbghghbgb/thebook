@@ -1,4 +1,3 @@
-import React from 'react';
 import withAuth from '../components/hoc/withAuth';
 import { User } from '../models/User';
 

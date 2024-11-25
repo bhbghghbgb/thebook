@@ -1,30 +1,41 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL2;
+import {AxiosResponse} from 'axios';
+import {AuthResponse} from "../../type/AuthResponse.ts";
+import {api} from "../../utils/axiosInterceptors.ts";
 const endpoint = "signin";
 const endpoint2 = "signup";
 const refreshEndpoint = "refresh-token";
 
+// Create an axios instance with default config
+
+
 export const authAPI = {
     signIn: async (usernameoremail: string, password: string) => {
         try {
-            const response = await axios.post(`${API_URL}/${endpoint}`, {usernameoremail, password});
+            const response:AxiosResponse<AuthResponse> = await api.post(`/${endpoint}`, {
+                usernameoremail, 
+                password
+            });
             return response.data;
         } catch (error: unknown) {
-            throw new Error((error as Error).message || 'Login failed');
+            console.error('Signin failed', error);
+            throw new Error((error as Error).message || 'Signin failed');
         }
     },
     signUp: async (username: string, password: string, email: string) => {
         try {
-            const response = await axios.post(`${API_URL}/${endpoint2}`, {username, password, email});
+            const response = await api.post(`/${endpoint2}`, {
+                username, 
+                password, 
+                email
+            });
             return response.data;
         } catch (error: unknown) {
-            throw new Error((error as Error).message || 'Register failed');
+            throw new Error((error as Error).message || 'Signup failed');
         }
     },
-    refreshToken: async (refreshToken: string) => {
+    refreshToken: async () => {
         try {
-            const response = await axios.post(`${API_URL}/${refreshEndpoint}`, {refreshToken});
+            const response:AxiosResponse<AuthResponse> = await api.post(`/${refreshEndpoint}`);
             return response.data;
         } catch (error: unknown) {
             throw new Error((error as Error).message || 'Refresh token failed');
