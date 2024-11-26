@@ -3,8 +3,24 @@ import {useNavigate} from 'react-router-dom';
 import {User} from '../../models/User';
 import {useAuth} from "../../context/AuthContext.tsx";
 
-const withAuth = (WrappedComponent: React.ComponentType<React.PropsWithChildren<{ user: User }>>) => {
+interface WithAuthProps {
+    user: User;
+    token: string;
+    refreshToken: () => Promise<void>;
+}
 
+/**
+ *
+ *
+ * Đúng vậy, nếu P extends WithAuthProps, thì tất cả các component được bọc bởi
+ * withAuth phải có kiểu props tương tự như WithAuthProps. Điều này có nghĩa là các
+ * component đó phải có các props user, token, và refreshToken.
+ *
+ *
+ * */
+const withAuth = <P extends WithAuthProps>(
+    WrappedComponent: React.ComponentType<P>
+        ) => {
 
     /* 
     
@@ -19,8 +35,8 @@ const withAuth = (WrappedComponent: React.ComponentType<React.PropsWithChildren<
     */
 
 
-    return (props: React.PropsWithChildren<Record<string, unknown>>) => {
-        const {user, token} = useAuth();
+    return (props: Omit<P, keyof WithAuthProps>) => {
+        const {user, token, refreshToken} = useAuth();
         const navigate = useNavigate();
 
         console.log('User: ', user);
@@ -43,7 +59,14 @@ const withAuth = (WrappedComponent: React.ComponentType<React.PropsWithChildren<
             return null;
         }
 
-        return <WrappedComponent {...props} user={user}/>;
+        const componentProps = {
+            ...props,
+            user: user,
+            token: token,
+            refreshToken: refreshToken
+        } as P;
+
+        return <WrappedComponent {...componentProps}  />;
     };
 };
 
