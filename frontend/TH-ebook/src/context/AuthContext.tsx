@@ -32,7 +32,6 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     );
     const navigate = useNavigate();
 
-    if (!token && !user) navigate("/auth/signin");
     const handleTokenResponse = (response: AuthResponse) => {
         if (response.success && response.token) {
             // Extract token if it's in Bearer format, otherwise use as is
