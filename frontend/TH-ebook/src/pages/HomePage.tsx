@@ -28,7 +28,6 @@ const HomePage = ({ isMobile }: Props) => {
 
   return (
     <div className="home-page gap-y-10">
-      <LayoutComponent isMobile={isMobile}>
         <BannerSlider
           books={books}
           isMobile={isMobile}
@@ -60,7 +59,6 @@ const HomePage = ({ isMobile }: Props) => {
           errors={errors}
           isLoading={isLoading}
         />
-      </LayoutComponent>
     </div>
   );
 };

@@ -20,11 +20,9 @@ interface Props {
 const BookDetailPage = ({ isMobile, data }: Props) => {
   return (
     <>
-      <LayoutComponent isMobile={isMobile}>
         <div className="place-items-center">
           <BookDetail book={data} isMobile={isMobile} />
         </div>
-      </LayoutComponent>
     </>
   );
 };

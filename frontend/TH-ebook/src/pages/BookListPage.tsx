@@ -29,7 +29,6 @@ const BookListPage = ({ header }: Props) => {
 
   const { books, errors, isLoading } = useBooksRedux();
   return (
-    <LayoutComponent isMobile={false}>
       <div className="page-container p-6">
         <div className="flex items-center mb-6 mt-2">
           <IconButton
@@ -49,7 +48,6 @@ const BookListPage = ({ header }: Props) => {
           isLoading={isLoading}
         />
       </div>
-    </LayoutComponent>
   );
 };
 

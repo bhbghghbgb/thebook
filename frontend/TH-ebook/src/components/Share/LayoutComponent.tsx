@@ -1,3 +1,5 @@
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar.tsx';
 
 interface Props {
@@ -6,11 +8,16 @@ interface Props {
 }
 
 const Layout = ({children, isMobile}: Props) => {
+    const location = useLocation();
+    const hideNavbar = location.pathname.includes('/auth/signup') || location.pathname.includes('/auth/signin');
+
     return (
         <>
-            <div className="h-[var(--navbar-height)]">
-                <NavBar isMobile={isMobile}/>
-            </div>
+            {!hideNavbar && (
+                <div className="h-[var(--navbar-height)]">
+                    <NavBar isMobile={isMobile}/>
+                </div>
+            )}
             {children}
         </>
     );
