@@ -16,6 +16,8 @@ import { StateType } from "../../store/rootReducer.ts";
 import { logoutSlice }  from "../../features/user/userSlice.ts" ;
 import MenuDefault from "../Share/MenuDefault.tsx";
 import {useAuth} from "../../context/AuthContext.tsx";
+import UserProfile from "../User/UserProfile.tsx";
+import {User} from "../../models/User.ts";
 
 interface NavBarProps {
   isMobile: boolean;
@@ -161,19 +163,11 @@ const NavBar = ({ isMobile }: NavBarProps) => {
                   menuItems={[
                     {
                       node: (
-                        <Button
-                          variant="filled"
-                          onClick={handleOnLogout}
-                          size="lg"
-                          color="deep-orange"
-                          placeholder={undefined}
-                          onPointerEnterCapture={undefined}
-                          onPointerLeaveCapture={undefined}
-                        >
-                          Logout
-                        </Button>
+                        <div className="w-96">
+                          <UserProfile user={JSON.parse(userLocalStorage) as User} onLogout={handleOnLogout} />
+                        </div>
                       ),
-                      onClick: () => handleOnLogout(),
+                      onClick: () => {},
                     },
                   ]}
                 ></MenuDefault>

@@ -23,9 +23,15 @@ const MenuDefault = ({
       }}
     >
       <MenuHandler>{handlerButton}</MenuHandler>
-      <MenuList className="flex flex-col gap-y-3 bg-transparent">
+      <MenuList className="flex flex-col gap-y-3 bg-transparent"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}>
         {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={item.onClick}>
+          <MenuItem key={index} onClick={item.onClick}
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}>
             {item.node}
           </MenuItem>
         ))}

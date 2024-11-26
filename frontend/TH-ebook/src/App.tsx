@@ -9,7 +9,7 @@ import HomePage from "./pages/HomePage";
 import ReaderPage from "./pages/ReaderPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import UserProfile from "./pages/UserProfile";
+import UserProfilePage from "./pages/UserProfilePage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -36,7 +36,7 @@ function App() {
                 />
                 <Route path=":id/:vl/:pg" element={<ReaderPage />} />
               </Route>
-              <Route path="user/profile" element={<UserProfile />} />
+              <Route path="user/profile" element={<UserProfilePage />} />
             </Routes>
           </div>
         </div>

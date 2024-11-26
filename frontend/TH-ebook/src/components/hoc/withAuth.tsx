@@ -5,14 +5,12 @@ import {useAuth} from "../../context/AuthContext.tsx";
 
 interface WithAuthProps {
     user: User;
-    token: string;
-    refreshToken: () => Promise<void>;
 }
 
 /**
  *
  *
- * Đúng vậy, nếu P extends WithAuthProps, thì tất cả các component được bọc bởi
+ * nếu P extends WithAuthProps, thì tất cả các component được bọc bởi
  * withAuth phải có kiểu props tương tự như WithAuthProps. Điều này có nghĩa là các
  * component đó phải có các props user, token, và refreshToken.
  *
@@ -36,11 +34,9 @@ const withAuth = <P extends WithAuthProps>(
 
 
     return (props: Omit<P, keyof WithAuthProps>) => {
-        const {user, token, refreshToken} = useAuth();
+        const {user, token} = useAuth();
         const navigate = useNavigate();
 
-        console.log('User: ', user);
-        console.log('Token: ', token);
         useEffect(() => {
             const checkAuth = async () => {
                 if (!token) {
@@ -62,8 +58,6 @@ const withAuth = <P extends WithAuthProps>(
         const componentProps = {
             ...props,
             user: user,
-            token: token,
-            refreshToken: refreshToken
         } as P;
 
         return <WrappedComponent {...componentProps}  />;
