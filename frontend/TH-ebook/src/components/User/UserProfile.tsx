@@ -7,6 +7,7 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import {User} from "../../models/User.ts";
+import {useNavigate} from "react-router-dom";
 
 interface UserProfileProps {
     user: User;
@@ -14,6 +15,7 @@ interface UserProfileProps {
 }
 
 function UserProfile({user, onLogout}: UserProfileProps) {
+    const navigate = useNavigate();
     return (
         <section className="container mx-auto px-8 py-10">
             <Card
@@ -90,7 +92,11 @@ function UserProfile({user, onLogout}: UserProfileProps) {
                         <div className="flex mt-2 gap-3">
                             <Button variant="gradient" color="deep-orange"
                                     placeholder={undefined} onPointerEnterCapture={undefined}
-                                    onPointerLeaveCapture={undefined}>
+                                    onPointerLeaveCapture={undefined}
+                                    onClick={() => {
+                                        navigate("/user/profile-full");
+                                    }}
+                            >
                                 Edit Profile
                             </Button>
                             <Button variant="gradient" color="deep-orange"

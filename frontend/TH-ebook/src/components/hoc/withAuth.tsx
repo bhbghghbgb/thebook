@@ -1,11 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {User} from '../../models/User';
 import {useAuth} from "../../context/AuthContext.tsx";
+import {api} from "../../utils/axiosInterceptors.ts";
+import LoadingSpinner from "../_Common/LoadingSpinner.tsx";
 
 interface WithAuthProps {
     user: User;
 }
+
+const fetchUser = async () => {
+    try {
+        // await phải nằm trong 1 async function
+        const response = await api.get('/profile')
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+        return null;
+    }
+};
 
 /**
  *
@@ -18,41 +31,30 @@ interface WithAuthProps {
  * */
 const withAuth = <P extends WithAuthProps>(
     WrappedComponent: React.ComponentType<P>
-        ) => {
-
-    /* 
-    
-    
-    Record<string, unknown>: Đây là một type generic của TypeScript, đại diện cho một đối
-    tượng mà các key của nó là kiểu string và các value có thể là bất kỳ kiểu nào (unknown).
-    Trong trường hợp này, nó được sử dụng để định nghĩa rằng props có thể chứa bất kỳ số 
-    lượng prop nào với tên là kiểu string và giá trị có thể là bất kỳ kiểu dữ liệu nào.
-
-    
-    
-    */
-
-
+) => {
     return (props: Omit<P, keyof WithAuthProps>) => {
-        const {user, token} = useAuth();
+        const {token} = useAuth();
         const navigate = useNavigate();
+        const [user, setUser] = useState<User | null>(null);
 
         useEffect(() => {
             const checkAuth = async () => {
                 if (!token) {
                     navigate('/auth/signin');
+                } else {
+                    const fetchedUser = await fetchUser();
+                    if (fetchedUser) {
+                        setUser(fetchedUser);
+                    } else {
+                        navigate('/auth/signin');
+                    }
                 }
-            }
-            checkAuth().then(r => `Checked auth: ${r}`);
+            };
+            checkAuth().then(r => `User is ${r}`);
         }, [token, navigate]);
 
-
-        if (!token) {
-            return null;
-        }
-
         if (!user) {
-            return null;
+            return <LoadingSpinner isLoading={true} />;
         }
 
         const componentProps = {
@@ -60,7 +62,7 @@ const withAuth = <P extends WithAuthProps>(
             user: user,
         } as P;
 
-        return <WrappedComponent {...componentProps}  />;
+        return <WrappedComponent {...componentProps} />;
     };
 };
 

@@ -36,7 +36,8 @@ api.interceptors.response.use(
         if (
             error.response?.status === 401 &&
             !originalRequest._retry &&
-            !originalRequest.url?.includes("/refresh-token")
+            !originalRequest.url?.includes("/refresh-token") &&
+            !originalRequest.url?.includes("/auth/signin") // Thêm kiểm tra cho trang đăng nhập
         ) {
             originalRequest._retry = true;
             try {
@@ -50,7 +51,7 @@ api.interceptors.response.use(
                     // Lưu token mới vào localStorage
                     localStorage.setItem("token", newToken);
                     // Cập nhật token trong header của request ban đầu
-                    originalRequest.headers.Authorization = newToken;
+                    originalRequest.headers.Authorization = `Bearer ${newToken}`;
                     // Thử lại request ban đầu với token mới
                     return axios(originalRequest);
                 }

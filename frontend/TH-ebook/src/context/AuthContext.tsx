@@ -9,7 +9,7 @@ interface AuthContextType {
     token: string | null;
     signin: (usernameoremail: string, password: string) => Promise<AuthResponse>;
     logout: () => void;
-    signup: (username: string, email: string, password: string) => Promise<void>;
+    signup: (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => Promise<void>;
     refreshToken: () => Promise<void>;
 }
 
@@ -31,6 +31,8 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
         localStorage.getItem("token")
     );
     const navigate = useNavigate();
+
+    if (!token && !user) navigate("/auth/signin");
     const handleTokenResponse = (response: AuthResponse) => {
         if (response.success && response.token) {
             // Extract token if it's in Bearer format, otherwise use as is
@@ -64,9 +66,9 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
         }
     };
 
-    const signup = async (username: string, email: string, password: string) => {
+    const signup = async (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => {
         try {
-            const response = await authAPI.signUp(username, email, password);
+            const response = await authAPI.signUp(username, email, password, fistname, lastname, phone);
             handleTokenResponse(response);
         } catch (error) {
             console.error("Signup failed:", error);

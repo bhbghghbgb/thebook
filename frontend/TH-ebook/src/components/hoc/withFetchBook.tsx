@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiResponse } from "../../type/ApiResponse.ts";
-import useFetchData from "../../hooks/useFetchData.ts";
+import useFetchBook from "../../hooks/useFetchBook.ts";
 import LoadingSpinner from "../_Common/LoadingSpinner.tsx";
 
 interface WithFetchDataProps<T> {
@@ -12,7 +12,7 @@ interface WithFetchDataProps<T> {
  * T là kiểu dữ liệu của dữ liệu fetch được
  * */
 
-const withFetchData = <P extends WithFetchDataProps<T>, T>(
+const withFetchBook = <P extends WithFetchDataProps<T>, T>(
   // ComponentType<P> là một generic type, địa diện cho việc một component có kiểu props là P
   WrappedComponent: React.ComponentType<P>, // Component to be wrapped
   endpoint: string, // API endpoint
@@ -23,7 +23,7 @@ const withFetchData = <P extends WithFetchDataProps<T>, T>(
    * vì các thuộc tính này sẽ được truyền vào WrappedComponent sau khi fetch dữ liệu
    * */
   return (props: Omit<P, keyof WithFetchDataProps<T>>) => {
-    const { data, isLoading, error } = useFetchData<ApiResponse<T>>(
+    const { data, isLoading, error } = useFetchBook<ApiResponse<T>>(
       endpoint,
       queryKey
     );
@@ -46,4 +46,4 @@ const withFetchData = <P extends WithFetchDataProps<T>, T>(
   };
 };
 
-export default withFetchData;
+export default withFetchBook;

@@ -66,12 +66,6 @@ const SignInForm = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (user) {
-    //         navigate('/');
-    //     }
-    // }, [user, navigate]);
-
     return (
         <Card className="w-96"
               placeholder={undefined}

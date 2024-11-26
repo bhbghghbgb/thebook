@@ -2,7 +2,7 @@ import { Book } from "../models/Book.ts";
 import BookDetail from "../components/BookDetail/BookDetail.tsx";
 import { useParams } from "react-router-dom";
 import LayoutComponent from "../components/Share/LayoutComponent.tsx";
-import withFetchData from "../components/hoc/withFetchData.tsx";
+import withFetchBook from "../components/hoc/withFetchBook.tsx";
 
 /*
  *
@@ -32,14 +32,14 @@ const BookDetailPage = ({ isMobile, data }: Props) => {
 /*
  *
  *
- * Các props `data`, `isLoading`, và `error` được loại bỏ trong `BookDetailPageWithParams` vì chúng được cung cấp bởi higher-order component (HOC) `withFetchData`.
+ * Các props `data`, `isLoading`, và `error` được loại bỏ trong `BookDetailPageWithParams` vì chúng được cung cấp bởi higher-order component (HOC) `withFetchBook`.
  * HOC này sẽ fetch dữ liệu và truyền các props này vào component được bọc (`BookDetailPage`).
  * Do đó, chúng không cần thiết làm input props cho `BookDetailPageWithParams`.
  *
  * */
 const BookDetailPageWithParams = ({ isMobile }: Omit<Props, "data">) => {
   const { id } = useParams<{ id: string }>() as { id: string };
-  const WrappedComponent = withFetchData<Props, Book>(
+  const WrappedComponent = withFetchBook<Props, Book>(
     BookDetailPage,
     `books/${id}`,
     ["book", id]

@@ -1,7 +1,7 @@
 import parse from "html-react-parser";
 import $ from "jquery";
 import DOMPurify from "dompurify";
-import useFetchData from "../../hooks/useFetchData";
+import useFetchBook from "../../hooks/useFetchBook.ts";
 import LoadingSpinner from "../_Common/LoadingSpinner";
 
 export type ReaderProps = {
@@ -16,7 +16,7 @@ const ReaderRenderer = ({
   pagePage: pg,
 }: ReaderProps) => {
   const lnk = `books/${id}/${vl}/${pg}`;
-  const { data, isLoading, error } = useFetchData<string>(lnk, `reader:${lnk}`);
+  const { data, isLoading, error } = useFetchBook<string>(lnk, `reader:${lnk}`);
   if (isLoading) {
     return <LoadingSpinner isLoading={isLoading} />;
   }

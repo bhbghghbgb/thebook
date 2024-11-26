@@ -29,6 +29,19 @@ const ISignUpSchema = yup.object().shape({
     email: yup.string()
         .required('Email is required')
         .email('Email is invalid'),
+    fistName: yup.string()
+        .required('First Name is required')
+        .min(3, 'First Name must be at least 3 characters')
+        .max(20, 'First Name must not exceed 20 characters'),
+    lastname: yup.string()
+        .required('Last Name is required')
+        .min(3, 'Last Name must be at least 3 characters')
+        .max(20, 'Last Name must not exceed 20 characters'),
+    phone: yup.number()
+        .required('Phone is required')
+        // .min(10, 'Phone must be at least 10 characters')
+        // .max(10, 'Phone must not exceed 10 characters'),
+
 });
 
 const SignUpForm = () => {
@@ -48,12 +61,12 @@ const SignUpForm = () => {
         mode: 'onChange'
     });
 
-    const onSubmit = async (data: { username: string, password: string, email: string }) => {
+    const onSubmit = async (data: { username: string, password: string, email: string, fistName: string, lastname: string , phone: string }) => {
         try {
             setIsLoading(true);
             setMessage("");
 
-            await signup(data.username, data.email, data.password);
+            await signup(data.username, data.email, data.password, data.fistName, data.lastname, data.phone);
 
             // If signup is successful, the user will be automatically signed in
             // and the AuthContext will update the user state
@@ -109,6 +122,28 @@ const SignUpForm = () => {
                             {errors.username.message as string}
                         </p>
                     )}
+                    <Input
+                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined} {...register("fistName", {required: true, maxLength: 20})}
+                        label="First Name"
+                        error={!!errors.fistName}
+                        disabled={isLoading}/>
+                    {errors.fistName && (
+                        <p className="text-red-900 text-sm">
+                            {errors.fistName.message as string}
+                        </p>
+                    )}
+                    <Input
+                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined} {...register("lastname", {required: true, maxLength: 20})}
+                        label="Last Name"
+                        error={!!errors.lastname}
+                        disabled={isLoading}/>
+                    {errors.lastname && (
+                        <p className="text-red-900 text-sm">
+                            {errors.lastname.message as string}
+                        </p>
+                    )}
 
                     <div className="relative flex w-full">
                         <Input
@@ -143,6 +178,18 @@ const SignUpForm = () => {
                     {errors.email && (
                         <p className="text-red-900 text-sm">
                             {errors.email.message as string}
+                        </p>
+                    )}
+                    <Input
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined} {...register("phone", {required: true, pattern: /^\d{10}$/})}
+                        label="Phone"
+                        error={!!errors.phone}
+                        disabled={isLoading}/>
+                    {errors.phone && (
+                        <p className="text-red-900 text-sm">
+                            {errors.phone.message as string}
                         </p>
                     )}
 
