@@ -14,11 +14,11 @@ api.defaults.headers.common["Content-Type"] = "application/json";
 // Request interceptor
 api.interceptors.request.use(
     (config) => {
-        // Lấy access token từ localStorage
-        const token = localStorage.getItem("token");
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+        // // Lấy access token từ localStorage
+        // const token = localStorage.getItem("token");
+        // if (token) {
+        //     config.headers.Authorization = `Bearer ${token}`;
+        // }
         // Đảm bảo withCredentials được set để gửi cookies
         config.withCredentials = true;
         return config;
@@ -56,17 +56,19 @@ api.interceptors.response.use(
                     ? data.token.split(" ")[1]
                     : data.token;
                 if (newToken) {
-                    // Lưu token mới vào localStorage
+                    
+                    /* // Lưu token mới vào localStorage
                     localStorage.setItem("token", newToken);
                     // Cập nhật token trong header của request ban đầu
                     originalRequest.headers.Authorization = `Bearer ${newToken}`;
-                    // Thử lại request ban đầu với token mới
+                    // Thử lại request ban đầu với token mới */
+
                     return axios(originalRequest);
                 }
             } catch (refreshError: unknown) {
                 console.error("Token refresh failed:", refreshError);
                 // Xóa token khi refresh thất bại
-                localStorage.removeItem("token");
+                // localStorage.removeItem("token");
                 // Có thể thêm logic redirect đến trang login ở đây
                 return Promise.reject({
                     status: "error",

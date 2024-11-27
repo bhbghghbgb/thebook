@@ -2,7 +2,7 @@ import React, {createContext, useState, useCallback, useContext} from "react";
 import {useNavigate} from "react-router-dom";
 import {User} from "../models/User";
 import {authAPI} from "../service/api/authAPI";
-import {AuthResponse} from "../type/AuthResponse.ts";
+import {AuthResponse} from "../type/AuthResponse";
 
 interface AuthContextType {
     user: User | null;
@@ -27,9 +27,7 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("user") || "null")
     )
-    const [token, setToken] = useState<string | null>(
-        localStorage.getItem("token")
-    );
+    const [token, setTokenState] = useState<string | null>();
     const navigate = useNavigate();
 
     const handleTokenResponse = (response: AuthResponse) => {
@@ -39,8 +37,7 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
                 ? response.token.split(" ")[1]
                 : response.token;
 
-            setToken(actualToken);
-            localStorage.setItem("token", actualToken);
+            setTokenState(actualToken);
 
             if (response.user) {
                 setUser(response.user);
@@ -77,7 +74,7 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
 
     const logout = useCallback(() => {
         setUser(null);
-        setToken(null);
+        setTokenState(null);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         // Optionally navigate to signin page
