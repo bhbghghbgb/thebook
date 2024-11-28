@@ -6,7 +6,7 @@ import {AuthResponse} from "../type/AuthResponse";
 
 interface AuthContextType {
     user: User | null;
-    token: string | null;
+    isAuth: boolean | null;
     signin: (usernameoremail: string, password: string) => Promise<AuthResponse>;
     logout: () => void;
     signup: (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => Promise<void>;
@@ -26,27 +26,20 @@ export const useAuth = () => {
 export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("user") || "null")
-    )
-    const [token, setTokenState] = useState<string | null>();
+    );
+    const [isAuth, setAuth] = useState(user !== null);
     const navigate = useNavigate();
 
-    const handleTokenResponse = (response: AuthResponse) => {
+    const handleResponse = (response: AuthResponse) => {
         if (response.success && response.token) {
-            // Extract token if it's in Bearer format, otherwise use as is
-            const actualToken = response.token.startsWith("Bearer ")
-                ? response.token.split(" ")[1]
-                : response.token;
-
-            setTokenState(actualToken);
-
+            setAuth(true);
             if (response.user) {
                 setUser(response.user);
                 localStorage.setItem("user", JSON.stringify(response.user));
             }
-
-            return actualToken;
+            return true;
         }
-        return null;
+        return false;
     };
     const signin = async (usernameoremail: string, password: string) => {
         try {
@@ -54,7 +47,7 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
                 usernameoremail,
                 password
             );
-            handleTokenResponse(response);
+            handleResponse(response);
             return response;
         } catch (error) {
             console.error("Signin failed:", error);
@@ -65,7 +58,8 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     const signup = async (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => {
         try {
             const response = await authAPI.signUp(username, email, password, fistname, lastname, phone);
-            handleTokenResponse(response);
+            handleResponse(response);
+            return response;
         } catch (error) {
             console.error("Signup failed:", error);
             throw error;
@@ -74,8 +68,6 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
 
     const logout = useCallback(() => {
         setUser(null);
-        setTokenState(null);
-        localStorage.removeItem("token");
         localStorage.removeItem("user");
         // Optionally navigate to signin page
         navigate("/auth/signin");
@@ -84,11 +76,11 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     const refreshToken = useCallback(async () => {
         try {
             const response: AuthResponse = await authAPI.refreshToken();
-            const newToken = handleTokenResponse(response);
-            if (!newToken) {
+            const isCheck = handleResponse(response);
+            if (!isCheck) {
                 throw new Error("Failed to refresh token");
             }
-            return newToken;
+            return isCheck;
         } catch (error) {
             console.error("Token refresh failed:", error);
             // Handle specific error cases
@@ -109,7 +101,7 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     }, [logout]);
     const value = {
         user,
-        token,
+        isAuth,
         signin,
         logout,
         signup,

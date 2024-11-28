@@ -33,13 +33,13 @@ const withAuth = <P extends WithAuthProps>(
     WrappedComponent: React.ComponentType<P>
 ) => {
     return (props: Omit<P, keyof WithAuthProps>) => {
-        const {token} = useAuth();
+        const {isAuth} = useAuth();
         const navigate = useNavigate();
         const [user, setUser] = useState<User | null>(null);
 
         useEffect(() => {
             const checkAuth = async () => {
-                if (!token) {
+                if (!isAuth) {
                     navigate('/auth/signin');
                 } else {
                     const fetchedUser = await fetchUser();
@@ -51,7 +51,7 @@ const withAuth = <P extends WithAuthProps>(
                 }
             };
             checkAuth().then(r => `User is ${r}`);
-        }, [token, navigate]);
+        }, [isAuth, navigate]);
 
         if (!user) {
             return <LoadingSpinner isLoading={true} />;
