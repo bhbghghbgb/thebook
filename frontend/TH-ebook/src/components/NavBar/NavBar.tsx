@@ -32,8 +32,6 @@ const NavBar = ({ isMobile }: NavBarProps) => {
   const closeDrawer = () => setOpen(false);
   const userSelector = useSelector((state: StateType) => state.user);
   const userLocalStorage = localStorage.getItem("user");
-  console.log("User Redux State:", userSelector);
-  console.log("User Local Storage:", userLocalStorage);
   const handleOnSignIn = () => {
     navigate("/auth/signin");
   };
@@ -82,7 +80,6 @@ const NavBar = ({ isMobile }: NavBarProps) => {
     },
   ];
 
-  console.log("Is Login State: ", userSelector.isLogin);
   return (
     <>
       <Navbar

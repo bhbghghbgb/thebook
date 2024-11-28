@@ -16,7 +16,8 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext";
 import {useDispatch} from "react-redux";
 import {authFailure, authSusccess} from "../../features/user/userSlice.ts";
-import {AuthResponse} from "../../type/AuthResponse.ts";
+import {ApiResponse} from "../../type/ApiResponse.ts";
+import {User} from "../../models/User.ts";
 
 const ISignInSchema = yup.object().shape({
     usernameoremail: yup.string().required('Username or email is required'),
@@ -45,7 +46,7 @@ const SignInForm = () => {
             setIsLoading(true);
             setMessage("");
 
-            const response: AuthResponse = await signin(data.usernameoremail, data.password);
+            const response: ApiResponse<User> = await signin(data.usernameoremail, data.password);
 
             if (!response.success) {
                 setMessage(response.message);
@@ -53,8 +54,8 @@ const SignInForm = () => {
                 return;
             }
 
-            if (response.user) {
-                dispatch(authSusccess(response.user));
+            if (response.success) {
+                dispatch(authSusccess(response.data));
                 navigate('/');
             }
         } catch (error: unknown) {

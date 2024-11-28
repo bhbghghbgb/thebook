@@ -1,5 +1,7 @@
 import axios, {AxiosResponse} from "axios";
-import {AuthResponse} from "../type/AuthResponse.ts";
+import {ErrorResponse} from "../type/ErrorResponse.ts";
+import {ApiResponse} from "../type/ApiResponse.ts";
+import {User} from "../models/User.ts";
 
 const API_URL = import.meta.env.VITE_API_URL2;
 // Create an axios instance with default config
@@ -48,14 +50,14 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 // Gọi API refresh token - refreshToken sẽ được gửi tự động qua cookies
-                const response: AxiosResponse<AuthResponse> = await api.post(
+                const response: AxiosResponse<ApiResponse<User>> = await api.post(
                     "/refresh-token"
                 );
-                const data: AuthResponse = response.data;
-                const newToken = data.token.startsWith("Bearer ")
-                    ? data.token.split(" ")[1]
-                    : data.token;
-                if (newToken) {
+                const data: ApiResponse<User> = response.data;
+                // const newToken = data.token.startsWith("Bearer ")
+                //     ? data.token.split(" ")[1]
+                //     : data.token;
+                if (data.success) {
                     
                     /* // Lưu token mới vào localStorage
                     localStorage.setItem("token", newToken);
@@ -72,10 +74,10 @@ api.interceptors.response.use(
                 // Có thể thêm logic redirect đến trang login ở đây
                 return Promise.reject({
                     status: "error",
-                    statusCode: refreshError.response?.status || 500,
+                    statusCode: (refreshError as ErrorResponse).statusCode || 500,
                     message:
-                        refreshError.response?.data?.message || "Internal Server Error",
-                    metadata: refreshError.response?.data?.metadata || {},
+                        (refreshError as ErrorResponse).message || "Internal Server Error",
+                    metadata: (refreshError as ErrorResponse).metadata || {},
                 });
             }
         }

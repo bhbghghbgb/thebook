@@ -2,12 +2,12 @@ import React, {createContext, useState, useCallback, useContext} from "react";
 import {useNavigate} from "react-router-dom";
 import {User} from "../models/User";
 import {authAPI} from "../service/api/authAPI";
-import {AuthResponse} from "../type/AuthResponse";
+import {ApiResponse} from "../type/ApiResponse.ts";
 
 interface AuthContextType {
     user: User | null;
     isAuth: boolean | null;
-    signin: (usernameoremail: string, password: string) => Promise<AuthResponse>;
+    signin: (usernameoremail: string, password: string) => Promise<ApiResponse<User>>;
     logout: () => void;
     signup: (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => Promise<void>;
     refreshToken: () => Promise<void>;
@@ -23,19 +23,19 @@ export const useAuth = () => {
     return context;
 };
 
-export const AuthProvider= ({children}: { children: React.ReactNode }) => {
+export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("user") || "null")
     );
     const [isAuth, setAuth] = useState(user !== null);
     const navigate = useNavigate();
 
-    const handleResponse = (response: AuthResponse) => {
-        if (response.success && response.token) {
+    const handleAuthSuccess = (response: ApiResponse<User>) => {
+        if (response.success) {
             setAuth(true);
-            if (response.user) {
-                setUser(response.user);
-                localStorage.setItem("user", JSON.stringify(response.user));
+            if (response.data) {
+                setUser(response.data);
+                localStorage.setItem("user", JSON.stringify(response.data));
             }
             return true;
         }
@@ -43,11 +43,11 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
     };
     const signin = async (usernameoremail: string, password: string) => {
         try {
-            const response: AuthResponse = await authAPI.signIn(
+            const response: ApiResponse<User> = await authAPI.signIn(
                 usernameoremail,
                 password
             );
-            handleResponse(response);
+            handleAuthSuccess(response);
             return response;
         } catch (error) {
             console.error("Signin failed:", error);
@@ -57,8 +57,8 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
 
     const signup = async (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => {
         try {
-            const response = await authAPI.signUp(username, email, password, fistname, lastname, phone);
-            handleResponse(response);
+            const response: ApiResponse<User> = await authAPI.signUp(username, email, password, fistname, lastname, phone);
+            handleAuthSuccess(response);
             return response;
         } catch (error) {
             console.error("Signup failed:", error);
@@ -66,17 +66,19 @@ export const AuthProvider= ({children}: { children: React.ReactNode }) => {
         }
     };
 
-    const logout = useCallback(() => {
+    const logout = useCallback(async () => {
         setUser(null);
         localStorage.removeItem("user");
         // Optionally navigate to signin page
+        const response = await authAPI.logout();
+        console.info("Logout response:", response);
         navigate("/auth/signin");
     }, [navigate]);
 
     const refreshToken = useCallback(async () => {
         try {
-            const response: AuthResponse = await authAPI.refreshToken();
-            const isCheck = handleResponse(response);
+            const response: ApiResponse<User> = await authAPI.refreshToken();
+            const isCheck = handleAuthSuccess(response);
             if (!isCheck) {
                 throw new Error("Failed to refresh token");
             }
