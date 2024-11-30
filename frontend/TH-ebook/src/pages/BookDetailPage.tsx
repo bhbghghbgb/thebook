@@ -1,7 +1,6 @@
 import { Book } from "../models/Book.ts";
 import BookDetail from "../components/BookDetail/BookDetail.tsx";
 import { useParams } from "react-router-dom";
-import LayoutComponent from "../components/Share/LayoutComponent.tsx";
 import withFetchBook from "../components/hoc/withFetchBook.tsx";
 
 /*
