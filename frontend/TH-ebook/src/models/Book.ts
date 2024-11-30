@@ -3,6 +3,7 @@ import {Category} from "./Category.ts";
 
 export interface Book {
     id: string,
+    //Todo: title là mảng
     title: string;
     altTitle: string;
     description: string;

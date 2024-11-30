@@ -183,7 +183,7 @@ function addAltTitles() {
 
       // Print the updated data
       writeFileSync(
-        join(dirname, "books.json.json"),
+        join(dirname, "books.json"),
         JSON.stringify(updatedData, null, 2)
       );
     } catch (error) {

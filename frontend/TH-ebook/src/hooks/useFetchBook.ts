@@ -1,9 +1,9 @@
 // src/hooks/useFetchBook.ts
 import { useQuery } from '@tanstack/react-query';
-import { fetchBook } from '../service/api/fetchBook.ts';
+import { fetchData } from '../service/api/fetchData.ts';
 
 const useFetchBook = <T>(endpoint: string, queryKey?: string | string[]) => {
-    return useQuery<T, Error>({ queryKey: [queryKey], queryFn: () => fetchBook(endpoint) });
+    return useQuery<T, Error>({ queryKey: [queryKey], queryFn: async () => (await fetchData<T>(endpoint)).data  });
 };
 
 export default useFetchBook;

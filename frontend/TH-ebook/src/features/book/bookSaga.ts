@@ -1,11 +1,11 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
-import axios, { AxiosResponse } from "axios";
 import {
   getBooksAction,
   getBooksSuccessAction,
   getBooksFailureAction,
 } from "./bookSlice.ts";
 import { Book } from "../../models/Book.ts";
+import {fetchData} from "../../service/api/fetchData.ts";
 
 /* 
 
@@ -18,14 +18,16 @@ yield call(axios.get, API_URL): Hàm call() được sử dụng để gọi m�
 */
 
 function* fetchBooksSaga() {
-  const API_URL: string = import.meta.env.VITE_API_URL2;
+  const endpoint = "books";
   try {
     // Gọi API để lấy dữ liệu sách
-    const response: AxiosResponse<Book[]> = yield axios.get(`${API_URL}/books`);
-    console.log("fetchBooksSaga Data");
-    console.log(response.data);
+    const response: Book[] = yield fetchData(endpoint);
     // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
-    yield put(getBooksSuccessAction(response.data));
+    console.log("fetchBooksSaga Data");
+    if (response) {
+      // console.log(response.data);
+      yield put(getBooksSuccessAction(response));
+    }
   } catch (error: unknown) {
     // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
     yield put(getBooksFailureAction((error as Error).message));

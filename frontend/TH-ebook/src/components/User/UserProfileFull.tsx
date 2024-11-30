@@ -32,9 +32,10 @@ const UserProfileFull = ({user}: UserProfilePageProps) => {
 
     const API_URL: string = import.meta.env.VITE_API_URL2;
     const endpoint = "edit-profile";
+    // Todo: gọi api trên 1 tầng cao hơn
     const onSubmit: SubmitHandler<UserProfileFormInputs> = async (data) => {
         const response: AxiosResponse<ApiResponse<User>> = await api.put(`${API_URL}/${endpoint}`, data);
-        if (response.data.success) {
+        if (!response.data.isError) {
             alert("Profile updated successfully");
         } else {
             alert("Profile update failed");

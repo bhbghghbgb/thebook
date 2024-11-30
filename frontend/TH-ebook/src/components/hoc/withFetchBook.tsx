@@ -1,5 +1,4 @@
 import React from "react";
-import { ApiResponse } from "../../type/ApiResponse.ts";
 import useFetchBook from "../../hooks/useFetchBook.ts";
 import LoadingSpinner from "../_Common/LoadingSpinner.tsx";
 
@@ -23,7 +22,7 @@ const withFetchBook = <P extends WithFetchDataProps<T>, T>(
    * vì các thuộc tính này sẽ được truyền vào WrappedComponent sau khi fetch dữ liệu
    * */
   return (props: Omit<P, keyof WithFetchDataProps<T>>) => {
-    const { data, isLoading, error } = useFetchBook<ApiResponse<T>>(
+    const { data, isLoading, error } = useFetchBook<T>(
       endpoint,
       queryKey
     );
@@ -40,7 +39,8 @@ const withFetchBook = <P extends WithFetchDataProps<T>, T>(
     const componentProps = {
       ...props,
       data: data,
-    } as P;
+    //   Todo: Fix this
+    } as unknown as P;
 
     return <WrappedComponent {...componentProps} />;
   };

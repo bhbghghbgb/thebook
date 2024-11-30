@@ -48,13 +48,13 @@ const SignInForm = () => {
 
             const response: ApiResponse<User> = await signin(data.usernameoremail, data.password);
 
-            if (!response.success) {
-                setMessage(response.message);
-                dispatch(authFailure(response.message));
+            if (response.isError) {
+                setMessage(response.message ?? "");
+                dispatch(authFailure(response.message ?? ""));
                 return;
             }
 
-            if (response.success) {
+            if (!response.isError && response.data) {
                 dispatch(authSusccess(response.data));
                 navigate('/');
             }

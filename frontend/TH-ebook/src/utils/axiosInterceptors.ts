@@ -1,5 +1,4 @@
-import axios, {AxiosResponse} from "axios";
-import {ErrorResponse} from "../type/ErrorResponse.ts";
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from "axios";
 import {ApiResponse} from "../type/ApiResponse.ts";
 import {User} from "../models/User.ts";
 
@@ -8,6 +7,20 @@ const API_URL = import.meta.env.VITE_API_URL2;
 export const api = axios.create({
     baseURL: API_URL,
 });
+
+interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+    _retry?: boolean;
+}
+
+interface DetailedErrorResponse {
+    isError: boolean;
+    detail?: {
+        status: string;
+        statusCode: number;
+        message: string;
+        metadata: object;
+    }
+}
 
 // Set default configs for all axios requests
 api.defaults.withCredentials = true;
@@ -35,20 +48,25 @@ api.interceptors.request.use(
     }
 );
 
+
 // Response interceptor
 api.interceptors.response.use(
     (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
-
+    async (error:AxiosError) => {
+        const originalRequest = error.config as ExtendedAxiosRequestConfig;
+        const errorResponse = error.response?.data as DetailedErrorResponse
+        const errorMessage = errorResponse?.detail?.message
+        console.error("Response error:", error.response?.status, (error.response?.data as DetailedErrorResponse).detail);
         if (
-            (error.response?.status === 401 || error.response.message?.includes("TokenExpiredError"))&&
-            !originalRequest._retry &&
-            !originalRequest.url?.includes("/refresh-token") && // Prevent infinite loop
-            !originalRequest.url?.includes("/signin") // Prevent infinite loop
+            error.response?.status === 401  &&
+            errorMessage === "TokenExpiredError" &&
+            !originalRequest?._retry &&
+            !originalRequest?.url?.includes("/refresh-token") && // Prevent infinite loop
+            !originalRequest?.url?.includes("/signin") // Prevent infinite loop
         ) {
             originalRequest._retry = true;
             try {
+                console.info("Refreshing token...");
                 // Gọi API refresh token - refreshToken sẽ được gửi tự động qua cookies
                 const response: AxiosResponse<ApiResponse<User>> = await api.post(
                     "/refresh-token"
@@ -57,7 +75,7 @@ api.interceptors.response.use(
                 // const newToken = data.token.startsWith("Bearer ")
                 //     ? data.token.split(" ")[1]
                 //     : data.token;
-                if (data.success) {
+                if (!data.isError) {
                     
                     /* // Lưu token mới vào localStorage
                     localStorage.setItem("token", newToken);
@@ -65,7 +83,7 @@ api.interceptors.response.use(
                     originalRequest.headers.Authorization = `Bearer ${newToken}`;
                     // Thử lại request ban đầu với token mới */
 
-                    return axios(originalRequest);
+                    return axios(originalRequest as AxiosRequestConfig);
                 }
             } catch (refreshError: unknown) {
                 console.error("Token refresh failed:", refreshError);
@@ -73,20 +91,15 @@ api.interceptors.response.use(
                 // localStorage.removeItem("token");
                 // Có thể thêm logic redirect đến trang login ở đây
                 return Promise.reject({
-                    status: "error",
-                    statusCode: (refreshError as ErrorResponse).statusCode || 500,
-                    message:
-                        (refreshError as ErrorResponse).message || "Internal Server Error",
-                    metadata: (refreshError as ErrorResponse).metadata || {},
+                    isError: true,
+                    detail: (error.response?.data as DetailedErrorResponse).detail
                 });
             }
         }
 
         return Promise.reject({
-            status: "error",
-            statusCode: error.response?.status || 500,
-            message: error.response?.data?.message || "Internal Server Error",
-            metadata: error.response?.data?.metadata || {},
+            isError: true,
+            detail: (error.response?.data as DetailedErrorResponse).detail
         });
     }
 );

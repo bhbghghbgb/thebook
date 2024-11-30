@@ -31,7 +31,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const navigate = useNavigate();
 
     const handleAuthSuccess = (response: ApiResponse<User>) => {
-        if (response.success) {
+        if (!response.isError && response.data) {
             setAuth(true);
             if (response.data) {
                 setUser(response.data);
