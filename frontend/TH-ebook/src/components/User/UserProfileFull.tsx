@@ -4,7 +4,7 @@ import {User} from "../../models/User.ts";
 import {api} from "../../utils/axiosInterceptors.ts";
 import {AxiosResponse} from "axios";
 import {ApiResponse} from "../../type/ApiResponse.ts";
-import {_} from "react-hook-form/dist/__typetest__/__fixtures__";
+import {useState} from "react";
 
 interface UserProfileFormInputs {
     _id: string;
@@ -19,7 +19,12 @@ interface UserProfilePageProps {
     user: User;
 }
 
-const UserProfileFull = ({user}: UserProfilePageProps) => {
+const UserProfileFull = ({user: initialUser}: UserProfilePageProps) => {
+    // Tạo state để quản lý user
+    const [user, setUser] = useState<User>(initialUser);
+    const API_URL: string = import.meta.env.VITE_API_URL2;
+    const endpoint = "edit-profile";
+
     const {register, handleSubmit} = useForm<UserProfileFormInputs>({
         defaultValues: {
             _id: user._id,
@@ -30,12 +35,16 @@ const UserProfileFull = ({user}: UserProfilePageProps) => {
             phone: user.phone,
         },
     });
-
-    const API_URL: string = import.meta.env.VITE_API_URL2;
-    const endpoint = "edit-profile";
     // Todo: gọi api trên 1 tầng cao hơn
     const onSubmit: SubmitHandler<UserProfileFormInputs> = async (data) => {
-        const hasChanges = Object.keys(data).some(key => data[key as keyof UserProfileFormInputs] !== user[key as keyof User]);
+        const hasChanges = (
+            data.firstName !== user.firstName ||
+            data.lastName !== user.lastName ||
+            data.username !== user.username ||
+            data.email !== user.email ||
+            data.phone !== user.phone
+        );
+        console.info("Has changes: ", hasChanges);
         if (!hasChanges) {
             alert("No changes detected");
             return;
@@ -44,8 +53,9 @@ const UserProfileFull = ({user}: UserProfilePageProps) => {
         console.log("User id update profile ", _id);
         const response: AxiosResponse<ApiResponse<User>> = await api.put(`${API_URL}/${endpoint}`, dataWithoutId);
         if (!response.data.isError) {
+            // Cập nhật state với dữ liệu mới từ server
+            setUser(response.data.data ?? initialUser);
             alert("Profile updated successfully");
-            window.location.reload();
         } else {
             alert("Profile update failed");
         }
@@ -71,10 +81,19 @@ const UserProfileFull = ({user}: UserProfilePageProps) => {
                         src={user.avatar}
                         alt="avatar"
                     />
-                    <div>
+                    <div className="flex flex-col gap-y-2">
                         <Typography color="white" variant="h6">
                             {user.firstName + " " + user.lastName}
                         </Typography>
+
+                        <div className="flex flex-row gap-x-2">
+                            <Button variant="gradient" color="deep-orange" size="sm">
+                                Change Avatar
+                            </Button>
+                            <Button variant="gradient" color="deep-orange" size="sm">
+                                Change Password
+                            </Button>
+                        </div>
                     </div>
                 </div>
 
@@ -82,13 +101,13 @@ const UserProfileFull = ({user}: UserProfilePageProps) => {
                     variant="outlined"
                     placeholder="ID"
                     {...register("_id")}
-                    /* 
-                    
-                    The ... syntax in JavaScript and TypeScript is known as the spread operator. 
-                    In the context of your code, ...register("_id"), it is used to spread the 
+                    /*
+
+                    The ... syntax in JavaScript and TypeScript is known as the spread operator.
+                    In the context of your code, ...register("_id"), it is used to spread the
                     properties returned by the register function into the component's props.
 
-                    
+
                     */
                     color="white"
                     readOnly
