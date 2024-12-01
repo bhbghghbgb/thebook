@@ -1,3 +1,11 @@
+/**
+ *
+ * Tạo context liên quan đến các thao tác cần phải xác thực người dùng trước khi thực hiện.
+ * Muốn sử dụng context này, cần phải bọc toàn bộ ứng dụng trong AuthProvider.
+ * lấy các context bằng cách sử dụng custom hook useAuth.
+ *
+ * */
+
 import React, {createContext, useState, useCallback, useContext} from "react";
 import {useNavigate} from "react-router-dom";
 import {User} from "../models/User";
@@ -10,6 +18,7 @@ interface AuthContextType {
     signin: (usernameoremail: string, password: string) => Promise<ApiResponse<User>>;
     logout: () => void;
     signup: (username: string, email: string, password: string, fistname: string, lastname: string, phone: string) => Promise<void>;
+    changePassword: (oldPassword: string, newPassword: string) => Promise<ApiResponse<User>>;
     refreshToken: () => Promise<void>;
 }
 
@@ -101,12 +110,23 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             throw error;
         }
     }, [logout]);
+
+    const changePassword = async (oldPassword: string, newPassword: string) => {
+        try {
+            const response: ApiResponse<User> = await authAPI.changePassword(oldPassword, newPassword);
+            return response;
+        } catch (error) {
+            console.error("Change password failed:", error);
+            throw error;
+        }
+    }
     const value = {
         user,
         isAuth,
         signin,
         logout,
         signup,
+        changePassword,
         refreshToken,
     };
 

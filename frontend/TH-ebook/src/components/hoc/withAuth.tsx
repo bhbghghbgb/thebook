@@ -1,3 +1,11 @@
+/**
+ *
+ *
+ * HOC này dùng để bọc các component cần lấy các thông tin được protected như user, ... .
+ *
+ * */
+
+
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {User} from '../../models/User';

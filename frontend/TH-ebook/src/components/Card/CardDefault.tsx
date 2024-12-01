@@ -31,7 +31,7 @@ function CardDefault({
     <>
       <div className="card relative">
         <Card className="mt-6 w-96" variant="gradient" color="transparent">
-          <CardHeader className="relative xxlg:h-56 xlg:h -50 lg:h-45 md:h-40 sm:h-30 ">
+          <CardHeader >
             {ComponentHeader}
           </CardHeader>
           <CardBody>

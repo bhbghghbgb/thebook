@@ -11,6 +11,7 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import UserProfileFullPage from "./pages/UserProfileFullPage.tsx";
 import LayoutComponent from "./components/Share/LayoutComponent.tsx";
+import ChangePasswordPage from "./pages/ChangePasswordPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function App() {
                 <Route path="auth">
                   <Route path="signup" element={<SignUpPage/>}/>
                   <Route path="signin" element={<SignInPage/>}/>
+                  <Route path="change-password" element={<ChangePasswordPage/>}/>
                 </Route>
                 <Route path="book">
                   <Route index element={<BookListPage header="Trending"/>}/>

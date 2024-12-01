@@ -6,6 +6,7 @@ const endpoint = "signin";
 const endpoint2 = "signup";
 const refreshEndpoint = "refresh-token";
 const logoutEndpoint = "signout";
+const changePasswordEndpoint = "change-password";
 // Create an axios instance with default config
 
 
@@ -60,6 +61,18 @@ export const authAPI = {
             return response?.data;
         } catch (error: unknown) {
             throw new Error((error as Error).message || 'Logout failed');
+        }
+    },
+
+    changePassword: async (oldPassword: string, newPassword: string) => {
+        try {
+            const response: AxiosResponse<ApiResponse<User>> = await api.put(`/${changePasswordEndpoint}`, {
+                oldPassword,
+                newPassword
+            });
+            return response?.data;
+        } catch (error: unknown) {
+            throw new Error((error as Error).message || 'Change password failed');
         }
     }
 }

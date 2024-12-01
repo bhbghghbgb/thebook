@@ -25,7 +25,7 @@ const ISignInSchema = yup.object().shape({
 });
 
 const SignInForm = () => {
-    const {signin} = useAuth();
+    const {signin} = useAuth(); // Sử dụng signin từ AuthContext
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +48,7 @@ const SignInForm = () => {
 
             const response: ApiResponse<User> = await signin(data.usernameoremail, data.password);
 
-            if (response.isError) {
+            if (response.data === null) {
                 setMessage(response.message ?? "");
                 dispatch(authFailure(response.message ?? ""));
                 return;
@@ -59,7 +59,7 @@ const SignInForm = () => {
                 navigate('/');
             }
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'An error occurred during sign in';
+            const errorMessage = (error as ApiResponse<User>).detail?.message ?? 'An error occurred during sign in';
             setMessage(errorMessage);
             dispatch(authFailure(errorMessage));
         } finally {

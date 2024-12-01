@@ -5,6 +5,8 @@ import {api} from "../../utils/axiosInterceptors.ts";
 import {AxiosResponse} from "axios";
 import {ApiResponse} from "../../type/ApiResponse.ts";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import OverlayComponent from "../Share/OverlayComponent.tsx";
 
 interface UserProfileFormInputs {
     _id: string;
@@ -51,6 +53,7 @@ const UserProfileFull = ({user: initialUser}: UserProfilePageProps) => {
         }
         const { _id, ...dataWithoutId } = data;
         console.log("User id update profile ", _id);
+        // Todo: viết editProfile trong AuthContext
         const response: AxiosResponse<ApiResponse<User>> = await api.put(`${API_URL}/${endpoint}`, dataWithoutId);
         if (!response.data.isError) {
             // Cập nhật state với dữ liệu mới từ server
@@ -66,6 +69,13 @@ const UserProfileFull = ({user: initialUser}: UserProfilePageProps) => {
 
     };
 
+
+    const navigate = useNavigate();
+    const handleOpenChangePassword = () => {
+        navigate("/auth/change-password");
+    }
+
+    const [openChangePassword, setopenChangePassword] = useState(false);
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-5">
@@ -90,7 +100,7 @@ const UserProfileFull = ({user: initialUser}: UserProfilePageProps) => {
                             <Button variant="gradient" color="deep-orange" size="sm">
                                 Change Avatar
                             </Button>
-                            <Button variant="gradient" color="deep-orange" size="sm">
+                            <Button variant="gradient" color="deep-orange" size="sm" onClick={() => handleOpenChangePassword()}>
                                 Change Password
                             </Button>
                         </div>
@@ -146,6 +156,19 @@ const UserProfileFull = ({user: initialUser}: UserProfilePageProps) => {
                 <Button type="submit" className="text-white px-4 py-2 rounded" variant="gradient" color="deep-orange">
                     Save
                 </Button>
+
+                {
+                    openChangePassword && (
+                        <OverlayComponent
+                            onClose={() => setopenChangePassword(false)}
+                            BarComponent={
+                                <div className="flex justify-center items-center">
+                                    <h1 className="text-2xl font-semibold text-gray-800">Change Password</h1>
+                                </div>
+                            }
+                        />
+                    )
+                }
             </div>
         </form>
     );
