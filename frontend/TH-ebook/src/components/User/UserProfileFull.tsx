@@ -4,6 +4,7 @@ import {User} from "../../models/User.ts";
 import {api} from "../../utils/axiosInterceptors.ts";
 import {AxiosResponse} from "axios";
 import {ApiResponse} from "../../type/ApiResponse.ts";
+import {_} from "react-hook-form/dist/__typetest__/__fixtures__";
 
 interface UserProfileFormInputs {
     _id: string;
@@ -34,13 +35,25 @@ const UserProfileFull = ({user}: UserProfilePageProps) => {
     const endpoint = "edit-profile";
     // Todo: gọi api trên 1 tầng cao hơn
     const onSubmit: SubmitHandler<UserProfileFormInputs> = async (data) => {
-        const response: AxiosResponse<ApiResponse<User>> = await api.put(`${API_URL}/${endpoint}`, data);
+        const hasChanges = Object.keys(data).some(key => data[key as keyof UserProfileFormInputs] !== user[key as keyof User]);
+        if (!hasChanges) {
+            alert("No changes detected");
+            return;
+        }
+        const { _id, ...dataWithoutId } = data;
+        console.log("User id update profile ", _id);
+        const response: AxiosResponse<ApiResponse<User>> = await api.put(`${API_URL}/${endpoint}`, dataWithoutId);
         if (!response.data.isError) {
             alert("Profile updated successfully");
+            window.location.reload();
         } else {
             alert("Profile update failed");
         }
+
         console.log(response.data.message);
+        console.log("New user profile: ",response.data.data);
+
+
     };
 
     return (
