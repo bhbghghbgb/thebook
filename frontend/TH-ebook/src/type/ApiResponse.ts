@@ -4,8 +4,7 @@ export interface ApiResponse<T> {
     isError?: boolean;
     // Todo: sửa lại theo detal của c#
     detail?: {
-        status: string;
-        statusCode: number;
+        status: number;
         message: string;
         metadata: object;
     };

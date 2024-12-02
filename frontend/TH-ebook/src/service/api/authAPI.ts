@@ -72,7 +72,7 @@ export const authAPI = {
             });
             return response?.data;
         } catch (error: unknown) {
-            throw new Error((error as Error).message || 'Change password failed');
+            throw new Error((error as ApiResponse<User>).detail?.message || 'Change password failed');
         }
     }
 }

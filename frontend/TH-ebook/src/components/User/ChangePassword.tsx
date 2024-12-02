@@ -1,4 +1,3 @@
-import CardDefault from "../Card/CardDefault.tsx";
 import {Button, Card, CardBody, CardFooter, CardHeader, Checkbox, Input, Typography} from "@material-tailwind/react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import * as yup from "yup";
@@ -7,6 +6,7 @@ import {useState} from "react";
 import {useAuth} from "../../context/AuthContext.tsx";
 import {ApiResponse} from "../../type/ApiResponse.ts";
 import {User} from "../../models/User.ts";
+import {useNavigate} from "react-router-dom";
 
 const IChangePasswordSchema = yup.object().shape({
     oldPassword: yup.string().required('Old Password is required'),
@@ -38,7 +38,7 @@ const ChangePassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState("");
     const {changePassword} = useAuth();
-
+    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<ChangePasswordFormInputs> =async (data) => {
         setIsLoading(true);
@@ -46,11 +46,12 @@ const ChangePassword = () => {
 
         try {
             const response = await changePassword(data.oldPassword, data.newPassword);
-            if (response.data === null) {
-                setMessage(response.message ?? "");
+            if (!response.isError) {
+                alert("Password changed successfully");
+                navigate('/user/profile-full');
             }
         }catch (error: unknown) {
-            const errorMessage = (error as ApiResponse<User>).detail?.message ?? 'Change Password failed';
+            const errorMessage = (error as Error).message ?? 'Change Password failed';
             setMessage(errorMessage);
         } finally {
             setIsLoading(false);

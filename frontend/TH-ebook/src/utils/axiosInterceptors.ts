@@ -40,10 +40,8 @@ api.interceptors.request.use(
     },
     (error) => {
         return Promise.reject({
-            status: "error",
-            statusCode: error.response?.status || 500,
-            message: error.response?.data?.message || "Internal Server Error",
-            metadata: error.response?.data?.metadata || {},
+            isError: true,
+            detail: (error.response?.data as DetailedErrorResponse).detail
         });
     }
 );
@@ -59,7 +57,7 @@ api.interceptors.response.use(
         console.error("Response error:", error.response?.status, (error.response?.data as DetailedErrorResponse).detail);
         if (
             error.response?.status === 401  &&
-            errorMessage === "TokenExpiredError" &&
+            (errorMessage === "TokenExpiredError" || errorMessage === "Unauthorized") &&
             !originalRequest?._retry &&
             !originalRequest?.url?.includes("/refresh-token") && // Prevent infinite loop
             !originalRequest?.url?.includes("/signin") // Prevent infinite loop
@@ -86,6 +84,8 @@ api.interceptors.response.use(
                     return axios(originalRequest as AxiosRequestConfig);
                 }
             } catch (refreshError: unknown) {
+
+                // Todo: Ép kiểu refreshError về APIResponse
                 console.error("Token refresh failed:", refreshError);
                 // Xóa token khi refresh thất bại
                 // localStorage.removeItem("token");
