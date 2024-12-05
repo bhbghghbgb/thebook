@@ -6,7 +6,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 
-import { HiHome, HiX } from "react-icons/hi";
+import {HiHome, HiUser, HiX} from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 interface DrawerDefaultProps {
@@ -19,6 +19,10 @@ export function DrawerDefault({ open, onClose }: DrawerDefaultProps) {
 
   const handleHomeClick = () => {
     navigate("/");
+    onClose();
+  };
+  const handleUserClick = () => {
+    navigate("/user/profile-full");
     onClose();
   };
   return (
@@ -40,6 +44,16 @@ export function DrawerDefault({ open, onClose }: DrawerDefaultProps) {
               </IconButton>
               <Typography variant="h4" color="black">
                 Home
+              </Typography>
+            </div>
+          </Button>
+          <Button variant="gradient" color="deep-orange" onClick={() => handleUserClick()}>
+            <div className="flex items-center gap-x-3">
+              <IconButton color="gray" size="lg">
+                <HiUser className="text-white" />
+              </IconButton>
+              <Typography variant="h4" color="black">
+                User
               </Typography>
             </div>
           </Button>
