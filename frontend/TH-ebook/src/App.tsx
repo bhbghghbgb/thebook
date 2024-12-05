@@ -12,12 +12,17 @@ import SignUpPage from "./pages/SignUpPage";
 import UserProfileFullPage from "./pages/UserProfileFullPage.tsx";
 import LayoutComponent from "./components/Share/LayoutComponent.tsx";
 import ChangePasswordPage from "./pages/ChangePasswordPage.tsx";
+import {useActionRedux} from "./hooks/useActionRedux.ts";
+import {fetchFeaturedBooksRequest, fetchNewBooksRequest, fetchTrendingBooksRequest} from "./features/book/bookSlice.ts";
 
 const queryClient = new QueryClient();
 
 function App() {
   // Define the media query
   const isMobile = useMediaQuery("(max-width: 1060px)");
+  useActionRedux(fetchNewBooksRequest);
+  useActionRedux(fetchFeaturedBooksRequest);
+  useActionRedux(fetchTrendingBooksRequest);
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -26,14 +31,19 @@ function App() {
             <div className="md-content flex-grow">
               <Routes>
                 <Route path="*" element={"404 Not Found"}></Route>
-                <Route index element={<HomePage isMobile={isMobile}/>}/>
+                <Route index element={<HomePage isMobile={isMobile}
+                                                // booksTrending={bookTrending}
+                                                /*booksNew={bookNew}
+                                                booksFeatured={bookFeatured}*//>}/>
                 <Route path="auth">
                   <Route path="signup" element={<SignUpPage/>}/>
                   <Route path="signin" element={<SignInPage/>}/>
                   <Route path="change-password" element={<ChangePasswordPage/>}/>
                 </Route>
                 <Route path="book">
-                  <Route index element={<BookListPage header="Trending"/>}/>
+                  <Route
+                      path=":type"
+                      element={<BookListPage header="Trending"/>}/>
                   <Route
                       path=":id"
                       element={<BookDetailPage isMobile={isMobile}/>}

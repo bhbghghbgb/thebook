@@ -21,10 +21,8 @@ const withReduxData = <P extends WithReduxDataProps<T>, T>(
     // Sử dụng useEffect với callback được định nghĩa rõ ràng
     useEffect(() => {
       const fetchBooks = async () => {
-        console.log("Fetching books.json..."); // Debug log
-        console.log("Action type:", getBooksAction.type); // Debug log
-        console.log("Dispatching action:", getBooksAction()); // Debug log
-        console.log("Dispatch:", dispatch); // Debug log
+        console.info("Fetching books action"); // Debug log
+        console.info("Dispatching action:", getBooksAction()); // Debug log
         try {
           dispatch(getBooksAction());
           console.log("Books fetched successfully"); // Debug log

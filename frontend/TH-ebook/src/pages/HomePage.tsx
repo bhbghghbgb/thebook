@@ -1,66 +1,85 @@
-import { useNavigate } from "react-router-dom";
-import LayoutComponent from "../components/Share/LayoutComponent";
+import {useNavigate} from "react-router-dom";
 import BannerSlider from "../components/Home/BannerSlider";
 import BookContainer from "../components/Home/BookContainer";
-import { Book } from "../models/Book";
-import useBooksRedux from "../hooks/useBooksRedux.ts";
+import {Book} from "../models/Book";
+import {useSelector} from "react-redux";
+import {StateType} from "../store/rootReducer.ts";
 
 interface Props {
-  isMobile: boolean;
+    isMobile: boolean;
 }
 
-const HomePage = ({ isMobile }: Props) => {
-  const navigate = useNavigate();
+const HomePage = ({isMobile,  /*booksFeatured, booksNew*/}: Props) => {
+    const navigate = useNavigate();
 
-  const handleBannerClick = (book: Book) => {
-    navigate(`/book/${book.id}`, { state: { book } });
-  };
+    const handleBannerClick = (book: Book) => {
+        navigate(`/book/${book.id}`, {state: {book}});
+    };
 
-  const handleBookClick = (book: Book) => {
-    navigate(`/book/${book.id}`, { state: { book } });
-  };
+    const handleBookClick = (book: Book) => {
+        navigate(`/book/${book.id}`, {state: {book}});
+    };
 
-  const handleBookListClick = (books: Book[]) => {
-    navigate(`/book`, { state: { books } });
-  };
+    const handleBookTrendingListClick = (books: Book[]) => {
+        navigate(`/book/Trending`, {state: {books}});
+    };
+    const handleBookNewListClick = (books: Book[]) => {
+        navigate(`/book/New`, {state: {books}});
+    };
+    const handleBookFeaturedListClick = (books: Book[]) => {
+        navigate(`/book/Featured`, {state: {books}});
+    };
 
-  const { books, errors, isLoading } = useBooksRedux();
 
-  return (
-    <div className="home-page gap-y-10">
-        <BannerSlider
-          books={books}
-          isMobile={isMobile}
-          onClick={handleBannerClick}
-        />
-        <BookContainer
-          header="Trending"
-          books={books}
-          onClick={handleBookClick}
-          onListClick={handleBookListClick}
-          errors={errors}
-          isLoading={isLoading}
-        />
-        <div className="flex-grow hidden sm:block" />
-        <BookContainer
-          header="New"
-          books={books}
-          onClick={handleBookClick}
-          onListClick={handleBookListClick}
-          errors={errors}
-          isLoading={isLoading}
-        />
-        <div className="flex-grow hidden sm:block" />
-        <BookContainer
-          header="Features"
-          books={books}
-          onClick={handleBookClick}
-          onListClick={handleBookListClick}
-          errors={errors}
-          isLoading={isLoading}
-        />
-    </div>
-  );
+
+    const {data: newBooks, errors: newBooksError, isLoading: isLoadingNewBooks} = useSelector(
+        (state: StateType) => state.newBooks
+    );
+    const {data: trendingBooks, errors: trendingBooksError, isLoading: trendingBooksisLoading} = useSelector(
+        (state: StateType) => state.trendingBooks
+    );
+    const {data: featuredBooks, errors: featuredBooksErrors, isLoading: featuredBooksIsloading} = useSelector(
+        (state: StateType) => state.featuredBooks
+    );
+
+
+    console.log("newBooks", newBooks);
+    console.log("trendingBooks", trendingBooks);
+    console.log("featuredBooks", featuredBooks);
+
+
+    return (
+        <div className="home-page gap-y-10">
+            <BannerSlider
+                isMobile={isMobile}
+                onClick={handleBannerClick}
+            />
+            <BookContainer
+                header="Trending"
+                onClick={handleBookClick}
+                onListClick={handleBookTrendingListClick}
+                books={trendingBooks || []}
+                isLoading={trendingBooksisLoading}
+                errors={trendingBooksError}/>
+            <div className="flex-grow hidden sm:block"/>
+            <BookContainer
+                header="New"
+                onClick={handleBookClick}
+                onListClick={handleBookNewListClick}
+                books={newBooks || []}
+                isLoading={isLoadingNewBooks}
+                errors={newBooksError}/>
+            <div className="flex-grow hidden sm:block"/>
+            <BookContainer
+                header="Features"
+                onClick={handleBookClick}
+                onListClick={handleBookFeaturedListClick}
+                books={featuredBooks || []}
+                isLoading={featuredBooksIsloading}
+                errors={featuredBooksErrors}
+            />
+        </div>
+    );
 };
 
 export default HomePage;

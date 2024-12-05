@@ -1,44 +1,115 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
-import {
-  getBooksAction,
-  getBooksSuccessAction,
-  getBooksFailureAction,
-} from "./bookSlice.ts";
-import { Book } from "../../models/Book.ts";
+import {all, put, takeLatest} from 'redux-saga/effects';
+import {Book} from "../../models/Book.ts";
 import {fetchData} from "../../service/api/fetchData.ts";
+import {ApiResponse} from "../../type/ApiResponse.ts";
+import {Action} from "@reduxjs/toolkit";
+import {
+    fetchNewBooksRequest,
+    fetchNewBooksSuccess,
+    fetchNewBooksFailure,
+    fetchTrendingBooksRequest,
+    fetchTrendingBooksSuccess,
+    fetchTrendingBooksFailure,
+    fetchFeaturedBooksRequest,
+    fetchFeaturedBooksSuccess,
+    fetchFeaturedBooksFailure,
+    fetchBooksRequest,
+    fetchBooksSuccess,
+    fetchBooksFailure
 
-/* 
+} from './bookSlice.ts';
+const createBookSaga = (fetchRequest:Action, fetchSuccess:Action, fetchFailure:Action, type:string) => {
+    return function* () {
+        const endpointBooks = type ? `products/books/type/${type}`: 'products/books';
+        try {
+            const response: ApiResponse<Book[]> = yield fetchData<Book[]>(endpointBooks);
+            console.log("respone", response);
+            // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
+            console.log("fetchBooksSaga Data");
+            if (response.data) {
+                // console.log(responseBooks.data);
+                yield put(fetchSuccess(response.data));
+            }
+            if (response.isError === true) {
+                // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
+                yield put(fetchFailure(response.detail?.message || "Error loading data"));
+            }
+        } catch (error) {
+            yield put(fetchFailure((error as Error).message));
+        }
+    };
+};
 
-function* fetchBooksSaga() { ... }: Đây là một hàm generator, được định nghĩa bằng từ khóa function*. Hàm này sẽ trả về một đối tượng iterator và có thể tạm dừng và tiếp tục thực thi tại các điểm yield.
+export function* watchBookSagas(
+    fetchNewBooksRequest:Action,
+    fetchNewBooksSuccess:Action,
+    fetchNewBooksFailure:Action,
+    fetchTrendingBooksRequest:Action,
+    fetchTrendingBooksSuccess:Action,
+    fetchTrendingBooksFailure:Action,
+    fetchFeaturedBooksRequest:Action,
+    fetchFeaturedBooksSuccess:Action,
+    fetchFeaturedBooksFailure:Action,
+    fetchBooksRequest:Action,
+    fetchBooksSuccess:Action,
+    fetchBooksFailure:Action
+) {
+    yield takeLatest(
+        fetchNewBooksRequest.type,
+        createBookSaga(
+            fetchNewBooksRequest,
+            fetchNewBooksSuccess,
+            fetchNewBooksFailure,
+            'New'
+        )
+    );
 
-try { ... } catch (error) { ... }: Khối try-catch được sử dụng để xử lý các lỗi có thể xảy ra
+    yield takeLatest(
+        fetchTrendingBooksRequest.type,
+        createBookSaga(
+            fetchTrendingBooksRequest,
+            fetchTrendingBooksSuccess,
+            fetchTrendingBooksFailure,
+            'Trending'
+        )
+    );
 
-yield call(axios.get, API_URL): Hàm call() được sử dụng để gọi một hàm không đồng bộ. Trong trường hợp này, chúng ta gọi hàm axios.get() để thực hiện một HTTP GET request đến API_URL.
+    yield takeLatest(
+        fetchFeaturedBooksRequest.type,
+        createBookSaga(
+            fetchFeaturedBooksRequest,
+            fetchFeaturedBooksSuccess,
+            fetchFeaturedBooksFailure,
+            'Featured'
+        )
+    );
 
-*/
-
-function* fetchBooksSaga() {
-  const endpoint = "books";
-  try {
-    // Gọi API để lấy dữ liệu sách
-    const response: Book[] = yield fetchData(endpoint);
-    // Nếu thành công, dispatch action getBooksSuccess với dữ liệu nhận được
-    console.log("fetchBooksSaga Data");
-    if (response) {
-      // console.log(response.data);
-      yield put(getBooksSuccessAction(response));
-    }
-  } catch (error: unknown) {
-    // Nếu có lỗi, dispatch action getBooksFailure với thông báo lỗi
-    yield put(getBooksFailureAction((error as Error).message));
-  }
+    yield takeLatest(
+        fetchBooksRequest.type,
+        createBookSaga(
+            fetchBooksRequest,
+            fetchBooksSuccess,
+            fetchBooksFailure,
+            ''
+        )
+    );
 }
 
-export function* watchFetchBookData() {
-  // Lắng nghe action getBooksAction và gọi hàm fetchBooksSaga khi action được dispatch
-  yield takeLatest(getBooksAction.type, fetchBooksSaga);
-}
-
-export default function* bookSaga(): Generator<unknown, void, unknown> {
-  yield all([call(watchFetchBookData)]);
+export default function* bookSaga() {
+    yield all([
+        watchBookSagas(
+            fetchNewBooksRequest,
+            fetchNewBooksSuccess,
+            fetchNewBooksFailure,
+            fetchTrendingBooksRequest,
+            fetchTrendingBooksSuccess,
+            fetchTrendingBooksFailure,
+            fetchFeaturedBooksRequest,
+            fetchFeaturedBooksSuccess,
+            fetchFeaturedBooksFailure,
+            fetchBooksRequest,
+            fetchBooksSuccess,
+            fetchBooksFailure
+        )
+    ]);
 }

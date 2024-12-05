@@ -1,14 +1,14 @@
 import "swiper/css";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, Scrollbar } from "swiper/modules";
-import { Book } from "../../models/Book.ts";
+import {Swiper, SwiperSlide} from "swiper/react";
+import {Mousewheel, Scrollbar} from "swiper/modules";
+import {Book} from "../../models/Book.ts";
 import {
-  HiOutlineArrowSmRight,
-  HiOutlineChevronDoubleRight,
+    HiOutlineArrowSmRight,
+    HiOutlineChevronDoubleRight,
 } from "react-icons/hi";
 import CardDefault from "../Card/CardDefault.tsx";
-import { Button, IconButton } from "@material-tailwind/react";
+import {Button, IconButton} from "@material-tailwind/react";
 import LoadingSpinner from "../_Common/LoadingSpinner.tsx";
 
 interface Props {

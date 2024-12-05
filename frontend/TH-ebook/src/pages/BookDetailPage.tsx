@@ -7,7 +7,7 @@ import withFetchBook from "../components/hoc/withFetchBook.tsx";
  *
  *
  * Ở đây phải đĩnh nghĩa props `data`
- * vì type checking của typescript sẽ báo lỗi nếu không có chúng.
+ * vì kiểu wrapped component kế thừa từ prop của HOC nên phải có các thuộc tính của HOC.
  *
  * */
 
