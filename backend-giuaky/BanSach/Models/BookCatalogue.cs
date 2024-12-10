@@ -6,18 +6,16 @@ namespace BanSach.Models
 {
     public class BookCatalogue : BaseDbModel
     {
-        [BsonId]
+       
         [BsonRepresentation(BsonType.ObjectId)]
-        [JsonPropertyName("id")]
-        public int? Id { get; set; } = null!;
-
         [BsonElement("book_id")]
         [JsonPropertyName("book_id")]
-        public int? BookId { get; set; } = null!;
+        public string? BookId { get; set; } = null!;
 
+        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("catalogue_id")]
         [JsonPropertyName("catalogue_id")]
-        public decimal? CatalogueId { get; set; } = null!;
+        public string? CatalogueId { get; set; } = null!;
 
     }
 }

@@ -6,10 +6,6 @@ namespace BanSach.Models
 {
     public class Catalogue : BaseDbModel
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        [JsonPropertyName("id")]
-        public int? Id { get; set; } = null!;
 
         [BsonElement("title")]
         [JsonPropertyName("title")]

@@ -42,6 +42,7 @@ builder.Services.AddSingleton<IMongoDbSettings>(sp =>
 builder.Services.AddScoped<GenreService>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
+
 // Thêm dòng này để cấu hình logging
 builder.Services.AddLogging();
 
@@ -95,6 +96,7 @@ builder.Services.AddSingleton<IMongoDbRepositoryOptions<Genre>>(
             .Value.CollectionNames[nameof(Genre)],
     }
 );
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

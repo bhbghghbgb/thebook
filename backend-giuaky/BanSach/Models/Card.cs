@@ -6,14 +6,11 @@ namespace BanSach.Models
 {
     public class Card : BaseDbModel
     {
-         [BsonId]
+        
         [BsonRepresentation(BsonType.ObjectId)]
-        [JsonPropertyName("id")]
-        public int? Id { get; set; } = null!;
-
         [BsonElement("user_id")]
         [JsonPropertyName("user_id")]
-        public int? UserId { get; set; } = null!;
+        public string? UserId { get; set; } = null!;
 
         [BsonElement("total_price")]
         [JsonPropertyName("total_price")]

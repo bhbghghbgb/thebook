@@ -6,10 +6,6 @@ namespace BanSach.Models
 {
     public class User : BaseDbModel
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        [JsonPropertyName("id")]
-        public int? Id { get; set; } = null!;
 
         [BsonElement("user_name")]
         [JsonPropertyName("user_name")]
