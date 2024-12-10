@@ -1,0 +1,181 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/nguyenthanhhung/Downloads/TestOnion/Presentation/Presentation.csproj": {}
+  },
+  "projects": {
+    "/home/nguyenthanhhung/Downloads/TestOnion/Presentation/Presentation.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/nguyenthanhhung/Downloads/TestOnion/Presentation/Presentation.csproj",
+        "projectName": "Presentation",
+        "projectPath": "/home/nguyenthanhhung/Downloads/TestOnion/Presentation/Presentation.csproj",
+        "packagesPath": "/home/nguyenthanhhung/.nuget/packages/",
+        "outputPath": "/home/nguyenthanhhung/Downloads/TestOnion/Presentation/obj/",
+        "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
+        "configFilePaths": [
+          "/home/nguyenthanhhung/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/nguyenthanhhung/Downloads/TestOnion/Service.Abstraction/Service.Abstraction.csproj": {
+                "projectPath": "/home/nguyenthanhhung/Downloads/TestOnion/Service.Abstraction/Service.Abstraction.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/nguyenthanhhung/Downloads/TestOnion/Service.Abstraction/Service.Abstraction.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/nguyenthanhhung/Downloads/TestOnion/Service.Abstraction/Service.Abstraction.csproj",
+        "projectName": "Service.Abstraction",
+        "projectPath": "/home/nguyenthanhhung/Downloads/TestOnion/Service.Abstraction/Service.Abstraction.csproj",
+        "packagesPath": "/home/nguyenthanhhung/.nuget/packages/",
+        "outputPath": "/home/nguyenthanhhung/Downloads/TestOnion/Service.Abstraction/obj/",
+        "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
+        "configFilePaths": [
+          "/home/nguyenthanhhung/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/nguyenthanhhung/Downloads/TestOnion/Shared/Shared.csproj": {
+                "projectPath": "/home/nguyenthanhhung/Downloads/TestOnion/Shared/Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/nguyenthanhhung/Downloads/TestOnion/Shared/Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/nguyenthanhhung/Downloads/TestOnion/Shared/Shared.csproj",
+        "projectName": "Shared",
+        "projectPath": "/home/nguyenthanhhung/Downloads/TestOnion/Shared/Shared.csproj",
+        "packagesPath": "/home/nguyenthanhhung/.nuget/packages/",
+        "outputPath": "/home/nguyenthanhhung/Downloads/TestOnion/Shared/obj/",
+        "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
+        "configFilePaths": [
+          "/home/nguyenthanhhung/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
